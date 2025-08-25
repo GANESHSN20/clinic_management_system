@@ -1,0 +1,32 @@
+{
+	"name": "cms_mgmt_system",
+	"version": "1.0.0",
+	"description": "clinic management system",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/sandeepkj90/cms_mgmt_system.git"
+	},
+	"keywords": [
+		"cms"
+	],
+	"engines": {
+		"node": ">=23.6.0",
+		"npm": ">=10.9.0"
+	},
+	"author": "sandeep",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/sandeepkj90/cms_mgmt_system/issues"
+	},
+	"homepage": "https://github.com/sandeepkj90/cms_mgmt_system#readme",
+	"dependencies": {
+		"dotenv": "^17.2.1",
+		"express": "^5.1.0",
+		"jsonwebtoken": "^9.0.2",
+		"mongoose": "^8.18.0"
+	}
+}
