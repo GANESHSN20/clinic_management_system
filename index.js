@@ -7,6 +7,9 @@ const port = process.env.PORT;
 
 require("./database.js");
 
+app.use("/users", require("./src/controller/user-controller.js"));
+
 app.listen(port, () => {
     console.log(`Server started at the port ${port}.`)
 });
+

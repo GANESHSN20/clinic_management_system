@@ -1,24 +1,27 @@
 console.log("user-dao");
 
+const UserModel = require("../model/user-model");
+
 const UserDAO = {
     isUsernameExist: (payload) => {
-        return userModel.findOne({username:payload.username}, {username:1, firstname:1, datOfBirth:1, sex:1});
+        return UserModel.findOne({userName:payload.userName}, {userName:1, firstName:1, datOfBirth:1, sex:1});
     },
 
     register: (payload) => {
-        return userModel({
-            firstname:payload.firstname,
-            lastname:payload.lastname,
+        return UserModel({
+            firstName:payload.firstName,
+            lastName:payload.lastName,
             phone:payload.phone,
             dateOfBirth:payload.dateOfBirth,
             sex:payload.sex,
             address:payload.address,
-            blooadGroup:payload.blooadGroup,
-            username:payload.username,
+            bloodGroup:payload.bloodGroup,
+            userName:payload.userName,
+            password:payload.password,
+            email:payload.email,
             status:payload.status,
-            isActive:payload.isActive,
             role:payload.role
         }).save();
-    }
+    },
 }
 module.exports = UserDAO;

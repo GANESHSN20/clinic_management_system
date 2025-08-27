@@ -1,17 +1,20 @@
+console.log("user-model");
+
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const UserSchema = new Schema({
-    firstname:{
+    firstName:{
         type:String,
         required:true
     },
-    lastname:{
+    lastName:{
         type:String,
     },
     phone:{
         type:Number,
-        required:true
+        required:true,
+        unique:true
     },
     dateOfBirth:{
         type:Date,
@@ -30,7 +33,7 @@ const UserSchema = new Schema({
         enum:["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
         required:true
     },
-    username:{
+    userName:{
         type:String
     },
     password:{
@@ -39,6 +42,8 @@ const UserSchema = new Schema({
     },
     email:{
         type:String,
+        required:true,
+        unique:true
     },
     status:{
         type:String,
