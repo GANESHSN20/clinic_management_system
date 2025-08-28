@@ -1,9 +1,10 @@
 const { randomInt } = require("crypto");
+const CONSTANTS = require("./constant");
 
 const UserName = {
     generateUsername: (payload) => {
         if(!payload.firstName || !payload.dateOfBirth || !payload.sex){
-            return ({message:"Missing required fields for username genenration"})
+            return ({message:CONSTANTS.UTILITY.USERNAME_ERROR});
         }
         const fname = payload.firstName.trim().toUpperCase();
         const dob = new Date(payload.dateOfBirth);
