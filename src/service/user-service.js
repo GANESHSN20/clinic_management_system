@@ -22,11 +22,8 @@ const UserService = {
             UserDao.register(payload).then(result => {
                 console.log("return data from dao to service", result);
                 resolve({
-                    message:CONSTANTS.USER.REGISTER,
-                    data:{
                         userName:result.userName,
                         password:result.password
-                    }
                 })
             })
             .catch(error => {
