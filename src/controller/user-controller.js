@@ -4,7 +4,10 @@ const express = require("express");
 const UserService = require("../service/user-service");
 const router = express.Router();
 
-router.post("/register", function(req, res){
+const joiUserSchema = require("../utils/user-validator");
+const userMiddleware=require("../middleware/user-middleware")
+
+router.post("/register",userMiddleware.validate(joiUserSchema),userMiddleware.checkRole, function(req, res){
     let bodyData = req.body;
     UserService.register(bodyData)
     .then(result => {

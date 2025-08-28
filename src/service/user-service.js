@@ -8,7 +8,7 @@ const UserService = {
         return new Promise(async(resolve, reject) => {
             
             let userName = Utility.generateUsername(payload);
-            payload.username = userName;
+            payload.userName = userName;
 
             let password = Utility.generatePassword();
             payload.password = password;
@@ -27,10 +27,10 @@ const UserService = {
                         password:result.password,
                     }
                 })
-                .catch(error => {
+            })
+            .catch(error => {
                     reject(error)
-                });
-            }); 
+            });
         });
    }
     

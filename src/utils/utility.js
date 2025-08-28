@@ -16,7 +16,7 @@ const UserName = {
     },
     
     generatePassword: (length = 12) => {
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*_+";
         let password = [];
         for(let i=0;i<length;i++){
             const index = randomInt(0, chars.length);
