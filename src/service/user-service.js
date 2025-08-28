@@ -7,10 +7,14 @@ const CONSTANTS = require("../utils/constant.js");
 const UserService = {
 	register: (payload) => {
 		return new Promise(async (resolve, reject) => {
-			let userName = Utility.getUsername(payload);
+			let userName =
+				payload.role == "ADMIN"
+					? payload.userName
+					: Utility.getUsername(payload);
 			payload.userName = userName;
 
-			let password = Utility.getPassword(8);
+			let password =
+				payload.role == "ADMIN" ? payload.password : Utility.getPassword(8);
 			payload.password = password;
 
 			let isUserExist = await UserDao.isUsernameExist(payload);
@@ -21,12 +25,13 @@ const UserService = {
 				if (updatedData.modifiedCount > 0) {
 					let mailObject = { password, userName };
 					// send the userName and password
+				} else if (payload.role == "ADMIN") {
 				} else {
 					return reject("Something went wrong.");
 				}
 
 				// update the user table.
-				return resolve(mailObject);
+				return resolve({ password, userName });
 			}
 
 			UserDao.register(payload)
