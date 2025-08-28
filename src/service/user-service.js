@@ -2,6 +2,7 @@ console.log("user-service");
 
 const UserDao = require("../dao/user-dao.js");
 const Utility = require("../utils/utility.js");
+const CONSTANTS = require("../utils/constant.js");
 
 const UserService = {
     register: (payload) => {
@@ -15,21 +16,21 @@ const UserService = {
             
             let isUserExist = await UserDao.isUsernameExist(payload);
             if(isUserExist)
-                 return reject("User already exist. Proceed to login");
+                 return reject(CONSTANTS.USER.REGISTER_ERROR);
 
 
-            UserDao.register(payload, userName).then(result => {
+            UserDao.register(payload).then(result => {
                 console.log("return data from dao to service", result);
                 resolve({
-                    message:"User registered successfully",
+                    message:CONSTANTS.USER.REGISTER,
                     data:{
                         userName:result.userName,
-                        password:result.password,
+                        password:result.password
                     }
                 })
             })
             .catch(error => {
-                    reject(error)
+                reject(error)
             });
         });
    }
