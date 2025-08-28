@@ -13,7 +13,7 @@ const UserService = {
             let password = Utility.generatePassword();
             payload.password = password;
             
-            let isUserExist = await UserDao.isUsernameExist(userName);
+            let isUserExist = await UserDao.isUsernameExist(payload);
             if(isUserExist)
                  return reject("User already exist. Proceed to login");
 
