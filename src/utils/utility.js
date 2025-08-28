@@ -1,30 +1,30 @@
 const { randomInt } = require("crypto");
 const CONSTANTS = require("./constant");
 
-const UserName = {
-    generateUsername: (payload) => {
-        if(!payload.firstName || !payload.dateOfBirth || !payload.sex){
-            return ({message:CONSTANTS.UTILITY.USERNAME_ERROR});
-        }
-        const fname = payload.firstName.trim().toUpperCase();
-        const dob = new Date(payload.dateOfBirth);
-        const year = dob.getFullYear();
-        const month = String(dob.getMonth() + 1).padStart(2, "0");
-        const day = String(dob.getDate()).padStart(2, "0");
-        const sexLetter = payload.sex[0];
-        
-        return `CMS${year}${sexLetter}${month}${fname}${day}`;
-    },
-    
-    generatePassword: (length = 12) => {
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*_+";
-        let password = [];
-        for(let i=0;i<length;i++){
-            const index = randomInt(0, chars.length);
-            password.push(chars.charAt(index));
-        }
-        return password.join("");
-    }
-}
+const Utility = {
+	getUsername: (payload) => {
+		if (!payload.firstName || !payload.dateOfBirth || !payload.sex) {
+			return { message: CONSTANTS.UTILITY.USERNAME_ERROR };
+		}
+		const fname = payload.firstName.trim().toUpperCase();
+		const dob = new Date(payload.dateOfBirth);
+		const year = dob.getFullYear();
+		const month = String(dob.getMonth() + 1).padStart(2, "0");
+		const day = String(dob.getDate()).padStart(2, "0");
+		const sexLetter = payload.sex[0];
 
-module.exports = UserName;
+		return `CMS${year}${sexLetter}${month}${fname}${day}`;
+	},
+
+	getPassword: (length = 8) => {
+		const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		let password = [];
+		for (let i = 0; i < length; i++) {
+			const index = randomInt(0, chars.length);
+			password.push(chars.charAt(index));
+		}
+		return password.join("");
+	},
+};
+
+module.exports = Utility;
