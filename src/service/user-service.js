@@ -2,7 +2,6 @@ console.log("user-service");
 
 const UserDao = require("../dao/user-dao.js");
 const Utility = require("../utils/utility.js");
-const CONSTANTS = require("../utils/constant.js");
 
 const UserService = {
 	register: (payload) => {

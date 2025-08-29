@@ -1,9 +1,11 @@
 const express = require("express");
 const app = express();
 app.use(express.json());
+
 const CustomResponse = require("./src/utils/custom-response.js");
 const CONSTANT = require("./src/utils/constant.js");
 const UserService = require("./src/service/user-service.js");
+
 require("dotenv").config();
 const port = process.env.PORT;
 
@@ -35,9 +37,9 @@ UserService.register(adminPayload)
 	})
 	.catch((error) => {
 		console.log(
-			CustomResponse.success(
-				CONSTANT.HTTP_STATUS.CREATED,
-				CONSTANT.USER.REGISTER,
+			CustomResponse.failure(
+				CONSTANT.HTTP_STATUS.INTERNAL_SERVER_ERROR,
+				CONSTANT.COMMON.SERVER_ERROR,
 				error,
 			),
 		);

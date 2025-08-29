@@ -22,7 +22,7 @@ const UserSchema = new Schema({
 	},
 	sex: {
 		type: String,
-		enum: ["MALE", "FEMALE", "OTHER"],
+		enum: Config.sex,
 		required: true,
 	},
 	address: {
@@ -49,7 +49,7 @@ const UserSchema = new Schema({
 	},
 	status: {
 		type: String,
-		enum: ["OPEN", "ONGOING", "CLOSED"],
+		enum: Config.status,
 		default: "OPEN",
 	},
 	isActive: {
@@ -62,7 +62,7 @@ const UserSchema = new Schema({
 	},
 	role: {
 		type: String,
-		enum: ["DOCTOR", "ADMIN", "RECEPTIONIST", "PATIENT"],
+		enum: Config.role,
 		required: true,
 	},
 	otp: {
