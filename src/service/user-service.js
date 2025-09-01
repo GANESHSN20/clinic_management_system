@@ -80,16 +80,16 @@ const UserService = {
       UserDao.getListByUsername(username)
         .then((result) => {
           console.log("Data from UserDao to service", result);
-           resolve({
+          return resolve({
             firstName: result.firstName,
             lastName: result.lastName,
             email: result.email,
             role: result.role,
-            _id: user._id,
+            _id: result._id,
           });
         })
         .catch((error) => {
-           reject(error);
+          return reject(error);
         });
     });
   },
