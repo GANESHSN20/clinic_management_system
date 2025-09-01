@@ -12,6 +12,7 @@ const port = process.env.PORT;
 require("./database.js");
 
 app.use("/users", require("./src/controller/user-controller.js"));
+console.log(process.env)
 let adminPayload = {
 	firstName: "ADMIN",
 	lastName: "USER",
@@ -22,7 +23,7 @@ let adminPayload = {
 	email: process.env.EMAIL,
 	address: "Other",
 	role: "ADMIN",
-	userName: process.env.USERNAME,
+	userName: process.env.USER_NAME,
 	password: process.env.PASSWORD,
 };
 UserService.register(adminPayload)
