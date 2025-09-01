@@ -1,8 +1,7 @@
-console.log("user-service");
-
 const UserDao = require("../dao/user-dao.js");
 const Utility = require("../utils/utility.js");
 const CONSTANTS = require("../utils/constant.js");
+const JwtService=require("../utils/jwt-service.js");
 
 const UserService = {
   register: (payload) => {
@@ -62,6 +61,7 @@ const UserService = {
           email: user.email,
           role: user.load,
         };
+        let token=JwtService.createToken(tokenPayload);
         return resolve({ token, ...tokenPayload, _id: user._id });
       } else {
         return reject(CONSTANTS.COMMON.PASSWORD);
