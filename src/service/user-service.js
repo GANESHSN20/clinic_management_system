@@ -76,18 +76,12 @@ const UserService = {
 		});
 	},
 
-	getListByUsername: (username) => {
+	detail: (userName) => {
 		return new Promise(async (resolve, reject) => {
-			UserDao.getListByUsername(username)
+			UserDao.detail(userName)
 				.then((result) => {
 					console.log("Data from UserDao to service", result);
-					return resolve({
-						firstName: result.firstName,
-						lastName: result.lastName,
-						email: result.email,
-						role: result.role,
-						_id: result._id,
-					});
+					return resolve(result);
 				})
 				.catch((error) => {
 					return reject(error);

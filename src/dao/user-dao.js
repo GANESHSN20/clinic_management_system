@@ -29,8 +29,8 @@ const UserDAO = {
 		}).save();
 	},
 
-	getListByUsername: (username) => {
-		return UserModel.findOne({ userName: username });
+	detail: (userName) => {
+		return UserModel.findOne({ userName }, { password: 0, _id: 0 });
 	},
 };
 
