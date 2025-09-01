@@ -4,95 +4,96 @@ const CONSTANTS = require("../utils/constant.js");
 const JwtService = require("../utils/jwt-service.js");
 
 const UserService = {
-  register: (payload) => {
-    return new Promise(async (resolve, reject) => {
-      let userName =
-        payload.role == "ADMIN"
-          ? payload.userName
-          : Utility.getUsername(payload);
-      payload.userName = userName;
+	register: (payload) => {
+		return new Promise(async (resolve, reject) => {
+			let userName =
+				payload.role == "ADMIN"
+					? payload.userName
+					: Utility.getUsername(payload);
+			payload.userName = userName;
 
-      let password =
-        payload.role == "ADMIN" ? payload.password : Utility.getPassword(8);
-      payload.password = password;
+			let password =
+				payload.role == "ADMIN" ? payload.password : Utility.getPassword(8);
+			payload.password = password;
 
-      let isUserExist = await UserDao.isUserExist(payload);
-      console.log({ isUserExist });
-      if (isUserExist) {
-        let updatedData = await UserDao.update(userName, { password });
-        console.log(updatedData);
-        if (updatedData.modifiedCount > 0) {
-          let mailObject = { password, userName };
-          // send the userName and password
-        } else if (payload.role == "ADMIN") {
-        } else {
-          return reject("Something went wrong.");
-        }
+			let isUserExist = await UserDao.isUserExist(payload);
+			console.log({ isUserExist });
+			if (isUserExist) {
+				let updatedData = await UserDao.update(userName, { password });
+				console.log(updatedData);
+				if (updatedData.modifiedCount > 0) {
+					let mailObject = { password, userName };
+					// send the userName and password
+				} else if (payload.role == "ADMIN") {
+				} else {
+					return reject("Something went wrong.");
+				}
 
-        // update the user table.
-        return resolve({ password, userName });
-      }
+				// update the user table.
+				return resolve({ password, userName });
+			}
 
-      UserDao.register(payload)
-        .then((result) => {
-          console.log("return data from dao to service", result);
-          resolve({
-            firstName: result.firstName,
-            lastName: result.lastName,
-            email: result.email,
-            role: result.role,
-            phone: result.phone,
-            userName: result.userName,
-          });
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
-  },
+			UserDao.register(payload)
+				.then((result) => {
+					console.log("return data from dao to service", result);
+					resolve({
+						firstName: result.firstName,
+						lastName: result.lastName,
+						email: result.email,
+						role: result.role,
+						phone: result.phone,
+						userName: result.userName,
+					});
+				})
+				.catch((error) => {
+					reject(error);
+				});
+		});
+	},
 
-  login: (payload) => {
-    return new Promise(async (resolve, reject) => {
-      const user = await UserDao.isUserExist(payload);
-      console.log(user);
-      if (!user) return reject(CONSTANTS.USER.LOGIN_ERROR);
-      if (payload.password == user.password) {
-        let tokenPayload = {
-          firstName: user.firstName,
-          email: user.email,
-          role: user.role,
-        };
-        let token = JwtService.createToken(tokenPayload);
-        return resolve({
-          token,
-          ...tokenPayload,
-          bloodGroup: user.bloodGroup,
-          _id: user._id,
-        });
-      } else {
-        return reject(CONSTANTS.COMMON.PASSWORD);
-      }
-    });
-  },
+	login: (payload) => {
+		return new Promise(async (resolve, reject) => {
+			const user = await UserDao.isUserExist(payload);
+			console.log(user);
+			if (!user) return reject(CONSTANTS.USER.LOGIN_ERROR);
+			if (payload.password == user.password) {
+				let tokenPayload = {
+					firstName: user.firstName,
+					email: user.email,
+					role: user.role,
+				};
+				let token = JwtService.createToken(tokenPayload);
+				return resolve({
+					token,
+					...tokenPayload,
+					bloodGroup: user.bloodGroup,
+					_id: user._id,
+					userName: user.userName,
+				});
+			} else {
+				return reject(CONSTANTS.COMMON.PASSWORD);
+			}
+		});
+	},
 
-  getListByUsername: (username) => {
-    return new Promise(async (resolve, reject) => {
-      UserDao.getListByUsername(username)
-        .then((result) => {
-          console.log("Data from UserDao to service", result);
-          return resolve({
-            firstName: result.firstName,
-            lastName: result.lastName,
-            email: result.email,
-            role: result.role,
-            _id: result._id,
-          });
-        })
-        .catch((error) => {
-          return reject(error);
-        });
-    });
-  },
+	getListByUsername: (username) => {
+		return new Promise(async (resolve, reject) => {
+			UserDao.getListByUsername(username)
+				.then((result) => {
+					console.log("Data from UserDao to service", result);
+					return resolve({
+						firstName: result.firstName,
+						lastName: result.lastName,
+						email: result.email,
+						role: result.role,
+						_id: result._id,
+					});
+				})
+				.catch((error) => {
+					return reject(error);
+				});
+		});
+	},
 };
 
 module.exports = UserService;

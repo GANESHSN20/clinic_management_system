@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 app.use(express.json());
+app.use(express.static("public"));
 
 const CustomResponse = require("./src/utils/custom-response.js");
 const CONSTANT = require("./src/utils/constant.js");
@@ -10,13 +11,18 @@ require("dotenv").config();
 const port = process.env.PORT;
 
 require("./database.js");
-
+app.use("/dashboard", (req, res) => {
+	res.sendFile(__dirname + "/public/dashboard.html");
+});
+app.use("/patient", (req, res) => {
+	res.sendFile(__dirname + "/public/patient.html");
+});
 app.use("/users", require("./src/controller/user-controller.js"));
-console.log(process.env)
+console.log(process.env);
 let adminPayload = {
 	firstName: "ADMIN",
 	lastName: "USER",
-	phone: "+910000000",
+	phone: 980989008,
 	dateOfBirth: "1995-09-09",
 	sex: "OTHER",
 	bloodGroup: "A+",
@@ -26,6 +32,10 @@ let adminPayload = {
 	userName: process.env.USER_NAME,
 	password: process.env.PASSWORD,
 };
+app.use("/", (req, res) => {
+	res.sendFile(__dirname + "/public/index.html");
+});
+
 UserService.register(adminPayload)
 	.then((result) => {
 		console.log(

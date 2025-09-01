@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+	</head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<link
+		rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+
+	<link
+		rel="stylesheet"
+		href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" />
+	<link
+		rel="stylesheet"
+		href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
+	<link rel="stylesheet" href="./style.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+	<body>
+		<i id="show-main-loader" class="bx bx-loader-alt bx-spin"></i>
+		<div class="callout toast" id="toast">
+			<span id="toast-message" class="spanTag">Error</span>
+		</div>
+		<div class="callout toast-confirm" id="toast-confirm">
+			<span id="toast-confirm-message" class="spanTag-confirm">Error</span>
+
+			<span id="dataToDelete" style="visibility: hidden">Not Found</span>
+			<br />
+			<br />
+			<hr class="hr-style" />
+			<p class="confirm-btn-design">
+				<i id="delete-loader" class="bx bx-loader-alt bx-spin"></i
+				><button
+					class="confirm-design confirm-success shadow"
+					onclick="deleteData()">
+					CONFIRM
+				</button>
+				<button class="confirm-design shadow" onclick="hideConfirmToast()">
+					CANCEL
+				</button>
+			</p>
+		</div>
+
+		<nav class="sidebar">
+			<header class="header-design">
+				<div onclick="navigateTo('DASHBOARD')">
+					<img class="image-design" src="./img/logo.png" alt="" srcset="" />
+				</div>
+			</header>
+			<div class="menu-bar">
+				<div class="menu">
+					<!-- <li class="search-box">
+                  <i class='bx bx-search icon'></i>
+                  <input type="text" placeholder="Search...">
+              </li> -->
+					<ul class="menu-links">
+						<li class="nav-link">
+							<a onclick="navigateTo('DASHBOARD')">
+								<i class="bx bx-home-alt icon"></i>
+								<span class="text nav-text">Dashboard</span>
+							</a>
+						</li>
+						<!-- <li class="nav-link">
+              <a onclick="navigateTo('INCOME')">
+                <i class="bx bxs-bank icon"></i>
+                <span class="text nav-text">Investment</span>
+              </a>
+            </li> -->
+						<!-- <li class="nav-link">
+							<a onclick="navigateTo('CLIENT')">
+								<i class="bx bxs-user-detail icon"></i>
+								<span class="text nav-text">Client</span>
+							</a>
+						</li> -->
+						<!-- <li class="nav-link">
+              <a onclick="navigateTo('BILLS')">
+                <i class="bx bx-list-check icon"></i>
+                <span class="text nav-text">Bills</span>
+              </a>
+            </li> -->
+						<li class="nav-link isActive">
+							<a class="menu-isActive">
+								<i class="bx bxs-user-pin icon menu-isActive"></i>
+								<span class="text nav-text menu-isActive">Patients</span>
+							</a>
+						</li>
+						<!-- <li class="nav-link">
+              <a onclick="navigateTo('SALARY')">
+                
+                <i class="bx bx-money-withdraw icon"></i>
+                <span class="text nav-text">Salaries</span>
+              </a>
+            </li>
+            <li class="nav-link">
+              <a onclick="navigateTo('EXPENSE')">
+                <i class="bx bx-money icon"></i>
+                <span class="text nav-text">Expenses</span>
+              </a>
+            </li>
+            <li class="nav-link">
+              <a onclick="navigateTo('REPORT')">
+                <i class="bx bxs-report icon"></i>
+                <span class="text nav-text">Report</span>
+              </a>
+            </li> -->
+					</ul>
+				</div>
+				<div class="bottom-content">
+					<li class="nav-link">
+						<a onclick="logout()">
+							<i class="bx bx-log-out icon"></i>
+							<span class="text nav-text">Logout</span>
+						</a>
+					</li>
+				</div>
+			</div>
+		</nav>
+		<div style="margin-left: 250px; cursor: pointer">
+			<nav class="navbar navbar-expand-lg fixed-top navbar-design" id="navbar">
+				<div class="right">
+					<img
+						style="cursor: pointer"
+						id="profileImage"
+						src="./profile_icon.jpeg"
+						alt=""
+						width="30" />
+					<span style="color: #632828; cursor: pointer" id="setName"
+						>ADMIN</span
+					>
+					<!-- <span class="logout-icon" onclick="logout()   this.parentElement.style.display='none';"
+              ><i class="fa fa-sign-out" aria-hidden="true"></i
+            >logout</span> -->
+				</div>
+			</nav>
+		</div>
+		<div class="main-area">
+			<div class="modal fade" id="myModal" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title">Employee Register Form</h4>
+						</div>
+						<div class="modal-body">
+							<form id="registerClient" style="border: 1px solid #ccc">
+								<div class="container">
+									<!-- <h4>Enter the Employee Detail.</h4> -->
+									<span class="error-message" id="display-message"
+										>default message</span
+									>
+									<br />
+									<div class="form-row">
+										<div class="form-group col-md-4">
+											<label for="firstName">First Name</label>
+											<input
+												type="text"
+												autocomplete="off"
+												class="form-control"
+												id="firstName"
+												placeholder="Enter first name" />
+										</div>
+										<div class="form-group col-md-4">
+											<label for="lastName">Last Name</label>
+											<input
+												type="text"
+												autocomplete="off"
+												class="form-control"
+												id="lastName"
+												placeholder="Enter last name" />
+										</div>
+										<div class="form-group col-md-4">
+											<label for="firstName">Middle Name</label>
+											<input
+												type="text"
+												autocomplete="off"
+												class="form-control"
+												id="firstName"
+												placeholder="Enter first name" />
+										</div>
+									</div>
+
+									<div class="form-row">
+										<div class="form-group col-md-6">
+											<label for="email">Email</label>
+											<input
+												type="email"
+												autocomplete="off"
+												class="form-control"
+												id="email"
+												placeholder="Enter email" />
+										</div>
+										<div class="form-group col-md-6">
+											<label for="phone">Phone</label>
+											<input
+												type="number"
+												autocomplete="off"
+												class="form-control"
+												id="phone"
+												placeholder="Enter phone" />
+										</div>
+									</div>
+
+									<div class="form-row">
+										<div class="form-group col-md-8">
+											<label for="address">Address</label>
+											<input
+												type="text"
+												autocomplete="false"
+												class="form-control"
+												id="address"
+												placeholder="Enter address" />
+										</div>
+										<div class="form-group col-md-4">
+											<label for="month">Blood Group</label>
+											<select
+												class="form-control select-design type-design"
+												id="bloodGroup"></select>
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="col-md-12 remove-margin">
+											<div class="form-group col-md-4">
+												<label for="userName">User Name</label>
+												<input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													id="userName"
+													readonly />
+											</div>
+											<div class="form-group col-md-4">
+												<label for="month">Role</label>
+												<select
+													class="form-control select-design type-design"
+													id="role"></select>
+											</div>
+											<div class="form-group col-md-1"></div>
+											<div class="form-group col-md-3">
+												<label for="status">Active</label>
+												<br />
+												<label class="switch">
+													<input
+														type="checkbox"
+														class="active-check"
+														onclick="getCheckedData(event)"
+														id="active-check"
+														checked />
+													<span class="slider round"></span>
+												</label>
+											</div>
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-md-4">
+											<label for="month">Joining Month</label>
+											<select
+												class="form-control select-design type-design"
+												id="month"></select>
+										</div>
+										<div class="form-group col-md-4">
+											<label for="year">Joining Year</label>
+											<select
+												class="form-control select-design type-design"
+												id="year"></select>
+										</div>
+										<div class="form-group col-md-4">
+											<label for="day">Joining Date</label>
+											<select
+												class="form-control select-design type-design"
+												id="day"></select>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<div class="clearfix">
+								<i id="register-loader" class="bx bx-loader-alt bx-spin"></i>
+								<button
+									type="button"
+									id="addbtn"
+									onclick="register()"
+									class="signupbtn form-button">
+									ADD
+								</button>
+								<button
+									type="button"
+									id="updatebtn"
+									onclick="updateData()"
+									class="signupbtn form-button"
+									style="display: none">
+									UPDATE
+								</button>
+								<button
+									type="button"
+									class="cancelbtn form-button"
+									data-dismiss="modal"
+									onclick="closeEmployeeModal()">
+									CANCEL
+								</button>
+							</div>
+							<!-- <button type="button" class="btn btn-primary">Sign in</button>    data-dismiss="modal" -->
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-12">
+				<div class="form-group col-md-3">
+					<span id="showTableDesc" class="filter-design">List</span>
+				</div>
+				<div class="form-group col-md-2">
+					<!-- <select
+						class="form-control select-design type-design filter-design"
+						id="month"></select> -->
+				</div>
+				<div class="col-md-2 filter-label-design">
+					<span class="type-design filter-label-design">UserType: </span>
+				</div>
+				<div class="form-group col-md-2">
+					<select
+						class="form-control select-design type-design filter-design"
+						id="active"></select>
+				</div>
+				<div class="form-group col-md-2">
+					<!-- <select
+						class="form-control select-design type-design filter-design"
+						id="month"></select> -->
+				</div>
+				<div class="form-group col-md-1">
+					<button
+						type="button"
+						class="add-btn filter-design"
+						data-toggle="modal"
+						data-target="#myModal"
+						onclick="showModalWithSelect(['firstName','lastName','email','salary','password','phone','status','userName','year','day','month','address'])">
+						ADD
+					</button>
+				</div>
+			</div>
+
+			<div class="table-responsive">
+				<table class="table table-hover">
+					<thead class="thead-style">
+						<tr>
+							<th>Emp ID</th>
+							<th>Name</th>
+							<th>Salary</th>
+							<th>Joined On</th>
+							<th>Phone</th>
+							<th>Role</th>
+							<th>Status</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody id="tableList"></tbody>
+				</table>
+			</div>
+		</div>
+
+		<script src="./common.js"></script>
+		<script src="./patient.js"></script>
+		<script src="./navigation.js"></script>
+	</body>
+</html>
