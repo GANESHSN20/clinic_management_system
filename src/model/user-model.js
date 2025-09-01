@@ -52,6 +52,16 @@ const UserSchema = new Schema({
 		enum: Config.status,
 		default: "OPEN",
 	},
+	specialization: {
+		type: String,
+		required: function () {
+			// specialization required only if role is "doctor"
+			return this.role === "DOCTOR";
+		},
+	},
+	qualifications: [{ type: String }],
+	experience: { type: Number, default: 0 },
+	consultationFee: { type: Number, default: 0 },
 	isActive: {
 		type: Boolean,
 		default: true,
