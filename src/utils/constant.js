@@ -8,11 +8,14 @@ const CONSTANTS = {
     },
     COMMON:{
         SERVER_ERROR:"Internal server error",
-        BAD_REQUEST:"Invalid payload"
+        BAD_REQUEST:"Invalid payload",
+        PASSWORD:"Invalid password. Please re-enter"
     },
     USER:{
         REGISTER:"User registered successfully",
-        REGISTER_ERROR:"User already exist. Proceed to login"
+        REGISTER_ERROR:"User already exist. Proceed to login",
+        LOGIN:"User logged in successfully",
+        LOGIN_ERROR:"User is not registered. Please sign-up"
     },
     UTILITY:{
         USERNAME_ERROR:"Missing required fields for username genenration"
