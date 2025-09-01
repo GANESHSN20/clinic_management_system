@@ -28,5 +28,10 @@ const UserDAO = {
       role: payload.role,
     }).save();
   },
+
+  getListByUsername: (username) => {
+    return UserModel.findOne({userName:username});
+  }
 };
+
 module.exports = UserDAO;

@@ -15,7 +15,8 @@ const CONSTANTS = {
         REGISTER:"User registered successfully",
         REGISTER_ERROR:"User already exist. Proceed to login",
         LOGIN:"User logged in successfully",
-        LOGIN_ERROR:"User is not registered. Please sign-up"
+        LOGIN_ERROR:"User is not registered. Please sign-up",
+        GETLIST:"Here are the details of user"
     },
     UTILITY:{
         USERNAME_ERROR:"Missing required fields for username genenration"

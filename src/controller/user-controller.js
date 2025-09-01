@@ -65,4 +65,31 @@ router.post("/login", function (req, res) {
     });
 });
 
+router.get("/getListByUsername/:username", function (req, res) {
+  let username = req.params.username;
+  UserService.getListByUsername(username)
+    .then((result) => {
+      res
+        .status(CONSTANTS.HTTP_STATUS.SUCCESS)
+        .send(
+          CustomResponse.success(
+            CONSTANTS.HTTP_STATUS.SUCCESS,
+            CONSTANTS.USER.GETLIST,
+            result
+          )
+        );
+    })
+    .catch((error) => {
+      res
+        .status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR)
+        .send(
+          CustomResponse.failure(
+            CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
+            CONSTANTS.COMMON.SERVER_ERROR,
+            error
+          )
+        );
+    });
+});
+
 module.exports = router;

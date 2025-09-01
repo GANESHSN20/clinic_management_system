@@ -1,7 +1,7 @@
 const UserDao = require("../dao/user-dao.js");
 const Utility = require("../utils/utility.js");
 const CONSTANTS = require("../utils/constant.js");
-const JwtService=require("../utils/jwt-service.js");
+const JwtService = require("../utils/jwt-service.js");
 
 const UserService = {
   register: (payload) => {
@@ -50,22 +50,47 @@ const UserService = {
         });
     });
   },
+
   login: (payload) => {
     return new Promise(async (resolve, reject) => {
       const user = await UserDao.isUserExist(payload);
-      console.log(isUserExist);
+      console.log(user);
       if (!user) return reject(CONSTANTS.USER.LOGIN_ERROR);
       if (payload.password == user.password) {
         let tokenPayload = {
           firstName: user.firstName,
           email: user.email,
-          role: user.load,
+          role: user.role,
         };
-        let token=JwtService.createToken(tokenPayload);
-        return resolve({ token, ...tokenPayload, _id: user._id });
+        let token = JwtService.createToken(tokenPayload);
+        return resolve({
+          token,
+          ...tokenPayload,
+          bloodGroup: user.bloodGroup,
+          _id: user._id,
+        });
       } else {
         return reject(CONSTANTS.COMMON.PASSWORD);
       }
+    });
+  },
+
+  getListByUsername: (username) => {
+    return new Promise(async (resolve, reject) => {
+      UserDao.getListByUsername(username)
+        .then((result) => {
+          console.log("Data from UserDao to service", result);
+           resolve({
+            firstName: result.firstName,
+            lastName: result.lastName,
+            email: result.email,
+            role: result.role,
+            _id: user._id,
+          });
+        })
+        .catch((error) => {
+           reject(error);
+        });
     });
   },
 };
