@@ -25,9 +25,9 @@ app.use("/users", require("./src/controller/user-controller.js"));
 let adminPayload = {
 	firstName: "ADMIN",
 	lastName: "USER",
-	phone: 980989008,
+	phone: 8792315230,
 	dateOfBirth: "1995-09-09",
-	sex: "OTHER",
+	gender: "OTHER",
 	bloodGroup: "A+",
 	email: process.env.EMAIL,
 	address: "Other",
@@ -40,7 +40,7 @@ app.use("/", (req, res) => {
 	res.sendFile(__dirname + "/public/index.html");
 });
 
-UserService.register(adminPayload)
+UserService.register(adminPayload, undefined)
 	.then((result) => {
 		console.log(
 			CustomResponse.success(

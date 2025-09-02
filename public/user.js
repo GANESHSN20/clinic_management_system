@@ -15,27 +15,15 @@ let dayList = [
 	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
 	23, 24, 25, 26, 27, 28, 29, 30, 31,
 ];
-let roleList = ["EMPLOYEE", "ADMIN", "SUPER-ADMIN"];
-let yearList = [
-	"2023",
-	"2024",
-	"2025",
-	"2026",
-	"2027",
-	"2028",
-	"2029",
-	"2030",
-	"2031",
-	"2032",
-	"2033",
-	"2034",
-	"2035",
-	"2036",
-	"2037",
-	"2038",
-	"2039",
-	"2040",
-];
+let role = localStorage.getItem("role");
+let roleList = [];
+if (role == "ADMIN") roleList = ["RECEPTIONIST", "DOCTOR", "ADMIN"];
+else if (role == "RECEPTIONIST") roleList = ["PATIENT"];
+let yearList = [];
+for (let i = 1900; i <= new Date().getFullYear(); i++) {
+	yearList.push(i);
+}
+
 let monthList = [
 	"January",
 	"February",
@@ -51,6 +39,7 @@ let monthList = [
 	"December",
 ];
 let bloodGroupList = ["A+", "AB+"];
+let genderList = ["MALE", "FEMALE", "OTHER"];
 
 (function () {
 	if (!localStorage.getItem("token")) window.location.href = "/login";
@@ -137,6 +126,9 @@ function showData(...data) {
 	}
 	for (let item of bloodGroupList) {
 		$("#bloodGroup").append($(`<option>`).val(item).text(item));
+	}
+	for (let item of genderList) {
+		$("#genderList").append($(`<option>`).val(item).text(item));
 	}
 	for (let item of yearList) {
 		// let selectedYear = item == todayDate[2] ? true : false;
@@ -228,7 +220,9 @@ function viewData(...data) {
 	for (let item of bloodGroupList) {
 		$("#bloodGroup").append($(`<option>`).val(item).text(item));
 	}
-
+	for (let item of genderList) {
+		$("#genderList").append($(`<option>`).val(item).text(item));
+	}
 	for (let item of yearList) {
 		// let selectedYear = item == todayDate[2] ? true : false;
 		$("#year").append($(`<option>`).val(item).text(item));
@@ -343,6 +337,9 @@ function showModalWithSelect(data) {
 	}
 	for (let item of bloodGroupList) {
 		$("#bloodGroup").append($(`<option>`).val(item).text(item));
+	}
+	for (let item of genderList) {
+		$("#genderList").append($(`<option>`).val(item).text(item));
 	}
 	for (let item of dayList) {
 		let option = item < 10 ? `0${item}` : item;

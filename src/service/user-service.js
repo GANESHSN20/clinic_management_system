@@ -4,16 +4,18 @@ const CONSTANTS = require("../utils/constant.js");
 const JwtService = require("../utils/jwt-service.js");
 
 const UserService = {
-	register: (payload) => {
+	register: (payload, reqUser) => {
 		return new Promise(async (resolve, reject) => {
 			let userName =
-				payload.role == "ADMIN"
+				payload.role == "ADMIN" && !reqUser
 					? payload.userName
 					: Utility.getUsername(payload);
 			payload.userName = userName;
 
 			let password =
-				payload.role == "ADMIN" ? payload.password : Utility.getPassword(8);
+				payload.role == "ADMIN" && !reqUser
+					? payload.password
+					: Utility.getPassword(8);
 			payload.password = password;
 
 			let userObject = await UserDao.isUsernameExist(payload);
@@ -61,12 +63,12 @@ const UserService = {
 					firstName: user.firstName,
 					email: user.email,
 					role: user.role,
-					userName: user.userName
+					userName: user.userName,
 				};
 				let token = JwtService.createToken(tokenPayload);
 				return resolve({
 					token,
-					...tokenPayload
+					...tokenPayload,
 				});
 			} else {
 				return reject(CONSTANTS.COMMON.PASSWORD);

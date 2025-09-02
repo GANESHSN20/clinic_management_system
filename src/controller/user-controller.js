@@ -9,10 +9,11 @@ const CustomResponse = require("../utils/custom-response");
 router.post(
 	"/register",
 	UserMiddleware.validate,
+	UserMiddleware.isAuthenticate,
 	UserMiddleware.checkRole,
 	function (req, res) {
 		let bodyData = req.body;
-		UserService.register(bodyData)
+		UserService.register(bodyData, req.user)
 			.then((result) => {
 				res
 					.status(CONSTANTS.HTTP_STATUS.CREATED)

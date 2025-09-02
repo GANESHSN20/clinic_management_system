@@ -21,7 +21,7 @@ phNumber:''
 }
 8798989098, required  
  dateOfBirth:'2001-01-02', required
-sex:"Female",enum ['MALE', 'FEMALE'] required
+gender:"Female",enum ['MALE', 'FEMALE'] required
 address:'MG road',
 blood-group:'A+',['A+', 'AB+', 'O+', 'o-', 'AB-', 'B+','B-', 'A-'] required
 userName:'CMS2001F01UMME02'( clinic ShortName+ year of birth+Sex+last four
@@ -34,6 +34,5 @@ createdAt:'', today date with default today date
 role:'Doctor, patient, receipt, admin' enum ['DOCTOR', 'PATIENT', 'Receptionist', 'ADMIN'] // admin will eb provided ons the of server
 OTP:''-- whatsapp ''
 }
-
 
 https://github.com/sandeepkj90/cms_mgmt_system.git
