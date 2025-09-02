@@ -22,7 +22,7 @@ const JoiUserSchema = joi
 
 		dateOfBirth: joi.date().less("now").required(),
 
-		sex: joi.string().valid("MALE", "FEMALE", "OTHER").required(),
+		gender: joi.string().valid("MALE", "FEMALE", "OTHER").required(),
 
 		address: joi.string().max(100),
 

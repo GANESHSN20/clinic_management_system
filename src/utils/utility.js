@@ -3,7 +3,7 @@ const CONSTANTS = require("./constant");
 
 const Utility = {
 	getUsername: (payload) => {
-		if (!payload.firstName || !payload.dateOfBirth || !payload.sex) {
+		if (!payload.firstName || !payload.dateOfBirth || !payload.gender) {
 			return { message: CONSTANTS.UTILITY.USERNAME_ERROR };
 		}
 		const fname = payload.firstName.trim().toUpperCase();
@@ -11,9 +11,9 @@ const Utility = {
 		const year = dob.getFullYear();
 		const month = String(dob.getMonth() + 1).padStart(2, "0");
 		const day = String(dob.getDate()).padStart(2, "0");
-		const sexLetter = payload.sex[0];
+		const genderLetter = payload.gender[0];
 
-		return `CMS${year}${sexLetter}${month}${fname}${day}`;
+		return `CMS${year}${genderLetter}${month}${fname}${day}`;
 	},
 
 	getPassword: (length = 8) => {
@@ -24,6 +24,9 @@ const Utility = {
 			password.push(chars.charAt(index));
 		}
 		return password.join("");
+	},
+	log: (message, ...rest) => {
+		console.log(message, rest);
 	},
 };
 

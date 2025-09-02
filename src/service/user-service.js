@@ -1,24 +1,26 @@
-console.log("user-service");
-
 const UserDao = require("../dao/user-dao.js");
 const Utility = require("../utils/utility.js");
+const CONSTANTS = require("../utils/constant.js");
+const JwtService = require("../utils/jwt-service.js");
 
 const UserService = {
-	register: (payload) => {
+	register: (payload, reqUser) => {
 		return new Promise(async (resolve, reject) => {
 			let userName =
-				payload.role == "ADMIN"
+				payload.role == "ADMIN" && !reqUser
 					? payload.userName
 					: Utility.getUsername(payload);
 			payload.userName = userName;
 
 			let password =
-				payload.role == "ADMIN" ? payload.password : Utility.getPassword(8);
+				payload.role == "ADMIN" && !reqUser
+					? payload.password
+					: Utility.getPassword(8);
 			payload.password = password;
 
-			let isUserExist = await UserDao.isUsernameExist(payload);
-			console.log({ isUserExist });
-			if (isUserExist) {
+			let userObject = await UserDao.isUsernameExist(payload);
+			console.log({ userObject });
+			if (userObject) {
 				let updatedData = await UserDao.update(userName, { password });
 				console.log(updatedData);
 				if (updatedData.modifiedCount > 0) {
@@ -47,6 +49,42 @@ const UserService = {
 				})
 				.catch((error) => {
 					reject(error);
+				});
+		});
+	},
+
+	login: (payload) => {
+		return new Promise(async (resolve, reject) => {
+			const user = await UserDao.isUserExist(payload);
+			console.log(user);
+			if (!user) return reject(CONSTANTS.USER.LOGIN_ERROR);
+			if (payload.password == user.password) {
+				let tokenPayload = {
+					firstName: user.firstName,
+					email: user.email,
+					role: user.role,
+					userName: user.userName,
+				};
+				let token = JwtService.createToken(tokenPayload);
+				return resolve({
+					token,
+					...tokenPayload,
+				});
+			} else {
+				return reject(CONSTANTS.COMMON.PASSWORD);
+			}
+		});
+	},
+
+	detail: (userName) => {
+		return new Promise(async (resolve, reject) => {
+			UserDao.detail(userName)
+				.then((result) => {
+					console.log("Data from UserDao to service", result);
+					return resolve(result);
+				})
+				.catch((error) => {
+					return reject(error);
 				});
 		});
 	},

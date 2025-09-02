@@ -2,23 +2,24 @@ const UserModel = require("../model/user-model");
 
 const UserDAO = {
 	isUsernameExist: (payload) => {
-		return UserModel.findOne(
-			{ userName: payload.userName },
-			{ userName: 1, firstName: 1, datOfBirth: 1, sex: 1 },
-		);
+		return UserModel.findOne({
+			userName: payload.userName,
+		});
 	},
+
 	update: (userName, payload) => {
 		console.log(userName, payload);
 
 		return UserModel.updateOne({ userName: userName }, { $set: payload });
 	},
+
 	register: (payload) => {
 		return UserModel({
 			firstName: payload.firstName,
 			lastName: payload.lastName,
 			phone: payload.phone,
 			dateOfBirth: payload.dateOfBirth,
-			sex: payload.sex,
+			gender: payload.gender,
 			address: payload.address,
 			bloodGroup: payload.bloodGroup,
 			userName: payload.userName,
@@ -27,5 +28,19 @@ const UserDAO = {
 			role: payload.role,
 		}).save();
 	},
+
+	detail: (userName) => {
+		return UserModel.findOne({ userName }, { password: 0, _id: 0 });
+	},
+
+	isUserExist: (payload) => {
+		let isNumber = /^\d+$/.test(payload.userName);
+		let condition = isNumber
+			? { phone: payload.userName }
+			: { userName: payload.userName };
+
+		return UserModel.findOne(condition);
+	},
 };
+
 module.exports = UserDAO;

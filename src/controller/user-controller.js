@@ -9,10 +9,11 @@ const CustomResponse = require("../utils/custom-response");
 router.post(
 	"/register",
 	UserMiddleware.validate,
+	UserMiddleware.isAuthenticate,
 	UserMiddleware.checkRole,
 	function (req, res) {
 		let bodyData = req.body;
-		UserService.register(bodyData)
+		UserService.register(bodyData, req.user)
 			.then((result) => {
 				res
 					.status(CONSTANTS.HTTP_STATUS.CREATED)
@@ -37,5 +38,59 @@ router.post(
 			});
 	},
 );
+
+router.post("/login", function (req, res) {
+	let bodyData = req.body;
+	UserService.login(bodyData)
+		.then((result) => {
+			res
+				.status(CONSTANTS.HTTP_STATUS.SUCCESS)
+				.send(
+					CustomResponse.success(
+						CONSTANTS.HTTP_STATUS.SUCCESS,
+						CONSTANTS.USER.LOGIN,
+						result,
+					),
+				);
+		})
+		.catch((error) => {
+			res
+				.status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR)
+				.send(
+					CustomResponse.failure(
+						CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
+						CONSTANTS.COMMON.SERVER_ERROR,
+						error,
+					),
+				);
+		});
+});
+
+router.get("/detail/:userName", function (req, res) {
+	let userName = req.params.userName;
+	UserService.detail(userName)
+		.then((result) => {
+			res
+				.status(CONSTANTS.HTTP_STATUS.SUCCESS)
+				.send(
+					CustomResponse.success(
+						CONSTANTS.HTTP_STATUS.SUCCESS,
+						CONSTANTS.USER.GETLIST,
+						result,
+					),
+				);
+		})
+		.catch((error) => {
+			res
+				.status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR)
+				.send(
+					CustomResponse.failure(
+						CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
+						CONSTANTS.COMMON.SERVER_ERROR,
+						error,
+					),
+				);
+		});
+});
 
 module.exports = router;
