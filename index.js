@@ -11,14 +11,17 @@ require("dotenv").config();
 const port = process.env.PORT;
 
 require("./database.js");
+
 app.use("/dashboard", (req, res) => {
 	res.sendFile(__dirname + "/public/dashboard.html");
 });
 app.use("/patient", (req, res) => {
 	res.sendFile(__dirname + "/public/patient.html");
 });
+
 app.use("/users", require("./src/controller/user-controller.js"));
-console.log(process.env);
+// console.log(process.env);
+
 let adminPayload = {
 	firstName: "ADMIN",
 	lastName: "USER",
@@ -32,6 +35,7 @@ let adminPayload = {
 	userName: process.env.USER_NAME,
 	password: process.env.PASSWORD,
 };
+
 app.use("/", (req, res) => {
 	res.sendFile(__dirname + "/public/index.html");
 });

@@ -16,9 +16,9 @@ const UserService = {
 				payload.role == "ADMIN" ? payload.password : Utility.getPassword(8);
 			payload.password = password;
 
-			let isUserExist = await UserDao.isUserExist(payload);
-			console.log({ isUserExist });
-			if (isUserExist) {
+			let userObject = await UserDao.isUsernameExist(payload);
+			console.log({ userObject });
+			if (userObject) {
 				let updatedData = await UserDao.update(userName, { password });
 				console.log(updatedData);
 				if (updatedData.modifiedCount > 0) {
@@ -61,14 +61,12 @@ const UserService = {
 					firstName: user.firstName,
 					email: user.email,
 					role: user.role,
+					userName: user.userName
 				};
 				let token = JwtService.createToken(tokenPayload);
 				return resolve({
 					token,
-					...tokenPayload,
-					bloodGroup: user.bloodGroup,
-					_id: user._id,
-					userName: user.userName,
+					...tokenPayload
 				});
 			} else {
 				return reject(CONSTANTS.COMMON.PASSWORD);

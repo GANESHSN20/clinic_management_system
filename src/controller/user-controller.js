@@ -66,7 +66,7 @@ router.post("/login", function (req, res) {
 });
 
 router.get("/detail/:userName", function (req, res) {
-	let username = req.params.userName;
+	let userName = req.params.userName;
 	UserService.detail(userName)
 		.then((result) => {
 			res
