@@ -24,8 +24,8 @@ function navigateTo(pageName) {
 			window.location.href = "#"; //"/salary";
 			break;
 		}
-		case "PATIENT": {
-			window.location.href = "/patient";
+		case "USER": {
+			window.location.href = "/user";
 			break;
 		}
 		case "REPORT": {
