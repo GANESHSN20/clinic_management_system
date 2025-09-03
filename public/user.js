@@ -19,6 +19,7 @@ let role = localStorage.getItem("role");
 let roleList = [];
 if (role == "ADMIN") roleList = ["RECEPTIONIST", "DOCTOR", "ADMIN"];
 else if (role == "RECEPTIONIST") roleList = ["PATIENT"];
+
 let yearList = [];
 for (let i = 1900; i <= new Date().getFullYear(); i++) {
 	yearList.push(i);
@@ -38,7 +39,7 @@ let monthList = [
 	"November",
 	"December",
 ];
-let bloodGroupList = ["A+", "AB+"];
+let bloodGroupList = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 let genderList = ["MALE", "FEMALE", "OTHER"];
 
 (function () {

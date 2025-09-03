@@ -3,6 +3,8 @@ const CONSTANTS = {
 		SUCCESS: 200,
 		CREATED: 201,
 		BAD_REQUEST: 400,
+		UNAUTHORIZED: 401,
+		FORBIDDEN: 403,
 		NOT_FOUND: 404,
 		INTERNAL_SERVER_ERROR: 500,
 	},
@@ -25,6 +27,10 @@ const CONSTANTS = {
 		VALIDATE: "Validation error",
 		ROLE_ERROR: "You are not allowed to create a profile as role",
 	},
+	TOKEN:{
+		INVALID:"Token is not provided",
+		EXPIRED:"Token is expired"
+	}
 };
 
 module.exports = CONSTANTS;

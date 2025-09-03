@@ -13,53 +13,53 @@ const port = process.env.PORT;
 require("./database.js");
 
 app.use("/dashboard", (req, res) => {
-	res.sendFile(__dirname + "/public/dashboard.html");
+  res.sendFile(__dirname + "/public/dashboard.html");
 });
 app.use("/patient", (req, res) => {
-	res.sendFile(__dirname + "/public/patient.html");
+  res.sendFile(__dirname + "/public/user.html");
 });
 
 app.use("/users", require("./src/controller/user-controller.js"));
 // console.log(process.env);
 
 let adminPayload = {
-	firstName: "ADMIN",
-	lastName: "USER",
-	phone: 8792315230,
-	dateOfBirth: "1995-09-09",
-	gender: "OTHER",
-	bloodGroup: "A+",
-	email: process.env.EMAIL,
-	address: "Other",
-	role: "ADMIN",
-	userName: process.env.USER_NAME,
-	password: process.env.PASSWORD,
+  firstName: "ADMIN",
+  lastName: "USER",
+  phone: 8792315230,
+  dateOfBirth: "1995-09-09",
+  gender: "OTHER",
+  bloodGroup: "A+",
+  email: process.env.EMAIL,
+  address: "Other",
+  role: "ADMIN",
+  userName: process.env.USER_NAME,
+  password: process.env.PASSWORD,
 };
 
 app.use("/", (req, res) => {
-	res.sendFile(__dirname + "/public/index.html");
+  res.sendFile(__dirname + "/public/index.html");
 });
 
 UserService.register(adminPayload, undefined)
-	.then((result) => {
-		console.log(
-			CustomResponse.success(
-				CONSTANT.HTTP_STATUS.CREATED,
-				CONSTANT.USER.REGISTER,
-				result,
-			),
-		);
-	})
-	.catch((error) => {
-		console.log(
-			CustomResponse.failure(
-				CONSTANT.HTTP_STATUS.INTERNAL_SERVER_ERROR,
-				CONSTANT.COMMON.SERVER_ERROR,
-				error,
-			),
-		);
-	});
+  .then((result) => {
+    console.log(
+      CustomResponse.success(
+        CONSTANT.HTTP_STATUS.CREATED,
+        CONSTANT.USER.REGISTER,
+        result
+      )
+    );
+  })
+  .catch((error) => {
+    console.log(
+      CustomResponse.error(
+        CONSTANT.HTTP_STATUS.INTERNAL_SERVER_ERROR,
+        CONSTANT.COMMON.SERVER_ERROR,
+        error
+      )
+    );
+  });
 
 app.listen(port, () => {
-	console.log(`Server started at the port ${port}.`);
+  console.log(`Server started at the port ${port}.`);
 });

@@ -61,7 +61,7 @@ const UserService = {
 			if (payload.password == user.password) {
 				let tokenPayload = {
 					firstName: user.firstName,
-					email: user.email,
+					lastName: user.lastName,
 					role: user.role,
 					userName: user.userName,
 				};
