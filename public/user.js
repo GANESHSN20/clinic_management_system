@@ -41,6 +41,17 @@ let monthList = [
 ];
 let bloodGroupList = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 let genderList = ["MALE", "FEMALE", "OTHER"];
+let specializationList = [
+	"General Physician",
+	"Cardiologist",
+	"Dermatologist",
+	"Neurologist",
+	"Psychiatrist",
+	"Gynecologist",
+	"ENT Specialist",
+	"Ophthalmologist",
+	"Dentist",
+];
 
 (function () {
 	if (!localStorage.getItem("token")) window.location.href = "/login";
@@ -130,6 +141,9 @@ function showData(...data) {
 	}
 	for (let item of genderList) {
 		$("#genderList").append($(`<option>`).val(item).text(item));
+	}
+	for (let item of specializationList) {
+		$("#specialization").append($(`<option>`).val(item).text(item));
 	}
 	for (let item of yearList) {
 		// let selectedYear = item == todayDate[2] ? true : false;
@@ -224,6 +238,9 @@ function viewData(...data) {
 	for (let item of genderList) {
 		$("#genderList").append($(`<option>`).val(item).text(item));
 	}
+	for (let item of specializationList) {
+		$("#specialization").append($(`<option>`).val(item).text(item));
+	}
 	for (let item of yearList) {
 		// let selectedYear = item == todayDate[2] ? true : false;
 		$("#year").append($(`<option>`).val(item).text(item));
@@ -249,6 +266,7 @@ function viewData(...data) {
 	document.getElementById("month").value = month;
 	document.getElementById("day").value = day;
 	document.getElementById("role").value = role;
+
 	$("#role").attr("disabled", true);
 	// $('#active-check').checked()
 	// let color= (active)?'#c3fabb':'#f8b5b5';
@@ -306,6 +324,7 @@ function updateData() {
 }
 
 function showModalWithSelect(data) {
+	console.log("showmodle with select", data);
 	for (let i of data) {
 		$(`#${i}`).css("border-left", "3px #434242 solid");
 		$(`#${i}`).prop("readonly", false);
@@ -342,6 +361,10 @@ function showModalWithSelect(data) {
 	for (let item of genderList) {
 		$("#genderList").append($(`<option>`).val(item).text(item));
 	}
+	for (let item of specializationList) {
+		$("#specialization").append($(`<option>`).val(item).text(item));
+	}
+
 	for (let item of dayList) {
 		let option = item < 10 ? `0${item}` : item;
 
@@ -357,6 +380,9 @@ function showModalWithSelect(data) {
 	$("#day").val(todayDate[1] < 10 ? `0${todayDate[1]}` : todayDate[1]);
 	$("#role").val(roleList[0]);
 	$("#active-check").prop("disabled", true);
+	let roleData = $("#role").val();
+	if (roleData === "DOCTOR") $("#isDoctor").css("display", "block");
+	else $("#isDoctor").css("display", "none");
 }
 // $("#active").mousedown(function () {
 //   //if (!$(this).is(':checked')) {
@@ -477,6 +503,12 @@ function deleteData() {
 		}, 2000);
 	});
 }
+function onRoleChange(event) {
+	let value = event.target.value;
+	console.log(value);
+	if (value === "DOCTOR") $("#isDoctor").css("display", "block");
+	else $("#isDoctor").css("display", "none");
+}
 function register() {
 	// showToastMessage('Good Morning','success');
 	// let status = document.getElementById("status").value;
@@ -496,6 +528,8 @@ function register() {
 		phone: document.getElementById("phone").value.trim(),
 		address: document.getElementById("address").value.trim(),
 		salary: document.getElementById("salary").value.trim(),
+		bloodGroup: document.getElementById("bloodGroup").value.trim(),
+		gender: document.getElementById("gender").value.trim(),
 		year: document.getElementById("year").value,
 		month: document.getElementById("month").value,
 		day: document.getElementById("day").value,

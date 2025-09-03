@@ -26,6 +26,10 @@ const UserDAO = {
 			password: payload.password,
 			email: payload.email,
 			role: payload.role,
+			specialization: payload.specialization,
+			qualifications: payload.qualifications,
+			experience: payload.experience,
+			consultationFee: payload.consultationFee,
 		}).save();
 	},
 

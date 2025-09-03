@@ -69,7 +69,14 @@ const UserSchema = new Schema({
 		},
 	],
 	experience: {
-		type: String,
+		hospitalName: {
+			type: String,
+			default: "",
+		},
+		years: {
+			type: Number,
+			default: 0,
+		},
 		required: function () {
 			// specialization required only if role is "doctor"
 			return this.role === "DOCTOR";
