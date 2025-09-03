@@ -41,6 +41,30 @@ const JoiUserSchema = joi
       .valid("PATIENT", "DOCTOR", "RECEPTIONIST", "ADMIN")
       .required(),
 
+    // specialization: joi.when("role", {
+    //   is: "DOCTOR",
+    //   then: joi.string().required(),
+    //   otherwise: joi.forbidden(),
+    // }),
+
+    // qualifications: joi.when("role", {
+    //   is: "DOCTOR",
+    //   then: joi.array().items(joi.string()).min(1).required(),
+    //   otherwise: joi.forbidden(),
+    // }),
+
+    // experience: joi.when("role", {
+    //   is: "DOCTOR",
+    //   then: joi.string().required(),
+    //   otherwise: joi.forbidden(),
+    // }),
+
+    // consultationFee: joi.when("role", {
+    //   is: "DOCTOR",
+    //   then: joi.number().required(),
+    //   otherwise: joi.forbidden(),
+    // }),
+    
   })
   .required();
 
