@@ -38,7 +38,7 @@ const UserDAO = {
   },
 
   isUserExist: (payload) => {
-    let isNumber = /^\d+$/.test(payload.userName);
+    let isNumber = /^\+\d+$/.test(payload.userName);
     let condition = isNumber
       ? { phone: payload.userName }
       : { userName: payload.userName };
@@ -53,6 +53,10 @@ const UserDAO = {
   //  delete: (userName) => {
   //   return UserModel.deleteOne({ userName });
   // },
+
+  list:(role) => {
+      return UserModel.find(role , {password:0, _id:0});
+  }
 };
 
 module.exports = UserDAO;

@@ -76,7 +76,7 @@ router.get("/detail/:userName", function (req, res) {
         .send(
           CustomResponse.success(
             CONSTANTS.HTTP_STATUS.SUCCESS,
-            CONSTANTS.USER.GETLIST,
+            CONSTANTS.USER.DETAIL,
             result
           )
         );
@@ -119,6 +119,37 @@ router.delete(
             CustomResponse.error(
               CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
               CONSTANTS.COMMON.SERVER_ERROR,
+              error
+            )
+          );
+      });
+  }
+);
+
+router.get(
+  "/list",
+  UserMiddleware.isAuthenticate,
+  function (req, res) {
+    let tokenPayload = req.user;
+    UserService.list(tokenPayload)
+      .then((result) => {
+        res
+          .status(CONSTANTS.HTTP_STATUS.SUCCESS)
+          .send(
+            CustomResponse.success(
+              CONSTANTS.HTTP_STATUS.SUCCESS,
+              CONSTANTS.USER.LIST,
+              result
+            )
+          );
+      })
+      .catch((error) => {
+        res
+          .status(CONSTANTS.HTTP_STATUS.NO_CONTENT)
+          .send(
+            CustomResponse.error(
+              CONSTANTS.HTTP_STATUS.NO_CONTENT,
+              CONSTANTS.USER.LIST_ERROR,
               error
             )
           );

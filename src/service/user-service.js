@@ -2,6 +2,7 @@ const UserDao = require("../dao/user-dao.js");
 const Utility = require("../utils/utility.js");
 const CONSTANTS = require("../utils/constant.js");
 const JwtService = require("../utils/jwt-service.js");
+const Config = require("../utils/config.js");
 
 const UserService = {
   register: (payload, tokenPayload) => {
@@ -92,9 +93,7 @@ const UserService = {
   delete: (userName, tokenPayload) => {
     return new Promise(async (resolve, reject) => {
       if (tokenPayload.role != "ADMIN")
-        return reject({
-          message: "You are not authorized to use this service.",
-        });
+        return reject(CONSTANTS.USER.DELETE_ERROR);
       UserDao.delete(userName)
         .then((result) => {
           return resolve({
@@ -103,6 +102,22 @@ const UserService = {
             phone: result.phone,
             userName: result.userName,
           });
+        })
+        .catch((error) => {
+          return reject(error);
+        });
+    });
+  },
+
+  list: (tokenPayload) => {
+    return new Promise(async (resolve, reject) => {
+      let role = tokenPayload.role;
+      if (role === "PATIENT") {
+        return resolve([]);
+      };
+      UserDao.list(Config[role])
+        .then((result) => {
+          return resolve(result);
         })
         .catch((error) => {
           return reject(error);

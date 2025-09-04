@@ -2,6 +2,7 @@ const CONSTANTS = {
 	HTTP_STATUS: {
 		SUCCESS: 200,
 		CREATED: 201,
+		NO_CONTENT: 204,
 		BAD_REQUEST: 400,
 		UNAUTHORIZED: 401,
 		FORBIDDEN: 403,
@@ -18,8 +19,11 @@ const CONSTANTS = {
 		REGISTER_ERROR: "User already exist. Proceed to login",
 		LOGIN: "User logged in successfully",
 		LOGIN_ERROR: "User is not registered. Please sign-up",
-		GETLIST: "Here are the details of user",
-		DELETE: "User deleted successfully"
+		DETAIL: "User detais retrieved successfully",
+		DELETE: "User deleted successfully",
+		DELETE_ERROR: "You are not authorized to use this service.",
+		LIST: "Users list retrieved successfully.",
+		LIST_ERROR: "No records found"
 	},
 	UTILITY: {
 		USERNAME_ERROR: "Missing required fields for username genenration",
