@@ -12,8 +12,9 @@ router.post(
   UserMiddleware.isAuthenticate,
   UserMiddleware.checkRole,
   function (req, res) {
-    let bodyData = req.body;
-    UserService.register(bodyData, req.user)
+    let payload = req.body;
+    let tokenPayload = req.user;
+    UserService.register(payload, tokenPayload)
       .then((result) => {
         res
           .status(CONSTANTS.HTTP_STATUS.CREATED)
@@ -40,8 +41,8 @@ router.post(
 );
 
 router.post("/login", function (req, res) {
-  let bodyData = req.body;
-  UserService.login(bodyData)
+  let payload = req.body;
+  UserService.login(payload)
     .then((result) => {
       res
         .status(CONSTANTS.HTTP_STATUS.SUCCESS)
@@ -92,5 +93,37 @@ router.get("/detail/:userName", function (req, res) {
         );
     });
 });
+
+router.delete(
+  "/delete/:userName",
+  UserMiddleware.isAuthenticate,
+  function (req, res) {
+    let userName = req.params.userName;
+    let tokenPayload = req.user;
+    UserService.delete(userName, tokenPayload)
+      .then((result) => {
+        res
+          .status(CONSTANTS.HTTP_STATUS.SUCCESS)
+          .send(
+            CustomResponse.success(
+              CONSTANTS.HTTP_STATUS.SUCCESS,
+              CONSTANTS.USER.DELETE,
+              result
+            )
+          );
+      })
+      .catch((error) => {
+        res
+          .status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR)
+          .send(
+            CustomResponse.error(
+              CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
+              CONSTANTS.COMMON.SERVER_ERROR,
+              error
+            )
+          );
+      });
+  }
+);
 
 module.exports = router;

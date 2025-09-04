@@ -59,18 +59,18 @@ const UserMiddleware = {
             CONSTANTS.TOKEN.INVALID
           )
         );
-    let userPayload = JwtService.verifyToken(token);
-    if (typeof userPayload == "string")
+    let tokenPayload = JwtService.verifyToken(token);
+    if (typeof tokenPayload == "string")
       return res
         .status(CONSTANTS.HTTP_STATUS.FORBIDDEN)
         .send(
           CustomResponse.error(
             CONSTANTS.HTTP_STATUS.FORBIDDEN,
             CONSTANTS.COMMON.SERVER_ERROR,
-            userPayload
+            tokenPayload
           )
         );
-    req.user = userPayload;
+    req.user = tokenPayload;
     next();
   },
 };

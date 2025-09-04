@@ -69,6 +69,7 @@ const UserSchema = new Schema({
 		},
 	],
 	experience: {
+		type:String,
 		hospitalName: {
 			type: String,
 			default: "",

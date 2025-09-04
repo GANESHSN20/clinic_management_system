@@ -19,6 +19,7 @@ const CONSTANTS = {
 		LOGIN: "User logged in successfully",
 		LOGIN_ERROR: "User is not registered. Please sign-up",
 		GETLIST: "Here are the details of user",
+		DELETE: "User deleted successfully"
 	},
 	UTILITY: {
 		USERNAME_ERROR: "Missing required fields for username genenration",
