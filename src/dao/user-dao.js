@@ -7,7 +7,7 @@ const UserDAO = {
     });
   },
 
-  update: (userName, payload) => {
+  updateLoginDetails: (userName, payload) => {
     console.log(userName, payload);
 
     return UserModel.updateOne({ userName }, { $set: payload });
@@ -54,9 +54,13 @@ const UserDAO = {
   //   return UserModel.deleteOne({ userName });
   // },
 
-  list:(role) => {
-      return UserModel.find(role , {password:0, _id:0});
-  }
+  list: (role) => {
+    return UserModel.find(role, { password: 0, _id: 0 });
+  },
+
+  update: (userName, payload) => {
+    return UserModel.updateOne({ userName }, { $set: payload });
+  },
 };
 
 module.exports = UserDAO;

@@ -157,4 +157,68 @@ router.get(
   }
 );
 
+router.delete(
+  "/delete/:userName",
+  UserMiddleware.isAuthenticate,
+  function (req, res) {
+    let userName = req.params.userName;
+    let tokenPayload = req.user;
+    UserService.delete(userName, tokenPayload)
+      .then((result) => {
+        res
+          .status(CONSTANTS.HTTP_STATUS.SUCCESS)
+          .send(
+            CustomResponse.success(
+              CONSTANTS.HTTP_STATUS.SUCCESS,
+              CONSTANTS.USER.DELETE,
+              result
+            )
+          );
+      })
+      .catch((error) => {
+        res
+          .status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR)
+          .send(
+            CustomResponse.error(
+              CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
+              CONSTANTS.COMMON.SERVER_ERROR,
+              error
+            )
+          );
+      });
+  }
+);
+
+router.patch(
+  "/update/:userName",
+  UserMiddleware.isAuthenticate,
+  function (req, res) {
+    let userName = req.params.userName;
+    let payload = req.body;
+    UserService.update(userName, payload)
+      .then((result) => {
+        res
+          .status(CONSTANTS.HTTP_STATUS.SUCCESS)
+          .send(
+            CustomResponse.success(
+              CONSTANTS.HTTP_STATUS.SUCCESS,
+              CONSTANTS.USER.UPDATE,
+              result
+            )
+          );
+      })
+      .catch((error) => {
+        res
+          .status(CONSTANTS.HTTP_STATUS.BAD_REQUEST)
+          .send(
+            CustomResponse.error(
+              CONSTANTS.HTTP_STATUS.BAD_REQUEST,
+              CONSTANTS.COMMON.BAD_REQUEST,
+              error
+            )
+          );
+      });
+  }
+);
+
 module.exports = router;

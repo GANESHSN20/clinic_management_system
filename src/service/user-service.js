@@ -22,7 +22,9 @@ const UserService = {
       let userObject = await UserDao.isUsernameExist(payload);
       console.log({ userObject });
       if (userObject) {
-        let updatedData = await UserDao.update(userName, { password });
+        let updatedData = await UserDao.updateLoginDetails(userName, {
+          password,
+        });
         console.log(updatedData);
         if (updatedData.modifiedCount > 0) {
           let mailObject = { password, userName };
@@ -114,8 +116,20 @@ const UserService = {
       let role = tokenPayload.role;
       if (role === "PATIENT") {
         return resolve([]);
-      };
+      }
       UserDao.list(Config[role])
+        .then((result) => {
+          return resolve(result);
+        })
+        .catch((error) => {
+          return reject(error);
+        });
+    });
+  },
+
+  update: (userName, payload) => {
+    return new Promise(async (resolve, reject) => {
+      UserDao.update(userName, payload)
         .then((result) => {
           return resolve(result);
         })

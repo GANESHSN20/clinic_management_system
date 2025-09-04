@@ -19,11 +19,12 @@ const CONSTANTS = {
 		REGISTER_ERROR: "User already exist. Proceed to login",
 		LOGIN: "User logged in successfully",
 		LOGIN_ERROR: "User is not registered. Please sign-up",
-		DETAIL: "User detais retrieved successfully",
+		DETAIL: "User details retrieved successfully",
 		DELETE: "User deleted successfully",
-		DELETE_ERROR: "You are not authorized to use this service.",
-		LIST: "Users list retrieved successfully.",
-		LIST_ERROR: "No records found"
+		DELETE_ERROR: "You are not authorized to use this service",
+		LIST: "Users list retrieved successfully",
+		LIST_ERROR: "No records found",
+		UPDATE: "User data updated successfully"
 	},
 	UTILITY: {
 		USERNAME_ERROR: "Missing required fields for username genenration",
