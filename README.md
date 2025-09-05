@@ -36,3 +36,40 @@ OTP:''-- whatsapp ''
 }
 
 https://github.com/sandeepkj90/cms_mgmt_system.git
+
+Slot Schema
+
+slot Schema
+
+Role receiptionist
+{
+date:
+startTime:{
+time:11
+periodIndicator:'am'
+}
+endTime: {
+time:2
+periodIndicator:'pm'
+}
+duration: 30
+slots:[{slot:"11 am",status:false},{slot:"11:30 am",status:false}]
+createdAt:
+
+}
+{
+date:
+startTime: 11:00am
+endTime: 2:pm
+duration: 30
+slots:[{slot:"11 am",status:false},{slot:"11:30 am",status:false}]
+
+}
+1.creating slot
+
+service function to get the slot array based on start time , end time and duration
+
+2. getting slotlist for token role patient is based on today date condition is greater than equal to today date list
+   for token role receipnist all data with descending order of date
+
+appointment Schedule
