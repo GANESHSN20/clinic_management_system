@@ -46,8 +46,8 @@ const UserDAO = {
     return UserModel.findOne(condition);
   },
 
-  delete: (userName) => {
-    return UserModel.findOneAndDelete({ userName });
+  deactivate: (userName) => {
+    return UserModel.updateOne({ userName },{$set:{isActive:false}});
   },
 
   //  delete: (userName) => {

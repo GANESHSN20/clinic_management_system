@@ -13,6 +13,7 @@ const CONSTANTS = {
 		SERVER_ERROR: "Internal server error",
 		BAD_REQUEST: "Invalid payload",
 		PASSWORD: "Invalid password. Please re-enter",
+		WRONG:"Something went wrong"
 	},
 	USER: {
 		REGISTER: "User registered successfully",
@@ -20,8 +21,9 @@ const CONSTANTS = {
 		LOGIN: "User logged in successfully",
 		LOGIN_ERROR: "User is not registered. Please sign-up",
 		DETAIL: "User details retrieved successfully",
-		DELETE: "User deleted successfully",
-		DELETE_ERROR: "You are not authorized to use this service",
+		DEACTIVATE: "User deactivated successfully",
+		DEACTIVATE_UNAUTHORIZED: "You are not authorized to use this service",
+		DEACTIVATE_ERROR:"User not found or already deactivated",
 		LIST: "Users list retrieved successfully",
 		LIST_ERROR: "No records found",
 		UPDATE: "User data updated successfully"

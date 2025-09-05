@@ -92,22 +92,27 @@ const UserService = {
     });
   },
 
-  delete: (userName, tokenPayload) => {
+  deactivate: (userName, tokenPayload) => {
     return new Promise(async (resolve, reject) => {
-      if (tokenPayload.role != "ADMIN")
-        return reject(CONSTANTS.USER.DELETE_ERROR);
-      UserDao.delete(userName)
-        .then((result) => {
-          return resolve({
-            firstName: result.firstName,
-            lastName: result.lastName,
-            phone: result.phone,
-            userName: result.userName,
-          });
-        })
-        .catch((error) => {
-          return reject(error);
-        });
+      try {
+        if (tokenPayload.role != "ADMIN")
+          return reject(CONSTANTS.USER.DEACTIVATE_UNAUTHORIZED);
+        let deactivated = await UserDao.deactivate(userName);
+        console.log(deactivated);
+        if (deactivated.modifiedCount === 1) return resolve(deactivated);
+        else {
+          return reject(CONSTANTS.USER.DEACTIVATE_ERROR);
+        }
+      } catch (error) {
+        return reject(error);
+      }
+      // UserDao.deactivate(userName)
+      //   .then((result) => {
+      //     return resolve(result);
+      //   })
+      //   .catch((error) => {
+      //     return reject(error);
+      //   });
     });
   },
 

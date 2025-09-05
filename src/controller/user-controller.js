@@ -94,20 +94,20 @@ router.get("/detail/:userName", function (req, res) {
     });
 });
 
-router.delete(
-  "/delete/:userName",
+router.patch(
+  "/deactivate/:userName",
   UserMiddleware.isAuthenticate,
   function (req, res) {
     let userName = req.params.userName;
     let tokenPayload = req.user;
-    UserService.delete(userName, tokenPayload)
+    UserService.deactivate(userName, tokenPayload)
       .then((result) => {
         res
           .status(CONSTANTS.HTTP_STATUS.SUCCESS)
           .send(
             CustomResponse.success(
               CONSTANTS.HTTP_STATUS.SUCCESS,
-              CONSTANTS.USER.DELETE,
+              CONSTANTS.USER.DEACTIVATE,
               result
             )
           );
@@ -118,7 +118,7 @@ router.delete(
           .send(
             CustomResponse.error(
               CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
-              CONSTANTS.COMMON.SERVER_ERROR,
+              CONSTANTS.COMMON.WRONG,
               error
             )
           );
