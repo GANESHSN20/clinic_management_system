@@ -7,218 +7,226 @@ const CONSTANTS = require("../utils/constant");
 const CustomResponse = require("../utils/custom-response");
 
 router.post(
-  "/register",
-  UserMiddleware.validate,
-  UserMiddleware.isAuthenticate,
-  UserMiddleware.checkRole,
-  function (req, res) {
-    let payload = req.body;
-    let tokenPayload = req.user;
-    UserService.register(payload, tokenPayload)
-      .then((result) => {
-        res
-          .status(CONSTANTS.HTTP_STATUS.CREATED)
-          .send(
-            CustomResponse.success(
-              CONSTANTS.HTTP_STATUS.CREATED,
-              CONSTANTS.USER.REGISTER,
-              result
-            )
-          );
-      })
-      .catch((error) => {
-        res
-          .status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR)
-          .send(
-            CustomResponse.error(
-              CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
-              CONSTANTS.COMMON.SERVER_ERROR,
-              error
-            )
-          );
-      });
-  }
+	"/register",
+	UserMiddleware.validate,
+	UserMiddleware.isAuthenticate,
+	UserMiddleware.checkRole,
+	function (req, res) {
+		let payload = req.body;
+		let tokenPayload = req.user;
+		UserService.register(payload, tokenPayload)
+			.then((result) => {
+				res
+					.status(CONSTANTS.HTTP_STATUS.CREATED)
+					.send(
+						CustomResponse.success(
+							CONSTANTS.HTTP_STATUS.CREATED,
+							CONSTANTS.USER.REGISTER,
+							result,
+						),
+					);
+			})
+			.catch((error) => {
+				res
+					.status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR)
+					.send(
+						CustomResponse.error(
+							CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
+							CONSTANTS.COMMON.SERVER_ERROR,
+							error,
+						),
+					);
+			});
+	},
 );
 
 router.post("/login", function (req, res) {
-  let payload = req.body;
-  UserService.login(payload)
-    .then((result) => {
-      res
-        .status(CONSTANTS.HTTP_STATUS.SUCCESS)
-        .send(
-          CustomResponse.success(
-            CONSTANTS.HTTP_STATUS.SUCCESS,
-            CONSTANTS.USER.LOGIN,
-            result
-          )
-        );
-    })
-    .catch((error) => {
-      res
-        .status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR)
-        .send(
-          CustomResponse.error(
-            CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
-            CONSTANTS.COMMON.SERVER_ERROR,
-            error
-          )
-        );
-    });
+	let payload = req.body;
+	UserService.login(payload)
+		.then((result) => {
+			res
+				.status(CONSTANTS.HTTP_STATUS.SUCCESS)
+				.send(
+					CustomResponse.success(
+						CONSTANTS.HTTP_STATUS.SUCCESS,
+						CONSTANTS.USER.LOGIN,
+						result,
+					),
+				);
+		})
+		.catch((error) => {
+			res
+				.status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR)
+				.send(
+					CustomResponse.error(
+						CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
+						CONSTANTS.COMMON.SERVER_ERROR,
+						error,
+					),
+				);
+		});
 });
 
 router.get("/detail/:userName", function (req, res) {
-  let userName = req.params.userName;
-  UserService.detail(userName)
-    .then((result) => {
-      res
-        .status(CONSTANTS.HTTP_STATUS.SUCCESS)
-        .send(
-          CustomResponse.success(
-            CONSTANTS.HTTP_STATUS.SUCCESS,
-            CONSTANTS.USER.DETAIL,
-            result
-          )
-        );
-    })
-    .catch((error) => {
-      res
-        .status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR)
-        .send(
-          CustomResponse.error(
-            CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
-            CONSTANTS.COMMON.SERVER_ERROR,
-            error
-          )
-        );
-    });
+	let userName = req.params.userName;
+	UserService.detail(userName)
+		.then((result) => {
+			res
+				.status(CONSTANTS.HTTP_STATUS.SUCCESS)
+				.send(
+					CustomResponse.success(
+						CONSTANTS.HTTP_STATUS.SUCCESS,
+						CONSTANTS.USER.DETAIL,
+						result,
+					),
+				);
+		})
+		.catch((error) => {
+			res
+				.status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR)
+				.send(
+					CustomResponse.error(
+						CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
+						CONSTANTS.COMMON.SERVER_ERROR,
+						error,
+					),
+				);
+		});
 });
 
 router.patch(
-  "/deactivate/:userName",
-  UserMiddleware.isAuthenticate,
-  function (req, res) {
-    let userName = req.params.userName;
-    let tokenPayload = req.user;
-    UserService.deactivate(userName, tokenPayload)
-      .then((result) => {
-        res
-          .status(CONSTANTS.HTTP_STATUS.SUCCESS)
-          .send(
-            CustomResponse.success(
-              CONSTANTS.HTTP_STATUS.SUCCESS,
-              CONSTANTS.USER.DEACTIVATE,
-              result
-            )
-          );
-      })
-      .catch((error) => {
-        res
-          .status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR)
-          .send(
-            CustomResponse.error(
-              CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
-              CONSTANTS.COMMON.WRONG,
-              error
-            )
-          );
-      });
-  }
+	"/delete/:userName",
+	UserMiddleware.isAuthenticate,
+	function (req, res) {
+		let userName = req.params.userName;
+		let tokenPayload = req.user;
+		UserService.delete(userName, tokenPayload)
+			.then((result) => {
+				res
+					.status(CONSTANTS.HTTP_STATUS.SUCCESS)
+					.send(
+						CustomResponse.success(
+							CONSTANTS.HTTP_STATUS.SUCCESS,
+							CONSTANTS.USER.DEACTIVATE,
+							result,
+						),
+					);
+			})
+			.catch((error) => {
+				res
+					.status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR)
+					.send(
+						CustomResponse.error(
+							CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
+							CONSTANTS.COMMON.WRONG,
+							error,
+						),
+					);
+			});
+	},
 );
 
-router.get(
-  "/list",
-  UserMiddleware.isAuthenticate,
-  function (req, res) {
-    let tokenPayload = req.user;
-    UserService.list(tokenPayload)
-      .then((result) => {
-        res
-          .status(CONSTANTS.HTTP_STATUS.SUCCESS)
-          .send(
-            CustomResponse.success(
-              CONSTANTS.HTTP_STATUS.SUCCESS,
-              CONSTANTS.USER.LIST,
-              result
-            )
-          );
-      })
-      .catch((error) => {
-        res
-          .status(CONSTANTS.HTTP_STATUS.NO_CONTENT)
-          .send(
-            CustomResponse.error(
-              CONSTANTS.HTTP_STATUS.NO_CONTENT,
-              CONSTANTS.USER.LIST_ERROR,
-              error
-            )
-          );
-      });
-  }
-);
+router.get("/list", UserMiddleware.isAuthenticate, function (req, res) {
+	let tokenPayload = req.user;
+	UserService.list(tokenPayload)
+		.then((result) => {
+			res
+				.status(CONSTANTS.HTTP_STATUS.SUCCESS)
+				.send(
+					CustomResponse.success(
+						CONSTANTS.HTTP_STATUS.SUCCESS,
+						CONSTANTS.USER.LIST,
+						result,
+					),
+				);
+		})
+		.catch((error) => {
+			res
+				.status(CONSTANTS.HTTP_STATUS.NO_CONTENT)
+				.send(
+					CustomResponse.error(
+						CONSTANTS.HTTP_STATUS.NO_CONTENT,
+						CONSTANTS.USER.LIST_ERROR,
+						error,
+					),
+				);
+		});
+});
 
 router.delete(
-  "/delete/:userName",
-  UserMiddleware.isAuthenticate,
-  function (req, res) {
-    let userName = req.params.userName;
-    let tokenPayload = req.user;
-    UserService.delete(userName, tokenPayload)
-      .then((result) => {
-        res
-          .status(CONSTANTS.HTTP_STATUS.SUCCESS)
-          .send(
-            CustomResponse.success(
-              CONSTANTS.HTTP_STATUS.SUCCESS,
-              CONSTANTS.USER.DELETE,
-              result
-            )
-          );
-      })
-      .catch((error) => {
-        res
-          .status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR)
-          .send(
-            CustomResponse.error(
-              CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
-              CONSTANTS.COMMON.SERVER_ERROR,
-              error
-            )
-          );
-      });
-  }
+	"/delete/:userName",
+	UserMiddleware.isAuthenticate,
+	function (req, res) {
+		let userName = req.params.userName;
+		let tokenPayload = req.user;
+		UserService.delete(userName, tokenPayload)
+			.then((result) => {
+				res
+					.status(CONSTANTS.HTTP_STATUS.SUCCESS)
+					.send(
+						CustomResponse.success(
+							CONSTANTS.HTTP_STATUS.SUCCESS,
+							CONSTANTS.USER.DELETE,
+							result,
+						),
+					);
+			})
+			.catch((error) => {
+				res
+					.status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR)
+					.send(
+						CustomResponse.error(
+							CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
+							CONSTANTS.COMMON.SERVER_ERROR,
+							error,
+						),
+					);
+			});
+	},
 );
 
 router.patch(
-  "/update/:userName",
-  UserMiddleware.isAuthenticate,
-  function (req, res) {
-    let userName = req.params.userName;
-    let payload = req.body;
-    UserService.update(userName, payload)
-      .then((result) => {
-        res
-          .status(CONSTANTS.HTTP_STATUS.SUCCESS)
-          .send(
-            CustomResponse.success(
-              CONSTANTS.HTTP_STATUS.SUCCESS,
-              CONSTANTS.USER.UPDATE,
-              result
-            )
-          );
-      })
-      .catch((error) => {
-        res
-          .status(CONSTANTS.HTTP_STATUS.BAD_REQUEST)
-          .send(
-            CustomResponse.error(
-              CONSTANTS.HTTP_STATUS.BAD_REQUEST,
-              CONSTANTS.COMMON.BAD_REQUEST,
-              error
-            )
-          );
-      });
-  }
+	"/update/:userName",
+	UserMiddleware.isAuthenticate,
+	function (req, res) {
+		let userName = req.params.userName;
+		let payload = req.body;
+		UserService.update(userName, payload)
+			.then((result) => {
+				res
+					.status(CONSTANTS.HTTP_STATUS.SUCCESS)
+					.send(
+						CustomResponse.success(
+							CONSTANTS.HTTP_STATUS.SUCCESS,
+							CONSTANTS.USER.UPDATE,
+							result,
+						),
+					);
+			})
+			.catch((error) => {
+				if (Array.isArray(error)) {
+					res
+						.status(CONSTANTS.HTTP_STATUS.BAD_REQUEST)
+						.send(
+							CustomResponse.error(
+								CONSTANTS.HTTP_STATUS.BAD_REQUEST,
+								`${CONSTANTS.COMMON.NOT_ALLOWED}${error.join(" ")}`,
+								error,
+							),
+						);
+				} else {
+					res
+						.status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR)
+						.send(
+							CustomResponse.error(
+								CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
+								CONSTANTS.COMMON.SERVER_ERROR,
+								error,
+							),
+						);
+				}
+			});
+	},
 );
 
 module.exports = router;

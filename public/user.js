@@ -11,6 +11,7 @@ let todayDate = new Date()
 	})
 	.replace(",", "")
 	.split(" ");
+console.log({ todayDate });
 let dayList = [
 	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
 	23, 24, 25, 26, 27, 28, 29, 30, 31,
@@ -21,7 +22,7 @@ if (role == "ADMIN") roleList = ["RECEPTIONIST", "DOCTOR", "ADMIN"];
 else if (role == "RECEPTIONIST") roleList = ["PATIENT"];
 
 let yearList = [];
-for (let i = 1900; i <= new Date().getFullYear(); i++) {
+for (let i = 1950; i <= new Date().getFullYear(); i++) {
 	yearList.push(i);
 }
 
@@ -40,7 +41,7 @@ let monthList = [
 	"December",
 ];
 let bloodGroupList = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
-let genderList = ["MALE", "FEMALE", "OTHER"];
+let gender = ["MALE", "FEMALE", "OTHER"];
 let specializationList = [
 	"General Physician",
 	"Cardiologist",
@@ -139,8 +140,8 @@ function showData(...data) {
 	for (let item of bloodGroupList) {
 		$("#bloodGroup").append($(`<option>`).val(item).text(item));
 	}
-	for (let item of genderList) {
-		$("#genderList").append($(`<option>`).val(item).text(item));
+	for (let item of gender) {
+		$("#gender").append($(`<option>`).val(item).text(item));
 	}
 	for (let item of specializationList) {
 		$("#specialization").append($(`<option>`).val(item).text(item));
@@ -235,8 +236,8 @@ function viewData(...data) {
 	for (let item of bloodGroupList) {
 		$("#bloodGroup").append($(`<option>`).val(item).text(item));
 	}
-	for (let item of genderList) {
-		$("#genderList").append($(`<option>`).val(item).text(item));
+	for (let item of gender) {
+		$("#gender").append($(`<option>`).val(item).text(item));
 	}
 	for (let item of specializationList) {
 		$("#specialization").append($(`<option>`).val(item).text(item));
@@ -358,8 +359,8 @@ function showModalWithSelect(data) {
 	for (let item of bloodGroupList) {
 		$("#bloodGroup").append($(`<option>`).val(item).text(item));
 	}
-	for (let item of genderList) {
-		$("#genderList").append($(`<option>`).val(item).text(item));
+	for (let item of gender) {
+		$("#gender").append($(`<option>`).val(item).text(item));
 	}
 	for (let item of specializationList) {
 		$("#specialization").append($(`<option>`).val(item).text(item));
@@ -395,24 +396,20 @@ function getCheckedData(e, checkboxId) {
 	$("#active-check").val(e.target.checked);
 }
 function getEmployeeList(filterObj) {
-	let filterList = {
-		role: "OPERATOR",
-		active: true,
-	};
+	let filterList = {};
 	if (filterObj) {
 		for (let item in filterObj) filterList[item] = filterObj[item];
 	}
 	$("#tableList").html("");
 
 	$("#show-main-loader").css("display", "block");
-	$("#showTableDesc").html("Employee List");
-	getDataList("employees", null, filterList, function (result, error) {
+	$("#showTableDesc").html("User List");
+	getDataList("users", null, filterList, function (result, error) {
 		if (error) console.log(error);
 
 		if (result.data.length == 0) showToastMessage(result.message, "info");
 
 		let str = "";
-		// let count = 0;
 		for (let it of result.data) {
 			// count = count + 1;
 			str += `<tr>
@@ -420,17 +417,17 @@ function getEmployeeList(filterObj) {
                     ${it.userName}</td>
                     <td>${it.firstName} ${it.lastName}</td>
                     
-                    <td>${it.salary}</td>
+                    <td>${it.email}</td>
                     
-                    <td>${it.month} ${it.day}, ${it.year}</td>
+                    <td>${formatDate(new Date(it.dateOfBirth))}</td>
+					
             <td>${it.phone}</td>
-            <td style="color:${
-							it.role != "EMPLOYEE" ? "#0f5787" : ""
-						};font-weight:${it.role != "EMPLOYEE" ? "bold" : ""}">${
-				it.role != "EMPLOYEE" ? "ADM" : "EMP"
-			}</td>
+			<td>${it.gender}</td>
+			<td>${it.bloodGroup}</td>
+            <td>${it.role}</td>
+			<td>${it.status}</td>
             <td>${
-							it.active
+							!it.active
 								? '<span style="color:#48bf36; font-size:16px;text-align:center;"onclick=""><i class="fa fa-circle" aria-hidden="true"></i></span>'
 								: '<span style="color:#FF4949; font-size:16px;text-align:center;" onclick=""><i class="fa fa-circle" aria-hidden="true"></i></span>'
 						}</td>
@@ -510,43 +507,36 @@ function onRoleChange(event) {
 	else $("#isDoctor").css("display", "none");
 }
 function register() {
-	// showToastMessage('Good Morning','success');
-	// let status = document.getElementById("status").value;
-	// let active = "";
-	// if (status == "T" || status == "t") {
-	//   active = true;
-	// } else if (status == "F" || status == "f") {
-	//   active = false;
-	// } else {
-	//   active = true;
-	// }
-	let active = Boolean(document.getElementById("active-check").value);
+	//let active = Boolean(document.getElementById("active-check").value);
+	let year = document.getElementById("year").value;
+	let month = document.getElementById("month").value;
+	let day = document.getElementById("day").value;
+	const monthIndex = new Date(`${month} 1, ${year}`).getMonth();
+	let role = document.getElementById("role").value;
+	console.log("date of birth", year, month, day, new Date(year, month, day));
+
 	let obj = {
 		firstName: document.getElementById("firstName").value.trim(),
 		lastName: document.getElementById("lastName").value.trim(),
 		email: document.getElementById("email").value.trim(),
-		phone: document.getElementById("phone").value.trim(),
+		phone: "+91" + document.getElementById("phone").value.trim(),
 		address: document.getElementById("address").value.trim(),
-		salary: document.getElementById("salary").value.trim(),
 		bloodGroup: document.getElementById("bloodGroup").value.trim(),
 		gender: document.getElementById("gender").value.trim(),
-		year: document.getElementById("year").value,
-		month: document.getElementById("month").value,
-		day: document.getElementById("day").value,
-		password: "asdf1234",
-		active,
-		status:
-			document.getElementById("role").value != "EMPLOYEE"
-				? "APPROVED"
-				: "INPROGRESS",
-		role: document.getElementById("role").value,
+		dateOfBirth: new Date(year, monthIndex, day),
+
+		role,
 	};
+
+	// if(role == 'DOCTOR'){
+	// 	obj['']
+	// }
 	let isFormValid = formValidation(obj);
 	if (!isFormValid) return false;
 
 	$("#register-loader").css("visibility", "visible");
 
-	postData("employees", obj, null, null, function (result, error) {
+	postData("users", obj, null, null, function (result, error) {
 		if (error) console.log(error);
 		console.log({ "data received from": result });
 		$("#register-loader").css("visibility", "hidden");
@@ -555,7 +545,7 @@ function register() {
 		$("#myModal").modal("hide");
 		// getEmployeeList();
 		setTimeout(() => {
-			getEmployeeList();
+			//getEmployeeList();
 		}, 2000);
 	});
 }

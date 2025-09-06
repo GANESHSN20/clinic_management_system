@@ -63,3 +63,4 @@ UserService.register(adminPayload, undefined)
 app.listen(port, () => {
 	console.log(`Server started at the port ${port}.`);
 });
+

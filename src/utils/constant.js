@@ -12,9 +12,10 @@ const CONSTANTS = {
 	COMMON: {
 		SERVER_ERROR: "Internal server error",
 		BAD_REQUEST: "Invalid payload",
+		NOT_ALLOWED: "These fields are not allowed to update - ",
 		PASSWORD: "Invalid password. Please re-enter",
-		WRONG:"Something went wrong",
-		SUSPENDED:"Your account has been deactivated"
+		WRONG: "Something went wrong",
+		SUSPENDED: "Your account has been deactivated. please contact to admin.",
 	},
 	USER: {
 		REGISTER: "User registered successfully",
@@ -24,11 +25,11 @@ const CONSTANTS = {
 		DETAIL: "User details retrieved successfully",
 		DEACTIVATE: "User deactivated successfully",
 		DEACTIVATE_UNAUTHORIZED: "You are not authorized to use this service",
-		DEACTIVATE_ERROR:"User not found or already deactivated",
+		DEACTIVATE_ERROR: "User not found or already deactivated",
 		LIST: "Users list retrieved successfully",
 		LIST_ERROR: "No records found",
 		UPDATE: "User data updated successfully",
-		UPDATE_ERROR:"But you are not allowed to update"
+		UPDATE_ERROR: "But you are not allowed to update",
 	},
 	UTILITY: {
 		USERNAME_ERROR: "Missing required fields for username genenration",
@@ -37,10 +38,10 @@ const CONSTANTS = {
 		VALIDATE: "Validation error",
 		ROLE_ERROR: "You are not allowed to create a profile as role",
 	},
-	TOKEN:{
-		INVALID:"Token is not provided",
-		EXPIRED:"Token is expired"
-	}
+	TOKEN: {
+		INVALID: "Token is not provided",
+		EXPIRED: "Token is expired",
+	},
 };
 
 module.exports = CONSTANTS;
