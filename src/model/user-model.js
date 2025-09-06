@@ -59,6 +59,7 @@ const UserSchema = new Schema({
 			return this.role === "DOCTOR";
 		},
 	},
+	
 	qualifications: [
 		{
 			type: String,

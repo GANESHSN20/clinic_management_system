@@ -147,11 +147,13 @@ const UserService = {
         });
         let updatedData = await UserDao.update(userName, allowedPayload);
         console.log(updatedData);
-        // if (updatedData.modifiedCount === 0) {
+
+        // if (Object.keys(allowedPayload) === 0) {
         //   return reject(restricted.length > 0
         //     ? `No changes applied. You are not allowed to update ${restricted.join(", ")}`
         //     : "No changes were made to the user data");
         // }
+        
         return resolve(
           restricted.length > 0
             ? `${CONSTANTS.USER.UPDATE_ERROR} ${restricted.join(", ")}`
