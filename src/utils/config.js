@@ -5,7 +5,8 @@ const Config = {
 	role: ["DOCTOR", "ADMIN", "RECEPTIONIST", "PATIENT"],
 	ADMIN:{},
 	DOCTOR:{role:{$in:["RECEPTIONIST","PATIENT"]}},
-	RECEPTIONIST:{role:"PATIENT"}
+	RECEPTIONIST:{role:"PATIENT"},
+	restrictedFields:["firstName", "gender", "dateOfBirth", "phone", "userName", "role", "password"]
 };
 
 module.exports = Config;

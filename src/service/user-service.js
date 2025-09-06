@@ -22,6 +22,9 @@ const UserService = {
       let userObject = await UserDao.isUsernameExist(payload);
       console.log({ userObject });
       if (userObject) {
+        if (userObject.isActive == false) {
+          return reject(CONSTANTS.COMMON.SUSPENDED);
+        }
         let updatedData = await UserDao.updateLoginDetails(userName, {
           password,
         });
@@ -60,7 +63,12 @@ const UserService = {
     return new Promise(async (resolve, reject) => {
       const user = await UserDao.isUserExist(payload);
       console.log(user);
-      if (!user) return reject(CONSTANTS.USER.LOGIN_ERROR);
+      if (!user) {
+        return reject(CONSTANTS.USER.LOGIN_ERROR);
+      }
+      if (user.isActive == false) {
+        return reject(CONSTANTS.COMMON.SUSPENDED);
+      }
       if (payload.password == user.password) {
         let tokenPayload = {
           firstName: user.firstName,
@@ -106,13 +114,6 @@ const UserService = {
       } catch (error) {
         return reject(error);
       }
-      // UserDao.deactivate(userName)
-      //   .then((result) => {
-      //     return resolve(result);
-      //   })
-      //   .catch((error) => {
-      //     return reject(error);
-      //   });
     });
   },
 
@@ -134,13 +135,31 @@ const UserService = {
 
   update: (userName, payload) => {
     return new Promise(async (resolve, reject) => {
-      UserDao.update(userName, payload)
-        .then((result) => {
-          return resolve(result);
-        })
-        .catch((error) => {
-          return reject(error);
+      try {
+        let restricted = Config.restrictedFields.filter((key) =>
+          Object.keys(payload).includes(key)
+        );
+        const allowedPayload = {};
+        Object.keys(payload).forEach((key) => {
+          if (!restricted.includes(key)) {
+            allowedPayload[key] = payload[key];
+          }
         });
+        let updatedData = await UserDao.update(userName, allowedPayload);
+        console.log(updatedData);
+        // if (updatedData.modifiedCount === 0) {
+        //   return reject(restricted.length > 0
+        //     ? `No changes applied. You are not allowed to update ${restricted.join(", ")}`
+        //     : "No changes were made to the user data");
+        // }
+        return resolve(
+          restricted.length > 0
+            ? `${CONSTANTS.USER.UPDATE_ERROR} ${restricted.join(", ")}`
+            : updatedData
+        );
+      } catch (error) {
+        return reject(error);
+      }
     });
   },
 };

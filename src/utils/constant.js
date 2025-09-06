@@ -13,7 +13,8 @@ const CONSTANTS = {
 		SERVER_ERROR: "Internal server error",
 		BAD_REQUEST: "Invalid payload",
 		PASSWORD: "Invalid password. Please re-enter",
-		WRONG:"Something went wrong"
+		WRONG:"Something went wrong",
+		SUSPENDED:"Your account has been deactivated"
 	},
 	USER: {
 		REGISTER: "User registered successfully",
@@ -26,7 +27,8 @@ const CONSTANTS = {
 		DEACTIVATE_ERROR:"User not found or already deactivated",
 		LIST: "Users list retrieved successfully",
 		LIST_ERROR: "No records found",
-		UPDATE: "User data updated successfully"
+		UPDATE: "User data updated successfully",
+		UPDATE_ERROR:"But you are not allowed to update"
 	},
 	UTILITY: {
 		USERNAME_ERROR: "Missing required fields for username genenration",
