@@ -75,8 +75,8 @@ const UserSchema = new Schema({
 					default: "",
 				},
 				years: {
-					type: Number,
-					default: 0,
+					type: String,
+					default: "",
 				},
 			},
 		],

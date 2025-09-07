@@ -55,7 +55,11 @@ const JoiUserSchema = joi
 
 		experience: joi.when("role", {
 			is: "DOCTOR",
-			then: joi.array()item().required(),
+			then: joi
+				.array()
+				.items({ hospitalName: joi.string(), years: joi.string() })
+				.min(1)
+				.required(),
 			otherwise: joi.forbidden(),
 		}),
 

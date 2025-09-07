@@ -615,7 +615,7 @@ function register() {
 		$("#myModal").modal("hide");
 		// getEmployeeList();
 		setTimeout(() => {
-			//getEmployeeList();
+			getEmployeeList();
 		}, 2000);
 	});
 }
