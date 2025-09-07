@@ -176,7 +176,7 @@
 											<label for="month">Gender</label>
 											<select
 												class="form-control select-design type-design"
-												id="genderList"></select>
+												id="gender"></select>
 										</div>
 									</div>
 
@@ -254,59 +254,67 @@
 									</div>
 									<div class="form-row" id="isDoctor">
 										<div class="col-md-12 remove-margin">
-											<div class="form-group col-md-3">
-												<label for="userName">User Name</label>
-												<input
-													type="text"
-													autocomplete="false"
-													class="form-control"
-													id="userName"
-													readonly />
-											</div>
-											<div class="form-group col-md-3">
-												<label for="month">Role</label>
+											<div class="form-group col-md-4">
+												<label for="qualification">Qualification</label>
 												<select
 													class="form-control select-design type-design"
-													id="role"
-													onchange="onRoleChange(event)"></select>
+													id="qualification"></select>
 											</div>
-											<div class="form-group col-md-3">
+											<div class="form-group col-md-4">
 												<label for="month">Specialization</label>
 												<select
 													class="form-control select-design type-design"
 													id="specialization"></select>
 											</div>
-											<div class="form-group col-md-1"></div>
-											<div class="form-group col-md-2">
-												<label for="status">Active</label>
-												<br />
-												<label class="switch">
-													<input
-														type="checkbox"
-														class="active-check"
-														onclick="getCheckedData(event)"
-														id="active-check"
-														checked />
-													<span class="slider round"></span>
-												</label>
+
+											<div class="form-group col-md-4">
+												<label for="consultationFee">Consultation Fee</label>
+												<input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													id="consultationFee" />
 											</div>
 										</div>
+										<div class="col-md-12 remove-margin">
+											<div class="form-group col-md-5">
+												<label for="hospital">Hospital</label>
+												<select
+													class="form-control select-design type-design"
+													id="hospital"></select>
+											</div>
+											<div class="form-group col-md-4">
+												<label for="years">Years</label>
+												<select
+													class="form-control select-design type-design"
+													id="expYears"></select>
+											</div>
+											<div class="form-group col-md-3">
+												<input
+													type="button"
+													autocomplete="false"
+													value="yes"
+													class="form-control exp-design"
+													onclick="addExperience()" />
+											</div>
+										</div>
+										<div class="col-md-12 remove-margin" id="addExp"></div>
 									</div>
 									<div class="form-row">
 										<div class="form-group col-md-4">
-											<label for="month">Joining Month</label>
+											<label for="month">DOB ( Month )</label>
 											<select
 												class="form-control select-design type-design"
 												id="month"></select>
 										</div>
 										<div class="form-group col-md-4">
-											<label for="year">Joining Year</label>
+											<label for="year">DOB ( Year )</label>
 											<select
 												class="form-control select-design type-design"
 												id="year"></select>
 										</div>
 										<div class="form-group col-md-4">
-											<label for="day">Joining Date</label>
+											<label for="day">DOB ( Date )</label>
 											<select
 												class="form-control select-design type-design"
 												id="day"></select>
@@ -385,13 +393,14 @@
 				<table class="table table-hover">
 					<thead class="thead-style">
 						<tr>
-							<th>Emp ID</th>
+							<th>Username</th>
 							<th>Name</th>
-							<th>Salary</th>
-							<th>Joined On</th>
 							<th>Phone</th>
+							<th>Gender</th>
+							<th>Blood Grp</th>
 							<th>Role</th>
 							<th>Status</th>
+							<th>Active</th>
 							<th>Action</th>
 						</tr>
 					</thead>
