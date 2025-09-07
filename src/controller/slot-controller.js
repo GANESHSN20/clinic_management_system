@@ -5,8 +5,9 @@ const SlotService = require("../service/slot-service");
 const CONSTANTS = require("../utils/constant");
 const CustomResponse = require("../utils/custom-response");
 
-router.post("/", function (req, res) {
+router.post("/create", function (req, res) {
   let payload = req.body;
+  console.log("payload");
   SlotService.create(payload)
     .then((result) => {
       res
@@ -20,12 +21,13 @@ router.post("/", function (req, res) {
         );
     })
     .catch((error) => {
+      console.log({ error });
       res
         .status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR)
         .send(
           CustomResponse.error(
             CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
-            CONSTANTS.COMMON.SERVER_ERROR,
+            "502 error",
             error
           )
         );

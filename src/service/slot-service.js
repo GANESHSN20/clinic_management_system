@@ -10,10 +10,10 @@ const SlotService = {
 
         const slots = [];
         for (let mins = start; mins < end; mins += payload.duration) {
-          slots.push({ slots: Helpers.formatTime(mins), status: false });
+          slots.push({ slot: Helpers.formatTime(mins), status: false });
         }
         payload.slots = slots;
-        let result = await SlotDao.register(payload);
+        let result = await SlotDao.create(payload);
         console.log(result);
         return resolve(result);
       } catch (error) {

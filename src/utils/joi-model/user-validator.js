@@ -55,7 +55,7 @@ const JoiUserSchema = joi
 
 		experience: joi.when("role", {
 			is: "DOCTOR",
-			then: joi.string().required(),
+			then: joi.array().items(joi.string()).min(1).required(),
 			otherwise: joi.forbidden(),
 		}),
 
