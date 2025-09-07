@@ -42,6 +42,28 @@ let monthList = [
 ];
 let bloodGroupList = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 let gender = ["MALE", "FEMALE", "OTHER"];
+let experience = [
+	"0-1 years",
+	"1-2 years",
+	"2-3 years",
+	"3-4 years",
+	"4-5 years",
+];
+const hospital = [
+	"AIIMS, New Delhi",
+	"Apollo Hospitals, Chennai",
+	"Fortis Memorial Research Institute, Gurugram",
+	"Medanta – The Medicity, Gurugram",
+	"Christian Medical College (CMC), Vellore",
+	"Narayana Health, Bengaluru",
+	"Manipal Hospitals, Bengaluru",
+	"Tata Memorial Hospital, Mumbai",
+	"PD Hinduja National Hospital, Mumbai",
+	"Care Hospitals, Hyderabad",
+	"Continental Hospitals, Hyderabad",
+	"Yashoda Hospitals, Hyderabad",
+	"Safdarjung Hospital, New Delhi",
+];
 let specializationList = [
 	"General Physician",
 	"Cardiologist",
@@ -53,7 +75,29 @@ let specializationList = [
 	"Ophthalmologist",
 	"Dentist",
 ];
-
+let expList = [];
+let qualificationList = [
+	"MBBS (Bachelor of Medicine, Bachelor of Surgery)",
+	"BDS (Bachelor of Dental Surgery)",
+	"BAMS (Bachelor of Ayurvedic Medicine and Surgery)",
+	"BHMS (Bachelor of Homeopathic Medicine and Surgery)",
+	"BUMS (Bachelor of Unani Medicine and Surgery)",
+	"BSMS (Bachelor of Siddha Medicine and Surgery)",
+	"MD (Doctor of Medicine)",
+	"MS (Master of Surgery)",
+	"DM (Doctorate of Medicine - Super Specialty)",
+	"MCh (Master of Chirurgiae - Super Specialty Surgery)",
+	"DNB (Diplomate of National Board)",
+	"PhD (Doctor of Philosophy in Medical Sciences)",
+	"MDS (Master of Dental Surgery)",
+	"M.Pharm (Master of Pharmacy - for clinical practice/research)",
+	"MPH (Master of Public Health)",
+	"Diploma in Clinical Pathology",
+	"Diploma in Child Health",
+	"Diploma in Orthopedics",
+	"Fellowship in Cardiology",
+	"Fellowship in Oncology",
+];
 (function () {
 	if (!localStorage.getItem("token")) window.location.href = "/login";
 	//   $('#setName').text(`Hi ${localStorage.getItem('name')}`);
@@ -137,8 +181,18 @@ function showData(...data) {
 	for (let item of monthList) {
 		$("#month").append($(`<option>`).val(item).text(item));
 	}
+	for (let item of qualificationList) {
+		$("#qualification").append($(`<option>`).val(item).text(item));
+	}
+
 	for (let item of bloodGroupList) {
 		$("#bloodGroup").append($(`<option>`).val(item).text(item));
+	}
+	for (let item of hospital) {
+		$("#hospital").append($(`<option>`).val(item).text(item));
+	}
+	for (let item of experience) {
+		$("#expYears").append($(`<option>`).val(item).text(item));
 	}
 	for (let item of gender) {
 		$("#gender").append($(`<option>`).val(item).text(item));
@@ -232,7 +286,9 @@ function viewData(...data) {
 	for (let item of monthList) {
 		$("#month").append($(`<option>`).val(item).text(item));
 	}
-
+	for (let item of qualificationList) {
+		$("#qualification").append($(`<option>`).val(item).text(item));
+	}
 	for (let item of bloodGroupList) {
 		$("#bloodGroup").append($(`<option>`).val(item).text(item));
 	}
@@ -250,7 +306,12 @@ function viewData(...data) {
 		// let selectedYear = item == todayDate[2] ? true : false;
 		$("#role").append($(`<option>`).val(item).text(item));
 	}
-
+	for (let item of hospital) {
+		$("#hospital").append($(`<option>`).val(item).text(item));
+	}
+	for (let item of experience) {
+		$("#expYears").append($(`<option>`).val(item).text(item));
+	}
 	for (let item of dayList) {
 		let option = item < 10 ? `0${item}` : item;
 
@@ -351,7 +412,9 @@ function showModalWithSelect(data) {
 	for (let item of monthList) {
 		$("#month").append($(`<option>`).val(item).text(item));
 	}
-
+	for (let item of qualificationList) {
+		$("#qualification").append($(`<option>`).val(item).text(item));
+	}
 	for (let item of yearList) {
 		let selectedYear = item == todayDate[2] ? true : false;
 		$("#year").append($(`<option>`).val(item).text(item));
@@ -364,6 +427,12 @@ function showModalWithSelect(data) {
 	}
 	for (let item of specializationList) {
 		$("#specialization").append($(`<option>`).val(item).text(item));
+	}
+	for (let item of hospital) {
+		$("#hospital").append($(`<option>`).val(item).text(item));
+	}
+	for (let item of experience) {
+		$("#expYears").append($(`<option>`).val(item).text(item));
 	}
 
 	for (let item of dayList) {
@@ -526,9 +595,12 @@ function register() {
 		role,
 	};
 
-	// if(role == 'DOCTOR'){
-	// 	obj['']
-	// }
+	if (role == "DOCTOR") {
+		obj["qualifications"] = $("#qualification").val();
+		obj["specialization"] = $("#specialization").val();
+		obj["experience"] = expList;
+		obj["consultationFee"] = $("#consultationFee").val();
+	}
 	let isFormValid = formValidation(obj);
 	if (!isFormValid) return false;
 
@@ -546,6 +618,29 @@ function register() {
 			//getEmployeeList();
 		}, 2000);
 	});
+}
+
+function addExperience() {
+	if (expList.length == 3) {
+		showErrorMessage("Limit reached for experience", true);
+		return;
+	}
+
+	let hospital = $("#hospital").val();
+	let expYear = $("#expYears").val();
+	console.log(hospital, expYear);
+	expList.push({ hospitalName: hospital, years: expYear });
+	let str = `<div class="form-group col-md-4">
+												<label for="expYear"></label>
+												<input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													value="${hospital}-${expYear}"
+													readonly />
+											</div>`;
+
+	$("#addExp").append(str);
 }
 
 {
