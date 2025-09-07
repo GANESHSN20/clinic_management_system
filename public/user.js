@@ -599,7 +599,7 @@ function register() {
 		obj["qualifications"] = $("#qualification").val();
 		obj["specialization"] = $("#specialization").val();
 		obj["experience"] = expList;
-		obj["consultationFee"] = $("#consultationFee").val();
+		obj["consultationFee"] = parseInt($("#consultationFee").val());
 	}
 	let isFormValid = formValidation(obj);
 	if (!isFormValid) return false;
