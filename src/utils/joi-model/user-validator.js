@@ -48,7 +48,7 @@ const JoiUserSchema = joi
 
     qualifications: joi.when("role", {
       is: "DOCTOR",
-      then: joi.array().items(joi.string()).min(1).required(),
+      then: joi.string().items(joi.string()).min(1).required(),
       otherwise: joi.forbidden(),
     }),
 

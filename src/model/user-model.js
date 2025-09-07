@@ -60,7 +60,7 @@ const UserSchema = new Schema({
 		},
 	},
 	
-	qualifications: [
+	qualifications: 
 		{
 			type: String,
 			required: function () {
@@ -68,7 +68,6 @@ const UserSchema = new Schema({
 				return this.role === "DOCTOR";
 			},
 		},
-	],
 	experience: {
 		type:String,
 		hospitalName: {
