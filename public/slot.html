@@ -83,16 +83,18 @@
                 <span class="text nav-text">Bills</span>
               </a>
             </li> -->
+
+						<!-- </li> -->
+						<li class="nav-link">
+							<a onclick="navigateTo('USER')">
+								<i class="bx bx-money icon"></i>
+								<span class="text nav-text">Users</span>
+							</a>
+						</li>
 						<li class="nav-link isActive">
 							<a class="menu-isActive">
 								<i class="bx bxs-user-pin icon menu-isActive"></i>
-								<span class="text nav-text menu-isActive">Users</span>
-							</a>
-						</li>
-						<li class="nav-link">
-							<a onclick="navigateTo('SLOT')">
-								<i class="bx bx-money icon"></i>
-								<span class="text nav-text">Slots</span>
+								<span class="text nav-text menu-isActive">Slots</span>
 							</a>
 						</li>
 						<!-- <li class="nav-link">
@@ -149,7 +151,7 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h4 class="modal-title">Employee Register Form</h4>
+							<h4 class="modal-title">Doctor Slot Form</h4>
 						</div>
 						<div class="modal-body">
 							<form id="registerClient" style="border: 1px solid #ccc">
@@ -160,33 +162,54 @@
 									>
 									<br />
 									<div class="form-row">
-										<div class="form-group col-md-4">
-											<label for="firstName">First Name</label>
+										<p style="clear: both">Doctor Information</p>
+										<div class="form-group col-md-8">
+											<label for="month"
+												>Name - Specialization - Qualification - Consultation
+												Fees</label
+											>
 											<input
 												type="text"
-												autocomplete="off"
+												autocomplete="false"
 												class="form-control"
-												id="firstName"
-												placeholder="Enter first name" />
+												id="doctor"
+												readonly />
+											<!-- <select
+												class="form-control select-design type-design"
+												id="doctor"></select> -->
 										</div>
-										<div class="form-group col-md-4">
-											<label for="lastName">Last Name</label>
-											<input
-												type="text"
-												autocomplete="off"
-												class="form-control"
-												id="lastName"
-												placeholder="Enter last name" />
-										</div>
-										<div class="form-group col-md-4">
-											<label for="month">Gender</label>
+									</div>
+									<div class="form-row">
+										<p style="clear: both">Slot Detail</p>
+										<div class="form-group col-md-6">
+											<label for="month">Available dates</label>
 											<select
 												class="form-control select-design type-design"
-												id="gender"></select>
+												id="dates"></select>
+										</div>
+										<div class="form-group col-md-6">
+											<label for="duration">Duration</label>
+											<select
+												class="form-control select-design type-design"
+												id="duration"></select>
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-md-6">
+											<label for="month">Start Time </label>
+											<select
+												class="form-control select-design type-design"
+												id="startTime"></select>
+										</div>
+										<div class="form-group col-md-6">
+											<label for="month">End Time</label>
+											<select
+												class="form-control select-design type-design"
+												id="endTime"></select>
 										</div>
 									</div>
 
-									<div class="form-row">
+									<!-- <div class="form-row">
 										<div class="form-group col-md-6">
 											<label for="email">Email</label>
 											<input
@@ -205,9 +228,9 @@
 												id="phone"
 												placeholder="Enter phone" />
 										</div>
-									</div>
+									</div> -->
 
-									<div class="form-row">
+									<!-- <div class="form-row">
 										<div class="form-group col-md-8">
 											<label for="address">Address</label>
 											<input
@@ -223,8 +246,8 @@
 												class="form-control select-design type-design"
 												id="bloodGroup"></select>
 										</div>
-									</div>
-									<div class="form-row">
+									</div> -->
+									<!-- <div class="form-row">
 										<div class="col-md-12 remove-margin">
 											<div class="form-group col-md-4">
 												<label for="userName">User Name</label>
@@ -257,8 +280,8 @@
 												</label>
 											</div>
 										</div>
-									</div>
-									<div class="form-row" id="isDoctor">
+									</div> -->
+									<!-- <div class="form-row" id="isDoctor">
 										<div class="col-md-12 remove-margin">
 											<div class="form-group col-md-4">
 												<label for="qualification">Qualification</label>
@@ -305,27 +328,7 @@
 											</div>
 										</div>
 										<div class="col-md-12 remove-margin" id="addExp"></div>
-									</div>
-									<div class="form-row">
-										<div class="form-group col-md-4">
-											<label for="month">DOB ( Month )</label>
-											<select
-												class="form-control select-design type-design"
-												id="month"></select>
-										</div>
-										<div class="form-group col-md-4">
-											<label for="year">DOB ( Year )</label>
-											<select
-												class="form-control select-design type-design"
-												id="year"></select>
-										</div>
-										<div class="form-group col-md-4">
-											<label for="day">DOB ( Date )</label>
-											<select
-												class="form-control select-design type-design"
-												id="day"></select>
-										</div>
-									</div>
+									</div> -->
 								</div>
 							</form>
 						</div>
@@ -416,7 +419,7 @@
 		</div>
 
 		<script src="./common.js"></script>
-		<script src="./user.js"></script>
+		<script src="./slot.js"></script>
 		<script src="./navigation.js"></script>
 	</body>
 </html>

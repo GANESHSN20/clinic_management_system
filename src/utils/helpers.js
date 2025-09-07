@@ -1,24 +1,28 @@
- const Helpers = {
-  parseTime: (timeStr) => {
-    const [time, period] = timeStr.split(" ");
-    let [hours, minutes] = time.split(":").map(Number);
+const Helpers = {
+	parseTime: (timeStr) => {
+		console.log({ timeStr });
 
-    if (period.toLowerCase() === "pm" && hours !== 12) hours += 12;
-    if (period.toLowerCase() === "am" && hours === 12) hours = 0;
+		let timeSeg = timeStr.split(" ");
+		let periodIndicator = timeSeg[1];
 
-    return hours * 60 + minutes; // total minutes
-  },
+		let [hours, minutes] = timeSeg[0].split(":").map(Number);
 
-  formatTime: (minutes) => {
-    let hrs = Math.floor(minutes / 60);
-    let mins = minutes % 60;
-    const period = hrs >= 12 ? "PM" : "AM";
+		if (periodIndicator.toLowerCase() === "pm" && hours !== 12) hours += 12;
+		if (periodIndicator.toLowerCase() === "am" && hours === 12) hours = 0;
 
-    if (hrs === 0) hrs = 12; // midnight
-    else if (hrs > 12) hrs -= 12;
+		return hours * 60 + minutes; // total minutes
+	},
 
-    return `${hrs}:${String(mins).padStart(2, "0")} ${period}`;
-  },
+	formatTime: (minutes) => {
+		let hrs = Math.floor(minutes / 60);
+		let mins = minutes % 60;
+		const period = hrs >= 12 ? "PM" : "AM";
+
+		if (hrs === 0) hrs = 12; // midnight
+		else if (hrs > 12) hrs -= 12;
+
+		return `${hrs}:${String(mins).padStart(2, "0")} ${period}`;
+	},
 };
 
 // function generateSlots({ startTime, endTime, duration }) {
@@ -26,9 +30,10 @@
 //   const end = parseTime(endTime);
 //   const slots = [];
 
-  // for (let mins = start; mins < end; mins += duration) {
-  //   slots.push({ slot: formatTime(mins), status: false });
-  // }
+// for (let mins = start; mins < end; mins += duration) {
+//   slots.push({ slot: formatTime(mins), status: false });
+// }
 
 //   return { slots };
 // }
+module.exports = Helpers;

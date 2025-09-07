@@ -34,7 +34,7 @@ const UserDAO = {
 	},
 
 	detail: (userName) => {
-		return UserModel.findOne({ userName }, { password: 0, _id: 0 });
+		return UserModel.findOne({ userName }, { password: 0 });
 	},
 
 	isUserExist: (payload) => {
@@ -55,7 +55,7 @@ const UserDAO = {
 	// },
 
 	list: (role) => {
-		return UserModel.find(role, { password: 0, _id: 0 });
+		return UserModel.find(role, { password: 0 });
 	},
 
 	update: (userName, payload) => {

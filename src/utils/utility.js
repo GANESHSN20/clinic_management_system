@@ -29,14 +29,14 @@ const Utility = {
 	log: (message, ...rest) => {
 		console.log(message, rest);
 	},
-	
+
 	getListByRole: (role) => {
 		let payload = {};
 		switch (role) {
 			case "ADMIN":
 				break;
 			case "RECEPTIONIST":
-				payload["role"] = "PATIENT";
+				payload["role"] = { $in: ["DOCTOR", "PATIENT"] };
 				break;
 			case "DOCTOR":
 				payload["role"] = { $in: ["RECEPTIONIST", "PATIENT"] };

@@ -4,8 +4,8 @@ function navigateTo(pageName) {
 			window.location.href = "/dashboard";
 			break;
 		}
-		case "CLIENT": {
-			window.location.href = "/client";
+		case "SLOT": {
+			window.location.href = "/slot";
 			break;
 		}
 		case "INCOME": {

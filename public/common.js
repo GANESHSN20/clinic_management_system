@@ -23,6 +23,7 @@ let api_url_list = {
 		clients: "/clients/register",
 		users: "/users/register",
 		bills: "/client-bills/addBill",
+		slots: "/slots/create",
 		expenses: "/expenses/expenseAdd",
 		investments: "/investments/investmentAdd",
 		salaries: "/salaries/salaryPaid",
@@ -204,7 +205,7 @@ function formValidation(data) {
 }
 
 function postData(url, body, query, params, callback) {
-	console.log(body);
+	console.log(body, url);
 	$.ajax({
 		method: "POST",
 		url: api_url_list.post[url],
@@ -313,3 +314,18 @@ function formatDate(date) {
 	return `${year}-${month}-${day}`;
 }
 
+function getNextDates(count = 3) {
+	const today = new Date();
+	const dates = [];
+
+	for (let i = 0; i < count; i++) {
+		const nextDate = new Date();
+		nextDate.setDate(today.getDate() + i);
+
+		// Format as YYYY-MM-DD (or customize)
+		const formatted = nextDate.toISOString().split("T")[0];
+		dates.push(formatted);
+	}
+
+	return dates;
+}

@@ -2,56 +2,46 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const SlotSchema = new Schema(
-  {
-    date: {
-      type: Date,
-      default: Date.now,
-    },
+	{
+		doctorId: {
+			type: Schema.Types.ObjectId,
+			ref: "users",
+			required: true,
+		},
+		date: {
+			type: Date,
+			default: Date.now,
+		},
 
-    startTime: {
-      // type: String,
-      time: {
-        type: Number,
-        required: true,
-      },
-      periodIndicator: {
-        type: String,
-        enum: ["AM", "PM"],
-        required: true,
-      },
-    },
+		startTime: {
+			type: String,
+			required: true,
+			// type: String,
+		},
 
-    endTime: {
-      // type: String,
-      time: {
-        type: Number,
-        required: true,
-      },
-      periodIndicator: {
-        type: String,
-        enum: ["AM", "PM"],
-        required: true,
-      },
-    },
-    duration: {
-      type: Number,
-      required: true,
-    },
+		endTime: {
+			type: String,
+			required: true,
+		},
+		duration: {
+			type: Number,
+			required: true,
+		},
 
-    slots: [
-      {
-        slot: {
-          type: String,
-          required: true,
-        },
-        status: {
-          type: Boolean,
-          default: false,
-        },
-      },
-    ],
-  },
-  { timestamps: true }
+		slots: [
+			{
+				slot: {
+					type: String,
+					required: true,
+				},
+				status: {
+					type: Boolean,
+					default: false,
+				},
+			},
+		],
+	},
+	{ timestamps: true },
 );
 
 module.exports = mongoose.model("slots", SlotSchema);
