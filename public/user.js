@@ -101,6 +101,17 @@ let qualificationList = [
 (function () {
 	if (!localStorage.getItem("token")) window.location.href = "/login";
 	$("#setName").text(`Hi ${localStorage.getItem("name")}`);
+	let role = localStorage.getItem("role");
+	if (role != "RECEPTIONIST" && role != "DOCTOR") {
+		$("#showSlotMenu").css("display", "none");
+	} else {
+		$("#showSlotMenu").css("display", "block");
+	}
+	if (role != "DOCTOR") {
+		$("#showSlotAdd").css("display", "block");
+	} else {
+		$("#showSlotAdd").css("display", "none");
+	}
 	//  showToastMessage('Welcome to Client Page','info',true);
 	getEmployeeList();
 })();
