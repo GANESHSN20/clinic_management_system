@@ -417,9 +417,7 @@ function getEmployeeList(filterObj) {
                     ${it.userName}</td>
                     <td>${it.firstName} ${it.lastName}</td>
                     
-                    <td>${it.email}</td>
                     
-                    <td>${formatDate(new Date(it.dateOfBirth))}</td>
 					
             <td>${it.phone}</td>
 			<td>${it.gender}</td>
