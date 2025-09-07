@@ -20,6 +20,7 @@ app.use("/user", (req, res) => {
 });
 
 app.use("/users", require("./src/controller/user-controller.js"));
+app.use("/slots", require("./src/controller/slot-controller.js"));
 // console.log(process.env);
 
 let adminPayload = {

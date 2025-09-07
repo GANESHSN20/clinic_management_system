@@ -42,6 +42,9 @@ const CONSTANTS = {
 		INVALID: "Token is not provided",
 		EXPIRED: "Token is expired",
 	},
+	SLOT:{
+		CREATED:"Slots created successfully"
+	}
 };
 
 module.exports = CONSTANTS;

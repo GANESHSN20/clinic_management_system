@@ -25,9 +25,11 @@ const Utility = {
 		}
 		return password.join("");
 	},
+
 	log: (message, ...rest) => {
 		console.log(message, rest);
 	},
+	
 	getListByRole: (role) => {
 		let payload = {};
 		switch (role) {
