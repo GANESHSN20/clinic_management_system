@@ -59,9 +59,40 @@ const UserSchema = new Schema({
 			return this.role === "DOCTOR";
 		},
 	},
-	qualifications: [{ type: String }],
-	experience: { type: Number, default: 0 },
-	consultationFee: { type: Number, default: 0 },
+
+	qualifications: {
+		type: String,
+		required: function () {
+			return this.role === "DOCTOR";
+		},
+		default: undefined, // prevents empty array from being set
+	},
+	experience: {
+		type: [
+			{
+				hospitalName: {
+					type: String,
+					default: "",
+				},
+				years: {
+					type: String,
+					default: "",
+				},
+			},
+		],
+
+		required: function () {
+			// specialization required only if role is "doctor"
+			return this.role === "DOCTOR";
+		},
+	},
+	consultationFee: {
+		type: Number,
+		required: function () {
+			// specialization required only if role is "doctor"
+			return this.role === "DOCTOR";
+		},
+	},
 	isActive: {
 		type: Boolean,
 		default: true,

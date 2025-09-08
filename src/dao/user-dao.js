@@ -7,10 +7,10 @@ const UserDAO = {
 		});
 	},
 
-	update: (userName, payload) => {
+	updateLoginDetails: (userName, payload) => {
 		console.log(userName, payload);
 
-		return UserModel.updateOne({ userName: userName }, { $set: payload });
+		return UserModel.updateOne({ userName }, { $set: payload });
 	},
 
 	register: (payload) => {
@@ -26,20 +26,40 @@ const UserDAO = {
 			password: payload.password,
 			email: payload.email,
 			role: payload.role,
+			specialization: payload.specialization,
+			qualifications: payload.qualifications,
+			experience: payload.experience,
+			consultationFee: payload.consultationFee,
 		}).save();
 	},
 
 	detail: (userName) => {
-		return UserModel.findOne({ userName }, { password: 0, _id: 0 });
+		return UserModel.findOne({ userName }, { password: 0 });
 	},
 
 	isUserExist: (payload) => {
-		let isNumber = /^\d+$/.test(payload.userName);
+		let isNumber = /^\+\d+$/.test(payload.userName);
 		let condition = isNumber
 			? { phone: payload.userName }
 			: { userName: payload.userName };
 
 		return UserModel.findOne(condition);
+	},
+
+	delete: (userName) => {
+		return UserModel.updateOne({ userName }, { $set: { isActive: false } });
+	},
+
+	//  delete: (userName) => {
+	//   return UserModel.deleteOne({ userName });
+	// },
+
+	list: (role) => {
+		return UserModel.find(role, { password: 0 });
+	},
+
+	update: (userName, payload) => {
+		return UserModel.updateOne({ userName }, { $set: payload });
 	},
 };
 

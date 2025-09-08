@@ -15,11 +15,16 @@ require("./database.js");
 app.use("/dashboard", (req, res) => {
 	res.sendFile(__dirname + "/public/dashboard.html");
 });
-app.use("/patient", (req, res) => {
-	res.sendFile(__dirname + "/public/patient.html");
+app.use("/user", (req, res) => {
+	res.sendFile(__dirname + "/public/user.html");
+});
+
+app.use("/slot", (req, res) => {
+	res.sendFile(__dirname + "/public/slot.html");
 });
 
 app.use("/users", require("./src/controller/user-controller.js"));
+app.use("/slots", require("./src/controller/slot-controller.js"));
 // console.log(process.env);
 
 let adminPayload = {
@@ -52,7 +57,7 @@ UserService.register(adminPayload, undefined)
 	})
 	.catch((error) => {
 		console.log(
-			CustomResponse.failure(
+			CustomResponse.error(
 				CONSTANT.HTTP_STATUS.INTERNAL_SERVER_ERROR,
 				CONSTANT.COMMON.SERVER_ERROR,
 				error,

@@ -25,8 +25,26 @@ const Utility = {
 		}
 		return password.join("");
 	},
+
 	log: (message, ...rest) => {
 		console.log(message, rest);
+	},
+
+	getListByRole: (role, userName) => {
+		let payload = {};
+		switch (role) {
+			case "ADMIN":
+				break;
+			case "RECEPTIONIST":
+				payload["role"] = { $in: ["DOCTOR", "PATIENT"] };
+				break;
+			case "DOCTOR":
+				payload["role"] = { $in: ["RECEPTIONIST", "PATIENT"] };
+			case "PATIENT":
+				payload["$or"] = [{ role: "DOCTOR" }, { userName }];
+				break;
+		}
+		return payload;
 	},
 };
 

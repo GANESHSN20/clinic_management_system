@@ -5,15 +5,15 @@ const JoiUserSchema = joi
 		firstName: joi
 			.string()
 			.pattern(/^[A-Za-z]+$/)
-			.min(2)
+			.min(3)
 			.max(30)
 			.required(),
 
 		lastName: joi
 			.string()
-			.pattern(/^[A-Za-z]+$/)
-			.min(2)
-			.max(30),
+			.pattern(/^[A-Za-z]*$/) // only letters, allows empty string
+			.optional() // field itself is optional
+			.allow(""),
 
 		phone: joi
 			.string()
@@ -40,6 +40,34 @@ const JoiUserSchema = joi
 			.string()
 			.valid("PATIENT", "DOCTOR", "RECEPTIONIST", "ADMIN")
 			.required(),
+
+		specialization: joi.when("role", {
+			is: "DOCTOR",
+			then: joi.string().required(),
+			otherwise: joi.forbidden(),
+		}),
+
+		qualifications: joi.when("role", {
+			is: "DOCTOR",
+			then: joi.string().required(),
+			otherwise: joi.forbidden(),
+		}),
+
+		experience: joi.when("role", {
+			is: "DOCTOR",
+			then: joi
+				.array()
+				.items({ hospitalName: joi.string(), years: joi.string() })
+				.min(1)
+				.required(),
+			otherwise: joi.forbidden(),
+		}),
+
+		consultationFee: joi.when("role", {
+			is: "DOCTOR",
+			then: joi.number().required(),
+			otherwise: joi.forbidden(),
+		}),
 	})
 	.required();
 

@@ -3,6 +3,15 @@ const Config = {
 	gender: ["MALE", "FEMALE", "OTHER"],
 	status: ["OPEN", "ONGOING", "CLOSED"],
 	role: ["DOCTOR", "ADMIN", "RECEPTIONIST", "PATIENT"],
+	restrictedFields: [
+		"firstName",
+		"gender",
+		"dateOfBirth",
+		"phone",
+		"userName",
+		"role",
+		"password",
+	],
 };
 
 module.exports = Config;

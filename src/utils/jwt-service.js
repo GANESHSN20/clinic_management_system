@@ -1,7 +1,9 @@
 const jwt = require("jsonwebtoken");
+const CONSTANTS = require("./constant");
+
 const JwtService = {
 	createToken: (payload) => {
-		let token = jwt.sign(payload, process.env.SECRET_KEY); /// expiretime
+		let token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "2h"}); /// expiretime
 		return token;
 	},
 
@@ -9,8 +11,12 @@ const JwtService = {
 		try {
 			return jwt.verify(token, process.env.SECRET_KEY);
 		} catch (error) {
-			console.log(error.message);
-			return error;
+				if(error.name === "TokenExpiredError")
+					return CONSTANTS.TOKEN.EXPIRED;
+				else{
+					console.log(error.message);
+					return error;
+				}
 		}
 	},
 };
