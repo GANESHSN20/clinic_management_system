@@ -10,19 +10,19 @@ const SlotSchema = new Schema(
 		},
 		date: {
 			type: Date,
-			default: Date.now,
+			required: true,
 		},
 
 		startTime: {
 			type: String,
 			required: true,
-			// type: String,
 		},
 
 		endTime: {
 			type: String,
 			required: true,
 		},
+		
 		duration: {
 			type: Number,
 			required: true,

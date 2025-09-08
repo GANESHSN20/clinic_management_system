@@ -2,35 +2,86 @@ const express = require("express");
 const router = express.Router();
 
 const SlotService = require("../service/slot-service");
+const UserMiddleware = require("../middleware/user-middleware");
 const CONSTANTS = require("../utils/constant");
 const CustomResponse = require("../utils/custom-response");
 
-router.post("/create", function (req, res) {
+router.post("/create", UserMiddleware.isAuthenticate, function (req, res) {
   let payload = req.body;
-  console.log("payload");
-  SlotService.create(payload)
+  let tokenPayload = req.user;
+  SlotService.create(payload, tokenPayload)
     .then((result) => {
       res
         .status(CONSTANTS.HTTP_STATUS.CREATED)
         .send(
           CustomResponse.success(
             CONSTANTS.HTTP_STATUS.CREATED,
-            CONSTANTS.SLOT.CREATED,
+            CONSTANTS.SLOT.CREATE,
             result
           )
         );
     })
     .catch((error) => {
-      console.log({ error });
+      if (typeof error == "string") {
+        res
+          .status(CONSTANTS.HTTP_STATUS.BAD_REQUEST)
+          .send(
+            CustomResponse.error(
+              CONSTANTS.HTTP_STATUS.BAD_REQUEST,
+              CONSTANTS.COMMON.DENIED,
+              error
+            )
+          );
+      } else {
+        res
+          .status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR)
+          .send(
+            CustomResponse.error(
+              CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
+              CONSTANTS.COMMON.SERVER_ERROR,
+              error
+            )
+          );
+      }
+    });
+});
+
+router.get("/list", UserMiddleware.isAuthenticate, function (req, res) {
+  let tokenPayload = req.user;
+  SlotService.list(tokenPayload)
+    .then((result) => {
       res
-        .status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR)
+        .status(CONSTANTS.HTTP_STATUS.SUCCESS)
         .send(
-          CustomResponse.error(
-            CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
-            "502 error",
-            error
+          CustomResponse.success(
+            CONSTANTS.HTTP_STATUS.SUCCESS,
+            CONSTANTS.SLOT.LIST,
+            result
           )
         );
+    })
+    .catch((error) => {
+      if (typeof error == "string") {
+        res
+          .status(CONSTANTS.HTTP_STATUS.BAD_REQUEST)
+          .send(
+            CustomResponse.error(
+              CONSTANTS.HTTP_STATUS.BAD_REQUEST,
+              CONSTANTS.COMMON.DENIED,
+              error
+            )
+          );
+      } else {
+        res
+          .status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR)
+          .send(
+            CustomResponse.error(
+              CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
+              CONSTANTS.COMMON.SERVER_ERROR,
+              error
+            )
+          );
+      }
     });
 });
 

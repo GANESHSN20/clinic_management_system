@@ -15,7 +15,8 @@ const CONSTANTS = {
 		NOT_ALLOWED: "These fields are not allowed to update - ",
 		PASSWORD: "Invalid password. Please re-enter",
 		WRONG: "Something went wrong",
-		SUSPENDED: "Your account has been deactivated. please contact to admin.",
+		SUSPENDED: "Your account has been deactivated. Please contact the admin",
+		DENIED:"Access denied"
 	},
 	USER: {
 		REGISTER: "User registered successfully",
@@ -43,7 +44,11 @@ const CONSTANTS = {
 		EXPIRED: "Token is expired",
 	},
 	SLOT:{
-		CREATED:"Slots created successfully"
+		CREATE:"Slots created successfully",
+		CREATE_ERROR:"Error occured while creating slots",
+		UNAUTHORIZED:"You are unauthorized to use this service",
+		LIST:"Slots list retrieved successfully",
+		LIST_ERROR:"No records found"
 	}
 };
 
