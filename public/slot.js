@@ -148,6 +148,7 @@ let doctorList = "";
 	}
 	//  showToastMessage('Welcome to Client Page','info',true);
 	getEmployeeList();
+	getSlotList();
 	// getDoctorList();
 })();
 
@@ -574,6 +575,124 @@ function getEmployeeList(filterObj) {
 	});
 }
 
+function getEmployeeList(filterObj) {
+	let filterList = {};
+	if (filterObj) {
+		for (let item in filterObj) filterList[item] = filterObj[item];
+	}
+
+	getDataList("users", null, filterList, function (result, error) {
+		if (error) console.log(error);
+
+		if (result.data.length == 0) showToastMessage(result.message, "info");
+
+		let str = "";
+		let loggedInRole = localStorage.getItem("role");
+
+		if (loggedInRole == "RECEPTIONIST") {
+			doctorList = result.data.find((item) => item.role == "DOCTOR");
+			localStorage.setItem("doctorId", doctorList._id);
+			// for (let it of doctorList) {
+
+			// }
+		}
+
+		// str +=`<tr><td>Total Amount</td><td>${response.data.totalAmount}</tr>`
+	});
+}
+
+function getSlotList(filterObj) {
+	let filterList = {};
+	if (filterObj) {
+		for (let item in filterObj) filterList[item] = filterObj[item];
+	}
+	$("#tableList").html("");
+
+	$("#show-main-loader").css("display", "block");
+	$("#showTableDesc").html("Slot List");
+	getDataList("slots", null, filterList, function (result, error) {
+		if (error) console.log(error);
+
+		if (result.data.length == 0) showToastMessage(result.message, "info");
+
+		let str = "";
+		// let loggedInRole = localStorage.getItem("role");
+		let finalList = result.data;
+		for (let it of finalList) {
+			let availableSlot = it.slots.filter((item) => item.status == false);
+			let bookedSlot = it.slots.filter((item) => item.status == true);
+			// count = count + 1;
+
+			/*
+			<th>Doctor Name</th>
+							<th>Date</th>
+							<th>Start Time</th>
+							<th>End Time</th>
+							<th>Duration</th>
+							<th>Booked Slot</th>
+							<th>Available Slot</th>
+							<th>Total slot</th>
+							<th>Action</th>
+			*/
+			str += `<tr>
+			<td>
+                    ${it.doctorId.firstName} ${it.doctorId.lastName}</td>
+                    <td>
+                    ${formatDate(new Date(it.date))}</td>
+                    <td>${it.startTime}</td>
+                    <td>${it.endTime}</td>
+                    
+                    
+					
+            <td>${it.duration}</td>
+			<td>${bookedSlot.length}</td>
+			<td>${availableSlot.length}</td>
+            <td>${it.slots.length}</td>
+            
+                    
+                    
+                <td><span style="cursor:pointer;color:#48bf36;padding:5px;margin:5px;font-size:16px;" onclick="viewData('${
+									it.doctorId.firstName
+								} ${it.doctorId.lastName}','${it.date}','${it.startTime}','${
+				it.endTime
+			}','${it.duration}','${
+				it.slots
+			}')"><i class="fa fa-eye" aria-hidden="true"></i>
+
+                </span><span style="cursor:pointer;color:#48bf36;padding:5px;margin:5px;font-size:16px;" onclick="showData('${
+									it.doctorId.firstName
+								} ${it.doctorId.lastName}','${it.date}','${it.startTime}','${
+				it.endTime
+			}','${it.duration}','${
+				it.slots
+			}')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </span></td></tr>`;
+		}
+		// str +=`<tr><td>Total Amount</td><td>${response.data.totalAmount}</tr>`
+		$("#tableList").append(str);
+		if (!$("#active").val()) {
+			$("#active").empty();
+
+			for (let item of activeList) {
+				// let selectedYear = item == todayDate[2] ? true : false;
+				$("#active").append($(`<option>`).val(item).text(item));
+			}
+			$("#active").val(activeList[0]);
+		}
+		// if (!$("#filterMonth").val()) {
+		// 	$("#filterMonth").empty();
+
+		// 	for (let item of monthList) {
+		// 		// let selectedYear = item == todayDate[2] ? true : false;
+		// 		$("#filterMonth").append($(`<option>`).val(item).text(item));
+		// 	}
+		// 	$("#filterMonth").val(activeList[0]);
+		// }
+		//
+
+		$("#show-main-loader").css("display", "none");
+	});
+}
 // function getDoctorList(filterObj) {
 // 	let filterList = {};
 // 	if (filterObj) {

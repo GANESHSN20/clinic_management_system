@@ -30,7 +30,7 @@ const Utility = {
 		console.log(message, rest);
 	},
 
-	getListByRole: (role) => {
+	getListByRole: (role, userName) => {
 		let payload = {};
 		switch (role) {
 			case "ADMIN":
@@ -40,6 +40,9 @@ const Utility = {
 				break;
 			case "DOCTOR":
 				payload["role"] = { $in: ["RECEPTIONIST", "PATIENT"] };
+			case "PATIENT":
+				payload["$or"] = [{ role: "DOCTOR" }, { userName }];
+				break;
 		}
 		return payload;
 	},

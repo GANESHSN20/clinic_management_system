@@ -120,10 +120,11 @@ const UserService = {
 	list: (tokenPayload) => {
 		return new Promise(async (resolve, reject) => {
 			let role = tokenPayload.role;
-			if (role === "PATIENT") {
-				return resolve([]);
-			}
-			UserDao.list(Utility.getListByRole(role))
+			let userName = tokenPayload.userName;
+			// if (role === "PATIENT") {
+			// 	return resolve([]);
+			// }
+			UserDao.list(Utility.getListByRole(role,userName))
 				.then((result) => {
 					return resolve(result);
 				})

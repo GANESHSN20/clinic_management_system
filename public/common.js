@@ -18,6 +18,7 @@ let api_url_list = {
 		expenses: "/expenses/getExpensesByCondition",
 		investments: "/investments/getInvestmentsByCondition",
 		salaries: "/salaries/getSalariesByUserName",
+		slots: "/slots/list",
 	},
 	post: {
 		clients: "/clients/register",
