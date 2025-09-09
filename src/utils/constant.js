@@ -16,7 +16,8 @@ const CONSTANTS = {
 		PASSWORD: "Invalid password. Please re-enter",
 		WRONG: "Something went wrong",
 		SUSPENDED: "Your account has been deactivated. Please contact the admin",
-		DENIED:"Access denied"
+		DENIED:"Access denied",
+		APPOINTMENT_REJECT:"This slot is already booked"
 	},
 	USER: {
 		REGISTER: "User registered successfully",
@@ -49,6 +50,12 @@ const CONSTANTS = {
 		UNAUTHORIZED:"You are unauthorized to use this service",
 		LIST:"Slots list retrieved successfully",
 		LIST_ERROR:"No records found"
+	},
+	APPOINTMENT:{
+		BOOK:"Appointment booked successfully",
+		UNAUTHORIZED:"You are unauthorized to use this service",
+		LIST:"Appointment list retrieved successfully"
+		
 	}
 };
 
