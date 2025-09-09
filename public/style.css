@@ -526,6 +526,30 @@ input[type="button"]:hover {
 	color: #ff4949;
 }
 
+/* hide the native radio */
+.radio-as-input input[type="radio"] {
+	display: none;
+}
+
+/* style the label span like an input box */
+.radio-as-input span {
+	display: inline-block;
+	padding: 10px 12px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background: #fff;
+	cursor: pointer;
+	min-width: 100px;
+	text-align: center;
+}
+
+/* when radio is checked */
+.radio-as-input input[type="radio"]:checked + span {
+	border: 2px solid #36d874;
+	background-color: #f6faf3;
+	color: #ada9a9;
+}
+
 hr {
 	border: 1px solid #f1f1f1;
 	margin-bottom: 25px;
@@ -864,4 +888,14 @@ button:hover {
 
 .filter-label-design {
 	margin-top: 29px;
+}
+.addHighlight {
+	box-shadow: none;
+	border: none;
+	background-color: #f6faf3;
+	border-left: 3px #36d874 solid;
+	border-radius: 0px;
+	color: #262424;
+	border-top: 0.5px #e4e2e2 solid;
+	border-bottom: 0.5px #e4e2e2 solid;
 }

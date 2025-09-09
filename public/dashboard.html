@@ -64,6 +64,12 @@
 								<span class="text nav-text">Slots</span>
 							</a>
 						</li>
+						<li class="nav-link">
+							<a onclick="navigateTo('APPOINTMENT')">
+								<i class="bx bx-money icon"></i>
+								<span class="text nav-text">Appointments</span>
+							</a>
+						</li>
 						<!-- <li class="nav-link">
               <a onclick="navigateTo('BILLS')">
                 <i class="bx bx-list-check icon"></i>
@@ -124,7 +130,25 @@
 				</div>
 			</nav>
 		</div>
-		<div class="main-area">Dashboard</div>
+		<div class="main-area">
+			Dashboard
+			<form>
+				<label class="radio-as-input">
+					<input type="radio" name="gender" value="male" />
+					<span>Male</span>
+				</label>
+
+				<label class="radio-as-input">
+					<input type="radio" name="gender" value="female" />
+					<span>Female</span>
+				</label>
+
+				<label class="radio-as-input">
+					<input type="radio" name="gender" value="other" />
+					<span>Other</span>
+				</label>
+			</form>
+		</div>
 
 		<script src="./common.js"></script>
 		<script src="./dashboard.js"></script>

@@ -19,6 +19,13 @@ const SlotDao = {
 		console.log(date);
 		return SlotModel.find({ date: { $gte: date } }).populate("doctorId");
 	},
+
+	update: (id, slot) => {
+		return SlotModel.updateOne(
+			{ _id: id, "slots.slot": slot },
+			{ $set: { "slots.$.status": true } },
+		);
+	},
 };
 
 module.exports = SlotDao;
