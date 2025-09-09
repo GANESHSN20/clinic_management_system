@@ -16,8 +16,9 @@ const CONSTANTS = {
 		PASSWORD: "Invalid password. Please re-enter",
 		WRONG: "Something went wrong",
 		SUSPENDED: "Your account has been deactivated. Please contact the admin",
-		DENIED:"Access denied",
-		APPOINTMENT_REJECT:"This slot is already booked"
+		DENIED: "Access denied",
+		APPOINTMENT_REJECT:
+			"Appointemnt for the given information/slot is already booked. Please choose someother slot.",
 	},
 	USER: {
 		REGISTER: "User registered successfully",
@@ -44,19 +45,18 @@ const CONSTANTS = {
 		INVALID: "Token is not provided",
 		EXPIRED: "Token is expired",
 	},
-	SLOT:{
-		CREATE:"Slots created successfully",
-		CREATE_ERROR:"Error occured while creating slots",
-		UNAUTHORIZED:"You are unauthorized to use this service",
-		LIST:"Slots list retrieved successfully",
-		LIST_ERROR:"No records found"
+	SLOT: {
+		CREATE: "Slots created successfully",
+		CREATE_ERROR: "Error occured while creating slots",
+		UNAUTHORIZED: "You are unauthorized to use this service",
+		LIST: "Slots list retrieved successfully",
+		LIST_ERROR: "No records found",
 	},
-	APPOINTMENT:{
-		BOOK:"Appointment booked successfully",
-		UNAUTHORIZED:"You are unauthorized to use this service",
-		LIST:"Appointment list retrieved successfully"
-		
-	}
+	APPOINTMENT: {
+		BOOK: "Appointment booked successfully",
+		UNAUTHORIZED: "You are unauthorized to use this service",
+		LIST: "Appointment list retrieved successfully",
+	},
 };
 
 module.exports = CONSTANTS;

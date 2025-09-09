@@ -8,8 +8,8 @@ function navigateTo(pageName) {
 			window.location.href = "/slot";
 			break;
 		}
-		case "INCOME": {
-			window.location.href = "#"; //"/investment";
+		case "APPOINTMENT": {
+			window.location.href = "/appointment"; //"/investment";
 			break;
 		}
 		case "BILLS": {

@@ -22,6 +22,9 @@ app.use("/user", (req, res) => {
 app.use("/slot", (req, res) => {
 	res.sendFile(__dirname + "/public/slot.html");
 });
+app.use("/appointment", (req, res) => {
+	res.sendFile(__dirname + "/public/appointment.html");
+});
 
 app.use("/users", require("./src/controller/user-controller.js"));
 app.use("/slots", require("./src/controller/slot-controller.js"));
