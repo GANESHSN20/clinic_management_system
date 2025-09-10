@@ -29,7 +29,6 @@ app.use("/appointment", (req, res) => {
 app.use("/users", require("./src/controller/user-controller.js"));
 app.use("/slots", require("./src/controller/slot-controller.js"));
 app.use("/appointments", require("./src/controller/appointment-controller.js"));
-
 // console.log(process.env);
 
 let adminPayload = {

@@ -12,6 +12,7 @@ let activeList = ["ACTIVE", "INACTIVE"];
 // 	.replace(",", "")
 // 	.split(" ");
 // console.log({ todayDate });
+let selectedSLotId = "";
 let role = localStorage.getItem("role");
 let roleList = [];
 if (role == "ADMIN") roleList = ["RECEPTIONIST", "DOCTOR", "ADMIN"];
@@ -601,23 +602,43 @@ function getEmployeeList(filterObj) {
 function selectSlotFromList(slotParentId, slot, id) {
 	console.log(slotParentId, slot, id);
 	$(`#${id}`).css("border-left", "5px #229f96 solid");
-	$(`#${id}`).css("border-right", "5px #229f96 solid");
+	$(`#${id}`).find("span").css("background-color", "#c4f4d7");
+	// $(`#${id}`).css("border-right", "5px #229f96 solid");
+	for (let item of availableSlotsListByDate.slots) {
+		if (item._id != id && !item.status) {
+			$(`#${item._id}`).css("border-left", "1px solid #ccc");
+			$(`#${item._id}`).find("span").css("background-color", "#fff");
+		}
+	}
 	$("#selectedSlot").val(slot);
 }
 
 $("#dates").on("change", function () {
-	console.log($(this).val());
+	console.log("data", $(this).val());
+
 	$("#selectedSlot").val("");
 	availableSlotsListByDate = JSON.parse($(this).val());
+	selectedSLotId = availableSlotsListByDate._id;
 	document.getElementById("addSlot").innerHTML = "";
 	let str = `<p style="clear: both">Select slot from list below:</p>`;
 	for (let item of availableSlotsListByDate.slots) {
 		console.log(item.status);
-
-		str += `<div class="form-group col-md-1" onclick="selectSlotFromList('${availableSlotsListByDate._id}','${item.slot}','${item._id}')">
+		if (item.status) {
+			str += `<div class="form-group col-md-1" onclick="selectSlotFromList('${availableSlotsListByDate._id}','${item.slot}','${item._id}')">
         
-            <label class="radio-as-input">
-    <input id="${item._id}"
+            <label class="radio-as-input" ></label>
+    <input  class="radio-as-input-box" style="border:1px solid #ccc;background-color:#ccc;color:#000;margin-top:0px"
+            type="button"
+			id="${item._id}"
+            value="${item.slot}" />
+  
+        
+    </div>`;
+		} else {
+			str += `<div class="form-group col-md-1" style="padding-top:19px" onclick="selectSlotFromList('${availableSlotsListByDate._id}','${item.slot}','${item._id}')">
+        
+            <label class="radio-as-input" id="${item._id}">
+    <input 
             type="radio"
             name="gender"
             value="${item.slot}" />
@@ -625,32 +646,43 @@ $("#dates").on("change", function () {
   </label>
         
     </div>`;
+		}
 	}
 	$("#addSlot").append(str);
 	for (let item of availableSlotsListByDate.slots) {
 		if (!item.status) {
 			// :
-			$(`#${item._id}`).css("color", "#fff");
-			$(`#${item._id}`).css("border-left", "3px #48bf36 solid");
 			$(`#${item._id}`).css("background-color", "#48bf36");
 			$(`#${item._id}`).css("cursor", "pointer");
+			// $(`#${item._id}`).hover(
+			// 	function () {
+			// 		// mouse enter
+			// 		$(this).css({
+			// 			"background-color": "#0faf74",
+			// 		});
+			// 	},
+			// 	function () {
+			// 		// mouse leave
+			// 		$(this).css({
+			// 			"background-color": "#48bf36",
+			// 		});
+			// 	},
+			// );
 			$(`#${item._id}`).hover(
 				function () {
-					// mouse enter
-					$(this).css({
-						"background-color": "#0faf74",
-					});
-				},
+					// $(this).find("span").css("background-color", "#0faf74");
+					// $(this).find("span").css("color", "#fff");
+					$(this).css("border-color", "1px solid #0faf74");
+				}, // mouse enter
 				function () {
-					// mouse leave
-					$(this).css({
-						"background-color": "#48bf36",
-					});
-				},
+					// $(this).find("span").css("background-color", "#fff");
+					$(this).find("span").css("color", "#262424");
+				}, // mouse leave
 			);
 		} else {
-			$(`#${item._id}`).css("background-color", "grey");
-			$(`#${item._id}`).css("color", "#fff");
+			$(`#${item._id}`).prop("disabled", true);
+			$(`#${item._id}`).find("span").css("background-color", "#ccc");
+			// $(`#${item._id}`).css("color", "#fff");
 		}
 	}
 });
@@ -897,21 +929,25 @@ function onRoleChange(event) {
 }
 function register() {
 	//let active = Boolean(document.getElementById("active-check").value);
+	console.log("dates", document.getElementById("dates").value);
 
 	let obj = {
 		doctorId: localStorage.getItem("doctorId"),
-		date: new Date(document.getElementById("dates").value.trim()),
-		startTime: document.getElementById("startTime").value.trim(),
-		endTime: document.getElementById("endTime").value.trim(),
-		duration: parseInt(document.getElementById("duration").value.trim()),
+		patientId: document.getElementById("patients").value.trim(),
+		slots: {
+			slot: document.getElementById("selectedSlot").value.trim(),
+			slotId: selectedSLotId,
+		},
+		date: new Date(JSON.parse(document.getElementById("dates").value).date),
+		reason: document.getElementById("reason").value.trim(),
 	};
-
+	console.log("obejct to pass crate appointment", obj);
 	let isFormValid = formValidation(obj);
 	if (!isFormValid) return false;
 
 	$("#register-loader").css("visibility", "visible");
 
-	postData("slots", obj, null, null, function (result, error) {
+	postData("appointments", obj, null, null, function (result, error) {
 		if (error) console.log(error);
 		console.log({ "data received from": result });
 		$("#register-loader").css("visibility", "hidden");

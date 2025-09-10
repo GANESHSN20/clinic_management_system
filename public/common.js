@@ -23,6 +23,7 @@ let api_url_list = {
 	post: {
 		clients: "/clients/register",
 		users: "/users/register",
+		appointments: "/appointments/book",
 		bills: "/client-bills/addBill",
 		slots: "/slots/create",
 		expenses: "/expenses/expenseAdd",
