@@ -1,3 +1,5 @@
+const PrescriptionDao = require("../dao/prescription-dao");
+
 const CONSTANTS = {
 	HTTP_STATUS: {
 		SUCCESS: 200,
@@ -57,6 +59,12 @@ const CONSTANTS = {
 		UNAUTHORIZED: "You are unauthorized to use this service",
 		LIST: "Appointment list retrieved successfully",
 	},
+	PRESCRIPTION:{
+		CREATE: "Prescription added successfully",
+		UNAUTHORIZED: "You are unauthorized to use this service",
+		DUPLICATE_ERROR: "Today's prescription for this patient already exist",
+		DUPLICATE_MESSAGE:"Duplicate entry"
+	}
 };
 
 module.exports = CONSTANTS;

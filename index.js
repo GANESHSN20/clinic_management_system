@@ -12,9 +12,14 @@ const port = process.env.PORT;
 
 require("./database.js");
 
+app.use("/", (req, res) => {
+	res.sendFile(__dirname + "/public/index.html");
+});
+
 app.use("/dashboard", (req, res) => {
 	res.sendFile(__dirname + "/public/dashboard.html");
 });
+
 app.use("/user", (req, res) => {
 	res.sendFile(__dirname + "/public/user.html");
 });
@@ -22,6 +27,7 @@ app.use("/user", (req, res) => {
 app.use("/slot", (req, res) => {
 	res.sendFile(__dirname + "/public/slot.html");
 });
+
 app.use("/appointment", (req, res) => {
 	res.sendFile(__dirname + "/public/appointment.html");
 });
@@ -29,6 +35,7 @@ app.use("/appointment", (req, res) => {
 app.use("/users", require("./src/controller/user-controller.js"));
 app.use("/slots", require("./src/controller/slot-controller.js"));
 app.use("/appointments", require("./src/controller/appointment-controller.js"));
+app.use("/prescriptions", require("./src/controller/prescription-controller.js"));
 // console.log(process.env);
 
 let adminPayload = {
@@ -44,10 +51,6 @@ let adminPayload = {
 	userName: process.env.USER_NAME,
 	password: process.env.PASSWORD,
 };
-
-app.use("/", (req, res) => {
-	res.sendFile(__dirname + "/public/index.html");
-});
 
 UserService.register(adminPayload, undefined)
 	.then((result) => {
