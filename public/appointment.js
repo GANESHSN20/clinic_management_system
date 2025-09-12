@@ -148,6 +148,11 @@ let patientList = [];
 	} else {
 		$("#showSlotAdd").css("display", "none");
 	}
+	if (role != "RECEPTIONIST" && role != "DOCTOR") {
+		$("#showSlotMenu").css("display", "none");
+	} else {
+		$("#showSlotMenu").css("display", "block");
+	}
 	//  showToastMessage('Welcome to Client Page','info',true);
 	getEmployeeList();
 	getSlotList();
@@ -579,7 +584,7 @@ function getEmployeeList(filterObj) {
 		let str = "";
 		let loggedInRole = localStorage.getItem("role");
 
-		if (loggedInRole == "RECEPTIONIST") {
+		if (loggedInRole == "RECEPTIONIST" || loggedInRole == "PATIENT") {
 			console.log(
 				"patientList---",
 				result.data.filter((item) => item.role == "PATIENT"),
@@ -624,7 +629,7 @@ $("#dates").on("change", function () {
 	for (let item of availableSlotsListByDate.slots) {
 		console.log(item.status);
 		if (item.status) {
-			str += `<div class="form-group col-md-1" onclick="selectSlotFromList('${availableSlotsListByDate._id}','${item.slot}','${item._id}')">
+			str += `<div class="form-group col-md-1 col-md-1-appointment" onclick="selectSlotFromList('${availableSlotsListByDate._id}','${item.slot}','${item._id}')">
         
             <label class="radio-as-input" ></label>
     <input  class="radio-as-input-box" style="border:1px solid #ccc;background-color:#ccc;color:#000;margin-top:0px"
@@ -635,7 +640,7 @@ $("#dates").on("change", function () {
         
     </div>`;
 		} else {
-			str += `<div class="form-group col-md-1" style="padding-top:19px" onclick="selectSlotFromList('${availableSlotsListByDate._id}','${item.slot}','${item._id}')">
+			str += `<div class="form-group col-md-1 col-md-1-appointment" style="padding-top:19px" onclick="selectSlotFromList('${availableSlotsListByDate._id}','${item.slot}','${item._id}')">
         
             <label class="radio-as-input" id="${item._id}">
     <input 

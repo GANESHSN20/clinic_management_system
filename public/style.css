@@ -448,7 +448,7 @@ body.dark .home .text {
 	border-radius: 0px;
 }
 .modal-dialog {
-	width: 62%;
+	width: 74%;
 }
 .modal-header {
 	background-color: #767474;
@@ -906,4 +906,9 @@ button:hover {
 	color: #262424;
 	border-top: 0.5px #e4e2e2 solid;
 	border-bottom: 0.5px #e4e2e2 solid;
+}
+@media (min-width: 992px) {
+	.col-md-1-appointment {
+		width: 11.333333%;
+	}
 }
