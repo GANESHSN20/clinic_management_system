@@ -46,6 +46,7 @@ const SlotService = {
 							slots: item.slots,
 							doctorId: item.doctorId,
 							date: item.date,
+							_id: item._id,
 						};
 					});
 					return resolve(slotList);
