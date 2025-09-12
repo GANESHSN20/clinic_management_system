@@ -24,25 +24,18 @@ const AppointmentDao = {
 	},
 
 	list: (date) => {
-		return AppointmentModel.find(
-			{
-				date: {
-					$gte: date,
-				},
+		return AppointmentModel.find({
+			date: {
+				$gte: date,
 			},
-			{ reason: 1, date: 1, status: 1 },
-		)
+		})
 			.populate({
 				path: "doctorId",
-				select: { firstName: 1, lastName: 1, specialzation: 1 },
+				select: { firstName: 1, lastName: 1, specialization: 1 },
 			})
 			.populate({
 				path: "patientId",
-				select: { firstName: 1, lastName: 1 },
-			})
-			.populate({
-				path: "slots.slotId",
-				select: { slots: 1 },
+				select: { firstName: 1, lastName: 1, dateOfBirth: 1 },
 			});
 	},
 };

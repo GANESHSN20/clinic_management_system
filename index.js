@@ -12,8 +12,6 @@ const port = process.env.PORT;
 
 require("./database.js");
 
-
-
 app.use("/dashboard", (req, res) => {
 	res.sendFile(__dirname + "/public/dashboard.html");
 });
@@ -29,11 +27,17 @@ app.use("/slot", (req, res) => {
 app.use("/appointment", (req, res) => {
 	res.sendFile(__dirname + "/public/appointment.html");
 });
+app.use("/prescription", (req, res) => {
+	res.sendFile(__dirname + "/public/prescription.html");
+});
 
 app.use("/users", require("./src/controller/user-controller.js"));
 app.use("/slots", require("./src/controller/slot-controller.js"));
 app.use("/appointments", require("./src/controller/appointment-controller.js"));
-app.use("/prescriptions", require("./src/controller/prescription-controller.js"));
+app.use(
+	"/prescriptions",
+	require("./src/controller/prescription-controller.js"),
+);
 // console.log(process.env);
 
 app.use("/", (req, res) => {

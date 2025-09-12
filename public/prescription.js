@@ -144,7 +144,7 @@ let patientList = [];
 	$("#setName").text(`Hi ${localStorage.getItem("name")}`);
 	let role = localStorage.getItem("role");
 
-	if (role != "DOCTOR") {
+	if (role == "DOCTOR") {
 		$("#showSlotAdd").css("display", "block");
 	} else {
 		$("#showSlotAdd").css("display", "none");
@@ -156,7 +156,6 @@ let patientList = [];
 	}
 	//  showToastMessage('Welcome to Client Page','info',true);
 	getEmployeeList();
-	getSlotList();
 	getAppointmentList();
 	// getDoctorList();req.is('type');
 })();
@@ -693,7 +692,7 @@ $("#dates").on("change", function () {
 		}
 	}
 });
-function getSlotList(filterObj) {
+function getAppointmentList(filterObj) {
 	let filterList = {};
 	if (filterObj) {
 		for (let item in filterObj) filterList[item] = filterObj[item];
@@ -702,7 +701,7 @@ function getSlotList(filterObj) {
 
 	$("#show-main-loader").css("display", "block");
 	$("#showTableDesc").html("Slot List");
-	getDataList("slots", null, filterList, function (result, error) {
+	getDataList("appointments", null, filterList, function (result, error) {
 		if (error) console.log(error);
 
 		if (result.data.length == 0) showToastMessage(result.message, "info");
@@ -756,31 +755,36 @@ function getAppointmentList(filterObj) {
 		// let loggedInRole = localStorage.getItem("role");
 		let finalList = result.data;
 		for (let it of finalList) {
+			let availableSlot = it.slots.filter((item) => item.status == false);
+			let bookedSlot = it.slots.filter((item) => item.status == true);
 			// count = count + 1;
 
 			/*
+			<th>Doctor Name</th>
 							<th>Date</th>
-							<th>Patient Name - DOB</th>
-							<th>Doctor Name - Specialization</th>
-							<th>Slot</th>
-							<th>Reason to visit</th>
-							<th>Status</th>
+							<th>Start Time</th>
+							<th>End Time</th>
+							<th>Duration</th>
+							<th>Booked Slot</th>
+							<th>Available Slot</th>
+							<th>Total slot</th>
 							<th>Action</th>
 			*/
 			str += `<tr>
+			<td>
+                    ${it.doctorId.firstName} ${it.doctorId.lastName}</td>
                     <td>
                     ${formatDate(new Date(it.date))}</td>
-                    <td>${it.patientId.firstName} ${
-				it.patientId.lastName
-			} - ${formatDate(new Date(it.patientId.dateOfBirth))}</td>
-                    <td>${it.doctorId.firstName} ${it.doctorId.lastName}
-			</td>
+                    <td>${it.startTime}</td>
+                    <td>${it.endTime}</td>
                     
                     
 					
-            <td>${it.slots.slot}</td>
-			<td>${it.reason}</td>
-			<td>${it.status}</td>
+            <td>${it.duration}</td>
+			<td>${bookedSlot.length}</td>
+			<td>${availableSlot.length}</td>
+            <td>${it.slots.length}</td>
+            
                     
                     
                 <td><span style="cursor:pointer;color:#48bf36;padding:5px;margin:5px;font-size:16px;" onclick="viewData('${
@@ -798,17 +802,8 @@ function getAppointmentList(filterObj) {
 			}','${it.duration}','${
 				it.slots
 			}')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                </span>
-				</span><span style="cursor:pointer;color:#2c52ed;padding:5px;margin:5px;font-size:20px;" onclick="showData('${
-					it.doctorId.firstName
-				} ${it.doctorId.lastName}','${it.date}','${it.startTime}','${
-				it.endTime
-			}','${it.duration}','${
-				it.slots
-			}')"><i class="fa fa-file-text-o" aria-hidden="true"></i>
                 </span></td></tr>`;
 		}
-
 		// str +=`<tr><td>Total Amount</td><td>${response.data.totalAmount}</tr>`
 		$("#tableList").append(str);
 		if (!$("#active").val()) {
@@ -967,7 +962,6 @@ function register() {
 		$("#myModal").modal("hide");
 		// getEmployeeList();
 		setTimeout(() => {
-			getAppointmentList();
 			// getSlotList();
 		}, 2000);
 	});

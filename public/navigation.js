@@ -12,6 +12,10 @@ function navigateTo(pageName) {
 			window.location.href = "/appointment"; //"/investment";
 			break;
 		}
+		case "PRESCRIPTION": {
+			window.location.href = "/prescription"; //"/investment";
+			break;
+		}
 		case "BILLS": {
 			window.location.href = "#"; //"/bill";
 			break;
