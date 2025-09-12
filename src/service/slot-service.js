@@ -42,7 +42,7 @@ const SlotService = {
         console.log({ result });
         if (tokenPayload.role == "PATIENT") {
           let slotList = result.map((item) => {
-            return { slots: item.slots, doctorId: item.doctorId };
+            return { slots: item.slots, doctorId: item.doctorId, date:item.date };
           });
           return resolve(slotList);
         }

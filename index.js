@@ -12,9 +12,7 @@ const port = process.env.PORT;
 
 require("./database.js");
 
-app.use("/", (req, res) => {
-	res.sendFile(__dirname + "/public/index.html");
-});
+
 
 app.use("/dashboard", (req, res) => {
 	res.sendFile(__dirname + "/public/dashboard.html");
@@ -37,6 +35,10 @@ app.use("/slots", require("./src/controller/slot-controller.js"));
 app.use("/appointments", require("./src/controller/appointment-controller.js"));
 app.use("/prescriptions", require("./src/controller/prescription-controller.js"));
 // console.log(process.env);
+
+app.use("/", (req, res) => {
+	res.sendFile(__dirname + "/public/index.html");
+});
 
 let adminPayload = {
 	firstName: "ADMIN",

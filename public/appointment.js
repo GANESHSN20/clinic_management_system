@@ -143,6 +143,7 @@ let patientList = [];
 	if (!localStorage.getItem("token")) window.location.href = "/login";
 	$("#setName").text(`Hi ${localStorage.getItem("name")}`);
 	let role = localStorage.getItem("role");
+	
 	if (role != "DOCTOR") {
 		$("#showSlotAdd").css("display", "block");
 	} else {
