@@ -40,6 +40,7 @@ const Utility = {
 				break;
 			case "DOCTOR":
 				payload["role"] = { $in: ["RECEPTIONIST", "PATIENT"] };
+				break;
 			case "PATIENT":
 				payload["$or"] = [{ role: "DOCTOR" }, { userName }];
 				break;
