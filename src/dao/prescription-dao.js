@@ -24,6 +24,17 @@ const PrescriptionDao = {
       notes: payload.notes,
     }).save();
   },
+
+  list: (patientId) => {
+    return PrescriptionModel.find({ patientId: patientId });
+  },
+
+  update: (payload, patientId) => {
+    return PrescriptionModel.updateOne(
+      { patientId: patientId },
+      { $set: payload }
+    );
+  },
 };
 
 module.exports = PrescriptionDao;

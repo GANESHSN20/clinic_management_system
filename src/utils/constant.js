@@ -63,7 +63,11 @@ const CONSTANTS = {
 		CREATE: "Prescription added successfully",
 		UNAUTHORIZED: "You are unauthorized to use this service",
 		DUPLICATE_ERROR: "Today's prescription for this patient already exist",
-		DUPLICATE_MESSAGE:"Duplicate entry"
+		DUPLICATE_MESSAGE:"Duplicate entry",
+	    LIST: "Prescription list retrieved successfully",
+		UPDATE: "Prescription updated successfully",
+
+
 	}
 };
 
