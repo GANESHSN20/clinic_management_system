@@ -24,7 +24,7 @@ const PrescriptionSchema = new Schema(
     },
     medicines: {
       type: [String],
-      required: true,
+      default: [],
     },
     investigations: [
       {
