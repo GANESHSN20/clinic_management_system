@@ -39,6 +39,36 @@ const AppointmentSchema = new Schema(
 			type: String,
 			required: true,
 		},
+		prescription: {
+			diagnosis: {
+				type: String,
+				required: true,
+			},
+			medicines: {
+				type: [String],
+				default: [],
+			},
+			investigations: [
+				{
+					testName: {
+						type: String,
+						default: "",
+					},
+					result: {
+						type: String,
+						default: "",
+					},
+				},
+			],
+			followUpDate: {
+				type: Date,
+				default: "",
+			},
+			notes: {
+				type: String,
+				default: "",
+			},
+		},
 	},
 	{ timestamps: true },
 );

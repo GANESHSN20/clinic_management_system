@@ -35,7 +35,7 @@ const AppointmentDao = {
 			})
 			.populate({
 				path: "patientId",
-				select: { firstName: 1, lastName: 1, dateOfBirth: 1 },
+				select: { firstName: 1, lastName: 1, gender: 1, dateOfBirth: 1 },
 			});
 	},
 };

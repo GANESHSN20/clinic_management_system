@@ -12,7 +12,7 @@ const Config = {
 		"role",
 		"password",
 	],
-	appointmentStatus:["BOOKED", "CANCELLED", "COMPLETED", "AVAILABLE"]
+	appointmentStatus: ["BOOKED", "INPROGRESS", "CANCELLED", "COMPLETED"],
 };
 
 module.exports = Config;
