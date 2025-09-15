@@ -388,6 +388,8 @@ function addMedicine() {
 }
 function writePrescription(...data) {
 	console.log("data to view ", data);
+	addMedicineList = [];
+	addedInvestigation = [];
 
 	let [doctorInfo, patientInfo, date] = data;
 	// for (let i of [
