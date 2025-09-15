@@ -390,7 +390,9 @@ function writePrescription(...data) {
 	console.log("data to view ", data);
 	addMedicineList = [];
 	addedInvestigation = [];
-
+	document.getElementById("addMedicines").innerHTML = "";
+	document.getElementById("addTests").innerHTML = "";
+	$("#medicine").val("");
 	let [doctorInfo, patientInfo, date] = data;
 	// for (let i of [
 	// 	"firstName",
