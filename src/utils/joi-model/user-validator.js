@@ -83,16 +83,17 @@ const JoiUserSchema = {
             .string()
             .pattern(/^\+(91|977)\d{10}$/)
             .label("phone")
-        )
+          )
         .required()
         .messages({
           "alternatives.match":
             "Username must be a valid username or phone number",
+            "any.only": "Username must be 'ADMIN' or a valid username"
         }),
 
-      password: joi.string().length(8).required().messages({
+      password: joi.string().min(8).max(12).required().messages({
         "string.empty": "Password is required",
-        "string.length": "Password must be of length 8 characters",
+        "string.length": "Password must be of length 8/12 characters",
       }),
     })
     .required(),
