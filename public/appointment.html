@@ -494,40 +494,6 @@
 										<div class="col-md-12 remove-margin" id="addTests"></div>
 									</div>
 
-									<!-- <div>
-
-{
-					name: {
-						type: String,
-						default: "",
-					},
-					quantity: {
-						type: String,
-						default: "",
-					},
-					doses: {
-						type: String,
-						enum: ["ONE", "TWO", "THREE"],
-						default: "ONE",
-					},
-					time: {
-						type: String,
-						enum: [
-							"MORNING",
-							"AFTERNOON",
-							"NIGHT",
-							"MORNING-NIGHT",
-							"MORNING-AFTERNOON-NIGHT",
-						],
-						default: "MORNING",
-					},
-					haveIt: {
-						type: String,
-						enum: ["BEFORE-FOOD", "AFTER-FOOD"],
-					},
-				},
-
-									</div> -->
 									<div class="form-row">
 										<div class="col-md-12 remove-margin">
 											<div class="form-group col-md-3">
@@ -615,10 +581,10 @@
 								<i id="register-loader" class="bx bx-loader-alt bx-spin"></i>
 								<button
 									type="button"
-									id="addbtn"
-									onclick="register()"
+									id="smbtbtn"
+									onclick="updatePrescription()"
 									class="signupbtn form-button">
-									ADD
+									SUBMIT
 								</button>
 								<button
 									type="button"

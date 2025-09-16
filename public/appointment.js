@@ -421,9 +421,53 @@ function writePrescription(...data) {
 	$("#name").val("");
 	console.log("next dates--", followUpDate);
 
-	$("#followUpDate").val(followUpDate);
+	let [doctorInfo, patientInfo, date, appointment_id, prescriptions] = data;
+	let prescriptionResponse = JSON.parse(prescriptions);
+	if (prescriptionResponse.diagnosis) {
+		addMedicineList = prescriptionResponse.medicine;
+		addedInvestigation = prescriptionResponse.investigations;
+		if (addMedicineList.length > 0) {
+			let str = "";
+			for (let item of addMedicineList) {
+				str += `<div class="form-group col-md-4">
+												<label for="investigation"></label>
+												<input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													value="(${item.name})-(${item.quantity})-(${item.doses})-(${item.time})-(${item.haveIt})"
+													readonly />
+											</div>`;
+			}
 
-	let [doctorInfo, patientInfo, date] = data;
+			$("#addMedicines").append(str);
+		}
+		if (addedInvestigation.length > 0) {
+			let str = "";
+			for (let item of addedInvestigation) {
+				str += `<div class="form-group col-md-4">
+												<label for="investigation"></label>
+												<input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													value="${item.testName}${item.result ? `- ${item.result}` : ""}"
+													readonly />
+											</div>`;
+			}
+
+			$("#addTests").append(str);
+		}
+		$("#followUpDate").val(prescriptionResponse.followUpDate);
+		$("#notes").val(prescriptionResponse.notes);
+	} else {
+		$("#followUpDate").val(followUpDate);
+		$("#notes").val("");
+	}
+
+	console.log({ appointmentId });
+
+	appointmentId = appointment_id;
 	// for (let i of [
 	// 	"firstName",
 	// 	"lastName",
@@ -974,6 +1018,10 @@ function getAppointmentList(filterObj) {
 			let patientInfo = `${it.patientId.firstName} ${it.patientId.lastName} - ${
 				it.patientId.gender
 			} - ( ${formatDate(new Date(it.patientId.dateOfBirth))} )`;
+			const prescriptionStr = JSON.stringify(it.prescription).replace(
+				/"/g,
+				"&quot;",
+			); // escape double quotes
 			appointmentId = it._id;
 			// count = count + 1;
 
@@ -1020,7 +1068,7 @@ function getAppointmentList(filterObj) {
                 </span>
 				</span><span style="cursor:pointer;color:#2c52ed;padding:5px;margin:5px;font-size:20px;" onclick="writePrescription('${doctorInfo}','${patientInfo}','${
 				it.date
-			}')"><i class="fa fa-file-text-o" aria-hidden="true"></i>
+			}', '${appointmentId}', '${prescriptionStr}')"><i class="fa fa-file-text-o" aria-hidden="true"></i>
                 </span></td></tr>`;
 		}
 
@@ -1180,6 +1228,41 @@ function register() {
 		showToastMessage(result.message, "success");
 		$("#registerClient").trigger("reset");
 		$("#myModal").modal("hide");
+		// getEmployeeList();
+		setTimeout(() => {
+			getAppointmentList();
+			// getSlotList();
+		}, 2000);
+	});
+}
+
+function updatePrescription() {
+	console.log({ message: "adad", appointmentId });
+
+	//let active = Boolean(document.getElementById("active-check").value);
+	console.log("dates", document.getElementById("dates").value);
+	let obj = {
+		prescription: {
+			diagnosis: $("#diagnosis").val(),
+			medicine: addMedicineList,
+			investigations: addedInvestigation,
+			followUpDate: $("#followUpDate").val(),
+			notes: $("#notes").val(),
+		},
+	};
+	console.log("obejct to pass crate appointment", obj);
+	let isFormValid = formValidation(obj);
+	if (!isFormValid) return false;
+
+	$("#register-loader").css("visibility", "visible");
+
+	patchData("appointments", obj, null, appointmentId, function (result, error) {
+		if (error) console.log(error);
+		console.log({ "data received from": result });
+		$("#register-loader").css("visibility", "hidden");
+		showToastMessage(result.message, "success");
+		$("#registerClient").trigger("reset");
+		$("#presModal").modal("hide");
 		// getEmployeeList();
 		setTimeout(() => {
 			getAppointmentList();
