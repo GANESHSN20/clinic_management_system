@@ -61,6 +61,7 @@ let startTimeList = [
 	"6:00 PM",
 	"6:30 PM",
 ];
+let followUpDate = getNextDates(7, true)[0];
 let endTimeList = [
 	"9:30 AM",
 	"10:00 AM",
@@ -370,29 +371,58 @@ function addMedicine() {
 		return;
 	}
 
-	let medicine = $("#medicine").val();
+	let medicineName = $("#name").val();
+	let quantity = $("#quantity").val();
+	let time = $("#time").val();
+	let haveIt = $("#haveIt").val();
+	let doses = $("#doses").val();
 
 	// console.log(hospital, expYear);
-	addMedicineList.push(medicine);
+	addMedicineList.push({
+		name: medicineName,
+		quantity: quantity,
+		doses: doses,
+		time: time,
+		haveIt: haveIt,
+	});
+	// let str = "";
+	// for (let item of addMedicineList) {
 	let str = `<div class="form-group col-md-4">
 												<label for="investigation"></label>
 												<input
 													type="text"
 													autocomplete="false"
 													class="form-control"
-													value="${medicine}"
+													value="(${medicineName})-(${quantity})-(${doses})-(${time})-(${haveIt})"
 													readonly />
 											</div>`;
+	// }
 
 	$("#addMedicines").append(str);
 }
+let quantityList = [1, 2, 3, 4, 6, 8, 9, 10, 12, 14, 15, 16, 18, 20];
+let timeList = [
+	"MORNING",
+	"AFTERNOON",
+	"NIGHT",
+	"MORNING-NIGHT",
+	"MORNING-AFTERNOON-NIGHT",
+];
+let dosesList = ["ONE", "TWO", "THREE"];
+let haveItList = ["BEFORE-FOOD", "AFTER-FOOD"];
+
 function writePrescription(...data) {
 	console.log("data to view ", data);
 	addMedicineList = [];
 	addedInvestigation = [];
 	document.getElementById("addMedicines").innerHTML = "";
 	document.getElementById("addTests").innerHTML = "";
-	$("#medicine").val("");
+	// $("#medicine").val("");
+	$("#name").val("");
+	console.log("next dates--", followUpDate);
+
+	$("#followUpDate").val(followUpDate);
+
 	let [doctorInfo, patientInfo, date] = data;
 	// for (let i of [
 	// 	"firstName",
@@ -423,18 +453,18 @@ function writePrescription(...data) {
 	$("#day").empty();
 	$("#userName").prop("readonly", true);
 
-	// for (let item of doctorList) {
-	// 	$("#doctor").append($(`<option>`).val(item).text(item));
-	// }
-	// for (let item of startMeridiemList) {
-	// 	$("#startPeriod").append($(`<option>`).val(item).text(item));
-	// }
-	// for (let item of startTimeList) {
-	// 	$("#startTime").append($(`<option>`).val(item).text(item));
-	// }
-	// for (let item of endMeridiemList) {
-	// 	$("#endPeriod").append($(`<option>`).val(item).text(item));
-	// }
+	for (let item of quantityList) {
+		$("#quantity").append($(`<option>`).val(item).text(item));
+	}
+	for (let item of timeList) {
+		$("#time").append($(`<option>`).val(item).text(item));
+	}
+	for (let item of dosesList) {
+		$("#doses").append($(`<option>`).val(item).text(item));
+	}
+	for (let item of haveItList) {
+		$("#haveIt").append($(`<option>`).val(item).text(item));
+	}
 	// for (let item of endTimeList) {
 	// 	$("#endTime").append($(`<option>`).val(item).text(item));
 	// }

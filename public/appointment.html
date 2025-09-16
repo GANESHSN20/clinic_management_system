@@ -104,12 +104,7 @@
 								<span class="text nav-text menu-isActive">Appointments</span>
 							</a>
 						</li>
-						<li class="nav-link">
-							<a onclick="navigateTo('PRESCRIPTION')">
-								<i class="bx bx-money icon"></i>
-								<span class="text nav-text">Prescriptions</span>
-							</a>
-						</li>
+
 						<!-- <li class="nav-link">
               <a onclick="navigateTo('SALARY')">
                 
@@ -443,7 +438,7 @@
 									</div>
 									<div class="form-row">
 										<p style="clear: both">Prescription Detail</p>
-										<div class="form-group col-md-6">
+										<div class="form-group col-md-3">
 											<label for="appointmentDate">Available dates</label>
 											<input
 												type="text"
@@ -459,6 +454,15 @@
 												autocomplete="false"
 												class="form-control"
 												id="diagnosis" />
+										</div>
+										<div class="form-group col-md-3">
+											<label for="foll">FollowUp dates</label>
+											<input
+												type="text"
+												autocomplete="false"
+												class="form-control"
+												id="followUpDate"
+												readonly />
 										</div>
 									</div>
 
@@ -482,28 +486,107 @@
 												<input
 													type="button"
 													autocomplete="false"
-													value="yes"
+													value="ADD"
 													class="form-control exp-design"
 													onclick="addInvestigation()" />
 											</div>
 										</div>
 										<div class="col-md-12 remove-margin" id="addTests"></div>
 									</div>
+
+									<!-- <div>
+
+{
+					name: {
+						type: String,
+						default: "",
+					},
+					quantity: {
+						type: String,
+						default: "",
+					},
+					doses: {
+						type: String,
+						enum: ["ONE", "TWO", "THREE"],
+						default: "ONE",
+					},
+					time: {
+						type: String,
+						enum: [
+							"MORNING",
+							"AFTERNOON",
+							"NIGHT",
+							"MORNING-NIGHT",
+							"MORNING-AFTERNOON-NIGHT",
+						],
+						default: "MORNING",
+					},
+					haveIt: {
+						type: String,
+						enum: ["BEFORE-FOOD", "AFTER-FOOD"],
+					},
+				},
+
+									</div> -->
 									<div class="form-row">
 										<div class="col-md-12 remove-margin">
-											<div class="form-group col-md-6">
-												<label for="years">Medicine</label>
+											<div class="form-group col-md-3">
+												<label for="years">Medicine Name</label>
 												<input
 													type="text"
 													autocomplete="false"
 													class="form-control"
-													id="medicine" />
+													id="name" />
+											</div>
+											<div class="form-group col-md-1">
+												<label for="years">Quantity</label>
+												<!-- <input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													id="quantity" /> -->
+												<select
+													class="form-control select-design type-design"
+													id="quantity"></select>
+											</div>
+											<div class="form-group col-md-1">
+												<label for="years">Doses</label>
+												<!-- <input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													id="doses" /> -->
+												<select
+													class="form-control select-design type-design"
+													id="doses"></select>
+											</div>
+											<div class="form-group col-md-2">
+												<label for="years">Time</label>
+												<!-- <input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													id="time" /> -->
+												<select
+													class="form-control select-design type-design"
+													id="time"></select>
+											</div>
+											<div class="form-group col-md-2">
+												<label for="years">Type</label>
+												<!-- <input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													id="haveIt" /> -->
+												<select
+													class="form-control select-design type-design"
+													id="haveIt"></select>
 											</div>
 											<div class="form-group col-md-3">
 												<input
 													type="button"
 													autocomplete="false"
-													value="yes"
+													value="ADD"
 													class="form-control exp-design"
 													onclick="addMedicine()" />
 											</div>
@@ -511,6 +594,18 @@
 										<div
 											class="col-md-12 remove-margin"
 											id="addMedicines"></div>
+									</div>
+									<div class="form-row">
+										<div class="col-md-12 remove-margin">
+											<div class="form-group col-md-12">
+												<label for="years">Final Notes</label>
+												<input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													id="notes" />
+											</div>
+										</div>
 									</div>
 								</div>
 							</form>
