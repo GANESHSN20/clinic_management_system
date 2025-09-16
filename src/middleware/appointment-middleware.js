@@ -1,12 +1,12 @@
 const CONSTANTS = require("../utils/constant");
 const CustomResponse = require("../utils/custom-response");
-const AppointemntSchemaValidator = require("../utils/joi-model/appointment-validator");
+const AppointmentSchemaValidator = require("../utils/joi-model/appointment-validator");
 const JwtService = require("../utils/jwt-service");
 
 const AppointmentMiddleware = {
   bookValidate: (req, res, next) => {
     if (req.body) {
-      const { error } = AppointemntSchemaValidator.book.validate(req.body, {
+      const { error } = AppointmentSchemaValidator.book.validate(req.body, {
         abortEarly: false,
       });
       if (error) {
@@ -47,6 +47,24 @@ const AppointmentMiddleware = {
         );
     req.user = tokenPayload;
     next();
+  },
+
+  updateValidate: (req, res, next) => {
+    if (req.body) {
+      const { error } = AppointmentSchemaValidator.update.validate(req.body, {
+        abortEarly: false,
+      });
+      if (error) {
+        return res.status(CONSTANTS.HTTP_STATUS.BAD_REQUEST).send(
+          CustomResponse.error(
+            CONSTANTS.HTTP_STATUS.BAD_REQUEST,
+            CONSTANTS.MIDDLEWARE.VALIDATE,
+            error.details.map((err) => err.message)
+          )
+        );
+      }
+      next();
+    }
   },
   
 };

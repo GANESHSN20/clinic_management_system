@@ -1,5 +1,3 @@
-const PrescriptionDao = require("../dao/prescription-dao");
-
 const CONSTANTS = {
 	HTTP_STATUS: {
 		SUCCESS: 200,
