@@ -448,7 +448,7 @@ body.dark .home .text {
 	border-radius: 0px;
 }
 .modal-dialog {
-	width: 62%;
+	width: 74%;
 }
 .modal-header {
 	background-color: #767474;
@@ -536,7 +536,17 @@ input[type="button"]:hover {
 	display: inline-block;
 	padding: 10px 12px;
 	border: 1px solid #ccc;
-	border-radius: 4px;
+	border-radius: 0px;
+	background: #fff;
+	cursor: pointer;
+	min-width: 100px;
+	text-align: center;
+}
+.radio-as-input-box {
+	display: inline-block;
+	padding: 10px 12px;
+	border: 1px solid #ccc;
+	border-radius: 0px;
 	background: #fff;
 	cursor: pointer;
 	min-width: 100px;
@@ -546,8 +556,6 @@ input[type="button"]:hover {
 /* when radio is checked */
 .radio-as-input input[type="radio"]:checked + span {
 	border: 2px solid #36d874;
-	background-color: #f6faf3;
-	color: #ada9a9;
 }
 
 hr {
@@ -898,4 +906,9 @@ button:hover {
 	color: #262424;
 	border-top: 0.5px #e4e2e2 solid;
 	border-bottom: 0.5px #e4e2e2 solid;
+}
+@media (min-width: 992px) {
+	.col-md-1-appointment {
+		width: 11.333333%;
+	}
 }

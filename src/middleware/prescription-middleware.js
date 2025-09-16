@@ -1,31 +1,12 @@
 const CONSTANTS = require("../utils/constant");
 const CustomResponse = require("../utils/custom-response");
-const UserSchemaValidator = require("../utils/joi-model/user-validator");
+const PrescriptionSchemaValidator = require("../utils/joi-model/prescription-validator");
 const JwtService = require("../utils/jwt-service");
-const Utility = require("../utils/utility");
 
-const UserMiddleware = {
-  registerValidate: (req, res, next) => {
+const PrescriptionMiddleware = {
+  addValidate: (req, res, next) => {
     if (req.body) {
-      const { error } = UserSchemaValidator.register.validate(req.body, {
-        abortEarly: false,
-      });
-      if (error) {
-        return res.status(CONSTANTS.HTTP_STATUS.BAD_REQUEST).send(
-          CustomResponse.error(
-            CONSTANTS.HTTP_STATUS.BAD_REQUEST,
-            CONSTANTS.MIDDLEWARE.VALIDATE,
-            error.details.map((err) => err.message)
-          )
-        );
-      }
-      next();
-    }
-  },
-
-  loginValidate: (req, res, next) => {
-    if (req.body) {
-      const { error } = UserSchemaValidator.login.validate(req.body, {
+      const { error } = PrescriptionSchemaValidator.add.validate(req.body, {
         abortEarly: false,
       });
       if (error) {
@@ -43,7 +24,7 @@ const UserMiddleware = {
 
   updateValidate: (req, res, next) => {
     if (req.body) {
-      const { error } = UserSchemaValidator.update.validate(req.body, {
+      const { error } = PrescriptionSchemaValidator.update.validate(req.body, {
         abortEarly: false,
       });
       if (error) {
@@ -57,31 +38,6 @@ const UserMiddleware = {
       }
       next();
     }
-  },
-
-  checkRole: (req, res, next) => {
-    let logedInUser = req.user;
-    Utility.log(logedInUser);
-    if (
-      req.body &&
-      (logedInUser.role == "RECEPTIONIST" ||
-        logedInUser.role == "DOCTOR" ||
-        logedInUser.role == "PATIENT") &&
-      (req.body.role == "ADMIN" ||
-        req.body.role == "RECEPTIONIST" ||
-        req.body.role == "DOCTOR")
-    ) {
-      return res
-        .status(CONSTANTS.HTTP_STATUS.BAD_REQUEST)
-        .send(
-          CustomResponse.error(
-            CONSTANTS.HTTP_STATUS.BAD_REQUEST,
-            CONSTANTS.COMMON.BAD_REQUEST,
-            `${CONSTANTS.MIDDLEWARE.ROLE_ERROR} ${req.body.role}`
-          )
-        );
-    }
-    next();
   },
 
   isAuthenticate: (req, res, next) => {
@@ -110,7 +66,6 @@ const UserMiddleware = {
     req.user = tokenPayload;
     next();
   },
-
 };
 
-module.exports = UserMiddleware;
+module.exports = PrescriptionMiddleware;

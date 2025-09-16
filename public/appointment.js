@@ -12,6 +12,7 @@ let activeList = ["ACTIVE", "INACTIVE"];
 // 	.replace(",", "")
 // 	.split(" ");
 // console.log({ todayDate });
+let selectedSLotId = "";
 let role = localStorage.getItem("role");
 let roleList = [];
 if (role == "ADMIN") roleList = ["RECEPTIONIST", "DOCTOR", "ADMIN"];
@@ -37,6 +38,7 @@ let avilableSlotList = [];
 // 	"December",
 // ];
 let durationList = [20, 30];
+let appointmentId = "";
 let startTimeList = [
 	"9:00 AM",
 	"9:30 AM",
@@ -59,6 +61,7 @@ let startTimeList = [
 	"6:00 PM",
 	"6:30 PM",
 ];
+let followUpDate = getNextDates(7, true)[0];
 let endTimeList = [
 	"9:30 AM",
 	"10:00 AM",
@@ -136,20 +139,60 @@ let qualificationList = [
 	"Fellowship in Cardiology",
 	"Fellowship in Oncology",
 ];
+const recommendedTests = [
+	// General Health & Screening
+	"Complete Blood Count (CBC)",
+	"Hemoglobin (Hb)",
+	"Blood Sugar (Fasting/PP/Random)",
+	"HbA1c (Glycated Hemoglobin)",
+	"Lipid Profile",
+	"Liver Function Test (LFT)",
+	"Kidney Function Test (KFT / RFT)",
+	"Thyroid Profile (T3, T4, TSH)",
+	"Vitamin D",
+	"Vitamin B12",
+
+	// Basic Urine Tests
+	"Urine Routine & Microscopy",
+
+	// Infection Screening
+	"HIV Test",
+	"Hepatitis B Surface Antigen (HBsAg)",
+	"Hepatitis C Virus (HCV)",
+
+	// Inflammation / Immunity
+	"CRP (C-Reactive Protein)",
+	"ESR (Erythrocyte Sedimentation Rate)",
+	// Cancer Markers
+	"PSA (Prostate Specific Antigen)",
+	"CA-125",
+	"CEA (Carcinoembryonic Antigen)",
+	"AFP (Alpha-fetoprotein)",
+
+	// Miscellaneous (very common in clinics)
+	"Blood Grouping & Rh Typing",
+];
 let doctorList = "";
 let patientList = [];
 (function () {
 	if (!localStorage.getItem("token")) window.location.href = "/login";
 	$("#setName").text(`Hi ${localStorage.getItem("name")}`);
 	let role = localStorage.getItem("role");
+
 	if (role != "DOCTOR") {
 		$("#showSlotAdd").css("display", "block");
 	} else {
 		$("#showSlotAdd").css("display", "none");
 	}
+	if (role != "RECEPTIONIST" && role != "DOCTOR") {
+		$("#showSlotMenu").css("display", "none");
+	} else {
+		$("#showSlotMenu").css("display", "block");
+	}
 	//  showToastMessage('Welcome to Client Page','info',true);
 	getEmployeeList();
 	getSlotList();
+	getAppointmentList();
 	// getDoctorList();req.is('type');
 })();
 
@@ -242,9 +285,7 @@ function showData(...data) {
 	for (let item of endTimeList) {
 		$("#endTime").append($(`<option>`).val(item).text(item));
 	}
-	for (let item of qualificationList) {
-		$("#qualification").append($(`<option>`).val(item).text(item));
-	}
+
 	for (let item of durationList) {
 		$("#duration").append($(`<option>`).val(item).text(item));
 	}
@@ -286,6 +327,183 @@ function showData(...data) {
 	document.getElementById("month").value = month;
 	document.getElementById("day").value = day;
 	document.getElementById("role").value = role;
+	$("#role").attr("disabled", true);
+	// $('#active-check').checked()
+	$("#active-check").prop("checked", active);
+	// let color= (active)?'#c3fabb':'#f8b5b5';
+	// let textColor = active ? "#48bf36" : "#FF4949";
+	// let status = active ? "T" : "F";
+	// // $('#status').css('background-color',color);
+	// $("#status").css("color", textColor);
+
+	// document.getElementById("status").value = status;
+	if (role == "SUPER-ADMIN" || role == "ADMIN")
+		$("#active-check").prop("disabled", true);
+	else $("#active-check").prop("disabled", false);
+}
+let addedInvestigation = [];
+function addInvestigation() {
+	if (addedInvestigation.length == 6) {
+		showErrorMessage("Limit reached for tests", true);
+		return;
+	}
+
+	let recommendedTests = $("#recommendedTests").val();
+	let result = $("#result").val();
+	// console.log(hospital, expYear);
+	addedInvestigation.push({ testName: recommendedTests, result: result });
+	let str = `<div class="form-group col-md-4">
+												<label for="investigation"></label>
+												<input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													value="${recommendedTests}${result ? `- ${result}` : ""}"
+													readonly />
+											</div>`;
+
+	$("#addTests").append(str);
+}
+let addMedicineList = [];
+function addMedicine() {
+	if (addMedicineList.length == 6) {
+		showErrorMessage("Limit reached for medicine", true);
+		return;
+	}
+
+	let medicineName = $("#name").val();
+	let quantity = $("#quantity").val();
+	let time = $("#time").val();
+	let haveIt = $("#haveIt").val();
+	let doses = $("#doses").val();
+
+	// console.log(hospital, expYear);
+	addMedicineList.push({
+		name: medicineName,
+		quantity: quantity,
+		doses: doses,
+		time: time,
+		haveIt: haveIt,
+	});
+	// let str = "";
+	// for (let item of addMedicineList) {
+	let str = `<div class="form-group col-md-4">
+												<label for="investigation"></label>
+												<input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													value="(${medicineName})-(${quantity})-(${doses})-(${time})-(${haveIt})"
+													readonly />
+											</div>`;
+	// }
+
+	$("#addMedicines").append(str);
+}
+let quantityList = [1, 2, 3, 4, 6, 8, 9, 10, 12, 14, 15, 16, 18, 20];
+let timeList = [
+	"MORNING",
+	"AFTERNOON",
+	"NIGHT",
+	"MORNING-NIGHT",
+	"MORNING-AFTERNOON-NIGHT",
+];
+let dosesList = ["ONE", "TWO", "THREE"];
+let haveItList = ["BEFORE-FOOD", "AFTER-FOOD"];
+
+function writePrescription(...data) {
+	console.log("data to view ", data);
+	addMedicineList = [];
+	addedInvestigation = [];
+	document.getElementById("addMedicines").innerHTML = "";
+	document.getElementById("addTests").innerHTML = "";
+	// $("#medicine").val("");
+	$("#name").val("");
+	console.log("next dates--", followUpDate);
+
+	$("#followUpDate").val(followUpDate);
+
+	let [doctorInfo, patientInfo, date] = data;
+	// for (let i of [
+	// 	"firstName",
+	// 	"lastName",
+	// 	"userName",
+	// 	"email",
+	// 	"salary",
+	// 	"phone",
+	// 	"address",
+	// 	"year",
+	// 	"month",
+	// 	"day",
+	// ]) {
+	// 	$(`#${i}`).css("border-left", "3px #434242 solid");
+	// 	$(`#${i}`).prop("readonly", false);
+	// }
+
+	$("#presModal").modal("show");
+	$("#addbtn").css("display", "none");
+	$("#updatebtn").css("display", "block");
+	$("#registerClient").trigger("reset");
+	$("#year").prop("disabled", false);
+	$("#month").prop("disabled", false);
+	$("#day").prop("disabled", false);
+	$("#active-check").prop("disabled", false);
+	$("#year").empty();
+	$("#month").empty();
+	$("#day").empty();
+	$("#userName").prop("readonly", true);
+
+	for (let item of quantityList) {
+		$("#quantity").append($(`<option>`).val(item).text(item));
+	}
+	for (let item of timeList) {
+		$("#time").append($(`<option>`).val(item).text(item));
+	}
+	for (let item of dosesList) {
+		$("#doses").append($(`<option>`).val(item).text(item));
+	}
+	for (let item of haveItList) {
+		$("#haveIt").append($(`<option>`).val(item).text(item));
+	}
+	// for (let item of endTimeList) {
+	// 	$("#endTime").append($(`<option>`).val(item).text(item));
+	// }
+	for (let item of recommendedTests) {
+		$("#recommendedTests").append($(`<option>`).val(item).text(item));
+	}
+	// for (let item of durationList) {
+	// 	$("#duration").append($(`<option>`).val(item).text(item));
+	// }
+
+	// for (let item of bloodGroupList) {
+	// 	$("#bloodGroup").append($(`<option>`).val(item).text(item));
+	// }
+	// for (let item of hospital) {
+	// 	$("#hospital").append($(`<option>`).val(item).text(item));
+	// }
+	// for (let item of experience) {
+	// 	$("#expYears").append($(`<option>`).val(item).text(item));
+	// }
+	// for (let item of gender) {
+	// 	$("#gender").append($(`<option>`).val(item).text(item));
+	// }
+	// for (let item of specializationList) {
+	// 	$("#specialization").append($(`<option>`).val(item).text(item));
+	// }
+
+	// for (let item of roleList) {
+	// 	// let selectedYear = item == todayDate[2] ? true : false;
+	// 	$("#role").append($(`<option>`).val(item).text(item));
+	// }
+
+	// for (let item of dayList) {
+	// 	let option = item < 10 ? `0${item}` : item;
+
+	// 	$("#day").append($(`<option>`).val(option).text(option));
+	// }
+	document.getElementById("doctorInfo").value = doctorInfo;
+	document.getElementById("patientInfo").value = patientInfo;
+	document.getElementById("appointmentDate").value = formatDate(new Date(date));
 	$("#role").attr("disabled", true);
 	// $('#active-check').checked()
 	$("#active-check").prop("checked", active);
@@ -578,7 +796,7 @@ function getEmployeeList(filterObj) {
 		let str = "";
 		let loggedInRole = localStorage.getItem("role");
 
-		if (loggedInRole == "RECEPTIONIST") {
+		if (loggedInRole == "RECEPTIONIST" || loggedInRole == "PATIENT") {
 			console.log(
 				"patientList---",
 				result.data.filter((item) => item.role == "PATIENT"),
@@ -601,23 +819,43 @@ function getEmployeeList(filterObj) {
 function selectSlotFromList(slotParentId, slot, id) {
 	console.log(slotParentId, slot, id);
 	$(`#${id}`).css("border-left", "5px #229f96 solid");
-	$(`#${id}`).css("border-right", "5px #229f96 solid");
+	$(`#${id}`).find("span").css("background-color", "#c4f4d7");
+	// $(`#${id}`).css("border-right", "5px #229f96 solid");
+	for (let item of availableSlotsListByDate.slots) {
+		if (item._id != id && !item.status) {
+			$(`#${item._id}`).css("border-left", "1px solid #ccc");
+			$(`#${item._id}`).find("span").css("background-color", "#fff");
+		}
+	}
 	$("#selectedSlot").val(slot);
 }
 
 $("#dates").on("change", function () {
-	console.log($(this).val());
+	console.log("data", $(this).val());
+
 	$("#selectedSlot").val("");
 	availableSlotsListByDate = JSON.parse($(this).val());
+	selectedSLotId = availableSlotsListByDate._id;
 	document.getElementById("addSlot").innerHTML = "";
 	let str = `<p style="clear: both">Select slot from list below:</p>`;
 	for (let item of availableSlotsListByDate.slots) {
 		console.log(item.status);
-
-		str += `<div class="form-group col-md-1" onclick="selectSlotFromList('${availableSlotsListByDate._id}','${item.slot}','${item._id}')">
+		if (item.status) {
+			str += `<div class="form-group col-md-1 col-md-1-appointment" onclick="selectSlotFromList('${availableSlotsListByDate._id}','${item.slot}','${item._id}')">
         
-            <label class="radio-as-input">
-    <input id="${item._id}"
+            <label class="radio-as-input" ></label>
+    <input  class="radio-as-input-box" style="border:1px solid #ccc;background-color:#ccc;color:#000;margin-top:0px"
+            type="button"
+			id="${item._id}"
+            value="${item.slot}" />
+  
+        
+    </div>`;
+		} else {
+			str += `<div class="form-group col-md-1 col-md-1-appointment" style="padding-top:19px" onclick="selectSlotFromList('${availableSlotsListByDate._id}','${item.slot}','${item._id}')">
+        
+            <label class="radio-as-input" id="${item._id}">
+    <input 
             type="radio"
             name="gender"
             value="${item.slot}" />
@@ -625,32 +863,43 @@ $("#dates").on("change", function () {
   </label>
         
     </div>`;
+		}
 	}
 	$("#addSlot").append(str);
 	for (let item of availableSlotsListByDate.slots) {
 		if (!item.status) {
 			// :
-			$(`#${item._id}`).css("color", "#fff");
-			$(`#${item._id}`).css("border-left", "3px #48bf36 solid");
 			$(`#${item._id}`).css("background-color", "#48bf36");
 			$(`#${item._id}`).css("cursor", "pointer");
+			// $(`#${item._id}`).hover(
+			// 	function () {
+			// 		// mouse enter
+			// 		$(this).css({
+			// 			"background-color": "#0faf74",
+			// 		});
+			// 	},
+			// 	function () {
+			// 		// mouse leave
+			// 		$(this).css({
+			// 			"background-color": "#48bf36",
+			// 		});
+			// 	},
+			// );
 			$(`#${item._id}`).hover(
 				function () {
-					// mouse enter
-					$(this).css({
-						"background-color": "#0faf74",
-					});
-				},
+					// $(this).find("span").css("background-color", "#0faf74");
+					// $(this).find("span").css("color", "#fff");
+					$(this).css("border-color", "1px solid #0faf74");
+				}, // mouse enter
 				function () {
-					// mouse leave
-					$(this).css({
-						"background-color": "#48bf36",
-					});
-				},
+					// $(this).find("span").css("background-color", "#fff");
+					$(this).find("span").css("color", "#262424");
+				}, // mouse leave
 			);
 		} else {
-			$(`#${item._id}`).css("background-color", "grey");
-			$(`#${item._id}`).css("color", "#fff");
+			$(`#${item._id}`).prop("disabled", true);
+			$(`#${item._id}`).find("span").css("background-color", "#ccc");
+			// $(`#${item._id}`).css("color", "#fff");
 		}
 	}
 });
@@ -708,7 +957,7 @@ function getAppointmentList(filterObj) {
 
 	$("#show-main-loader").css("display", "block");
 	$("#showTableDesc").html("Slot List");
-	getDataList("slots", null, filterList, function (result, error) {
+	getDataList("appointments", null, filterList, function (result, error) {
 		if (error) console.log(error);
 
 		if (result.data.length == 0) showToastMessage(result.message, "info");
@@ -716,37 +965,41 @@ function getAppointmentList(filterObj) {
 		let str = "";
 		// let loggedInRole = localStorage.getItem("role");
 		let finalList = result.data;
+		console.log({ finalList });
+
 		for (let it of finalList) {
-			let availableSlot = it.slots.filter((item) => item.status == false);
-			let bookedSlot = it.slots.filter((item) => item.status == true);
+			let doctorInfo = `${it.doctorId.firstName} ${it.doctorId.lastName} - ${it.doctorId.specialization}`;
+			/*   >Name - Gender - Date of Birth - Blood Group</  */
+
+			let patientInfo = `${it.patientId.firstName} ${it.patientId.lastName} - ${
+				it.patientId.gender
+			} - ( ${formatDate(new Date(it.patientId.dateOfBirth))} )`;
+			appointmentId = it._id;
 			// count = count + 1;
 
 			/*
-			<th>Doctor Name</th>
 							<th>Date</th>
-							<th>Start Time</th>
-							<th>End Time</th>
-							<th>Duration</th>
-							<th>Booked Slot</th>
-							<th>Available Slot</th>
-							<th>Total slot</th>
+							<th>Patient Name - DOB</th>
+							<th>Doctor Name - Specialization</th>
+							<th>Slot</th>
+							<th>Reason to visit</th>
+							<th>Status</th>
 							<th>Action</th>
 			*/
 			str += `<tr>
-			<td>
-                    ${it.doctorId.firstName} ${it.doctorId.lastName}</td>
                     <td>
                     ${formatDate(new Date(it.date))}</td>
-                    <td>${it.startTime}</td>
-                    <td>${it.endTime}</td>
+                    <td>${it.patientId.firstName} ${
+				it.patientId.lastName
+			} - ${formatDate(new Date(it.patientId.dateOfBirth))}</td>
+                    <td>${it.doctorId.firstName} ${it.doctorId.lastName}
+			</td>
                     
                     
 					
-            <td>${it.duration}</td>
-			<td>${bookedSlot.length}</td>
-			<td>${availableSlot.length}</td>
-            <td>${it.slots.length}</td>
-            
+            <td>${it.slots.slot}</td>
+			<td>${it.reason}</td>
+			<td>${it.status}</td>
                     
                     
                 <td><span style="cursor:pointer;color:#48bf36;padding:5px;margin:5px;font-size:16px;" onclick="viewData('${
@@ -764,8 +1017,13 @@ function getAppointmentList(filterObj) {
 			}','${it.duration}','${
 				it.slots
 			}')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </span>
+				</span><span style="cursor:pointer;color:#2c52ed;padding:5px;margin:5px;font-size:20px;" onclick="writePrescription('${doctorInfo}','${patientInfo}','${
+				it.date
+			}')"><i class="fa fa-file-text-o" aria-hidden="true"></i>
                 </span></td></tr>`;
 		}
+
 		// str +=`<tr><td>Total Amount</td><td>${response.data.totalAmount}</tr>`
 		$("#tableList").append(str);
 		if (!$("#active").val()) {
@@ -897,21 +1155,25 @@ function onRoleChange(event) {
 }
 function register() {
 	//let active = Boolean(document.getElementById("active-check").value);
+	console.log("dates", document.getElementById("dates").value);
 
 	let obj = {
 		doctorId: localStorage.getItem("doctorId"),
-		date: new Date(document.getElementById("dates").value.trim()),
-		startTime: document.getElementById("startTime").value.trim(),
-		endTime: document.getElementById("endTime").value.trim(),
-		duration: parseInt(document.getElementById("duration").value.trim()),
+		patientId: document.getElementById("patients").value.trim(),
+		slots: {
+			slot: document.getElementById("selectedSlot").value.trim(),
+			slotId: selectedSLotId,
+		},
+		date: new Date(JSON.parse(document.getElementById("dates").value).date),
+		reason: document.getElementById("reason").value.trim(),
 	};
-
+	console.log("obejct to pass crate appointment", obj);
 	let isFormValid = formValidation(obj);
 	if (!isFormValid) return false;
 
 	$("#register-loader").css("visibility", "visible");
 
-	postData("slots", obj, null, null, function (result, error) {
+	postData("appointments", obj, null, null, function (result, error) {
 		if (error) console.log(error);
 		console.log({ "data received from": result });
 		$("#register-loader").css("visibility", "hidden");
@@ -920,6 +1182,7 @@ function register() {
 		$("#myModal").modal("hide");
 		// getEmployeeList();
 		setTimeout(() => {
+			getAppointmentList();
 			// getSlotList();
 		}, 2000);
 	});

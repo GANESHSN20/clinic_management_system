@@ -65,6 +65,7 @@
 								<span class="text nav-text">Dashboard</span>
 							</a>
 						</li>
+
 						<!-- <li class="nav-link">
               <a onclick="navigateTo('INCOME')">
                 <i class="bx bxs-bank icon"></i>
@@ -91,7 +92,7 @@
 								<span class="text nav-text">Users</span>
 							</a>
 						</li>
-						<li class="nav-link">
+						<li class="nav-link" id="showSlotMenu">
 							<a onclick="navigateTo('SLOT')">
 								<i class="bx bx-money icon"></i>
 								<span class="text nav-text">Slots</span>
@@ -103,6 +104,7 @@
 								<span class="text nav-text menu-isActive">Appointments</span>
 							</a>
 						</li>
+
 						<!-- <li class="nav-link">
               <a onclick="navigateTo('SALARY')">
                 
@@ -207,9 +209,11 @@
 										</div>
 										<div class="form-group col-md-6">
 											<label for="duration">Reason for consultation</label>
-											<select
-												class="form-control select-design type-design"
-												id="reason"></select>
+											<input
+												type="text"
+												autocomplete="false"
+												class="form-control"
+												id="reason" />
 										</div>
 									</div>
 									<div class="form-row">
@@ -385,6 +389,259 @@
 				</div>
 			</div>
 
+			<div class="modal fade" id="presModal" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title">Prescription Letter</h4>
+						</div>
+						<div class="modal-body">
+							<form id="registerClient" style="border: 1px solid #ccc">
+								<div class="container">
+									<!-- <h4>Enter the Employee Detail.</h4> -->
+									<span class="error-message" id="display-message"
+										>default message</span
+									>
+									<br />
+									<div class="form-row">
+										<p style="clear: both">User Information</p>
+										<div class="form-group col-md-6">
+											<label for="month"
+												>Name - Specialization - Qualification - Consultation
+												Fees</label
+											>
+											<input
+												type="text"
+												autocomplete="false"
+												class="form-control"
+												id="doctorInfo"
+												readonly />
+											<!-- <select
+												class="form-control select-design type-design"
+												id="doctor"></select> -->
+										</div>
+										<div class="form-group col-md-6">
+											<label for="month"
+												>Select the Patient ( Name - Gender - Date of Birth -
+												Blood Group )</label
+											>
+											<input
+												type="text"
+												autocomplete="false"
+												class="form-control"
+												id="patientInfo"
+												readonly />
+											<!-- <select
+												class="form-control select-design type-design"
+												id="doctor"></select> -->
+										</div>
+									</div>
+									<div class="form-row">
+										<p style="clear: both">Prescription Detail</p>
+										<div class="form-group col-md-3">
+											<label for="appointmentDate">Available dates</label>
+											<input
+												type="text"
+												autocomplete="false"
+												class="form-control"
+												id="appointmentDate"
+												readonly />
+										</div>
+										<div class="form-group col-md-6">
+											<label for="duration">Diagnosis/ Disease</label>
+											<input
+												type="text"
+												autocomplete="false"
+												class="form-control"
+												id="diagnosis" />
+										</div>
+										<div class="form-group col-md-3">
+											<label for="foll">FollowUp dates</label>
+											<input
+												type="text"
+												autocomplete="false"
+												class="form-control"
+												id="followUpDate"
+												readonly />
+										</div>
+									</div>
+
+									<div class="form-row">
+										<div class="col-md-12 remove-margin">
+											<div class="form-group col-md-5">
+												<label for="tests">Tests</label>
+												<select
+													class="form-control select-design type-design"
+													id="recommendedTests"></select>
+											</div>
+											<div class="form-group col-md-4">
+												<label for="years">Result</label>
+												<input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													id="result" />
+											</div>
+											<div class="form-group col-md-3">
+												<input
+													type="button"
+													autocomplete="false"
+													value="ADD"
+													class="form-control exp-design"
+													onclick="addInvestigation()" />
+											</div>
+										</div>
+										<div class="col-md-12 remove-margin" id="addTests"></div>
+									</div>
+
+									<!-- <div>
+
+{
+					name: {
+						type: String,
+						default: "",
+					},
+					quantity: {
+						type: String,
+						default: "",
+					},
+					doses: {
+						type: String,
+						enum: ["ONE", "TWO", "THREE"],
+						default: "ONE",
+					},
+					time: {
+						type: String,
+						enum: [
+							"MORNING",
+							"AFTERNOON",
+							"NIGHT",
+							"MORNING-NIGHT",
+							"MORNING-AFTERNOON-NIGHT",
+						],
+						default: "MORNING",
+					},
+					haveIt: {
+						type: String,
+						enum: ["BEFORE-FOOD", "AFTER-FOOD"],
+					},
+				},
+
+									</div> -->
+									<div class="form-row">
+										<div class="col-md-12 remove-margin">
+											<div class="form-group col-md-3">
+												<label for="years">Medicine Name</label>
+												<input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													id="name" />
+											</div>
+											<div class="form-group col-md-1">
+												<label for="years">Quantity</label>
+												<!-- <input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													id="quantity" /> -->
+												<select
+													class="form-control select-design type-design"
+													id="quantity"></select>
+											</div>
+											<div class="form-group col-md-1">
+												<label for="years">Doses</label>
+												<!-- <input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													id="doses" /> -->
+												<select
+													class="form-control select-design type-design"
+													id="doses"></select>
+											</div>
+											<div class="form-group col-md-2">
+												<label for="years">Time</label>
+												<!-- <input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													id="time" /> -->
+												<select
+													class="form-control select-design type-design"
+													id="time"></select>
+											</div>
+											<div class="form-group col-md-2">
+												<label for="years">Type</label>
+												<!-- <input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													id="haveIt" /> -->
+												<select
+													class="form-control select-design type-design"
+													id="haveIt"></select>
+											</div>
+											<div class="form-group col-md-3">
+												<input
+													type="button"
+													autocomplete="false"
+													value="ADD"
+													class="form-control exp-design"
+													onclick="addMedicine()" />
+											</div>
+										</div>
+										<div
+											class="col-md-12 remove-margin"
+											id="addMedicines"></div>
+									</div>
+									<div class="form-row">
+										<div class="col-md-12 remove-margin">
+											<div class="form-group col-md-12">
+												<label for="years">Final Notes</label>
+												<input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													id="notes" />
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<div class="clearfix">
+								<i id="register-loader" class="bx bx-loader-alt bx-spin"></i>
+								<button
+									type="button"
+									id="addbtn"
+									onclick="register()"
+									class="signupbtn form-button">
+									ADD
+								</button>
+								<button
+									type="button"
+									id="updatebtn"
+									onclick="updateData()"
+									class="signupbtn form-button"
+									style="display: none">
+									UPDATE
+								</button>
+								<button
+									type="button"
+									class="cancelbtn form-button"
+									data-dismiss="modal"
+									onclick="closeEmployeeModal()">
+									CANCEL
+								</button>
+							</div>
+							<!-- <button type="button" class="btn btn-primary">Sign in</button>    data-dismiss="modal" -->
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<div class="col-md-12">
 				<div class="form-group col-md-3">
 					<span id="showTableDesc" class="filter-design">List</span>
@@ -424,14 +681,12 @@
 				<table class="table table-hover">
 					<thead class="thead-style">
 						<tr>
-							<th>Doctor Name</th>
 							<th>Date</th>
-							<th>Start Time</th>
-							<th>End Time</th>
-							<th>Duration</th>
-							<th>Booked Slot</th>
-							<th>Available Slot</th>
-							<th>Total slot</th>
+							<th>Patient Name - DOB</th>
+							<th>Doctor Name</th>
+							<th>Slot</th>
+							<th>Reason to visit</th>
+							<th>Status</th>
 							<th>Action</th>
 						</tr>
 					</thead>

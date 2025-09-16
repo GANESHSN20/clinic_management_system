@@ -19,10 +19,12 @@ let api_url_list = {
 		investments: "/investments/getInvestmentsByCondition",
 		salaries: "/salaries/getSalariesByUserName",
 		slots: "/slots/list",
+		appointments: "/appointments/list",
 	},
 	post: {
 		clients: "/clients/register",
 		users: "/users/register",
+		appointments: "/appointments/book",
 		bills: "/client-bills/addBill",
 		slots: "/slots/create",
 		expenses: "/expenses/expenseAdd",
@@ -315,7 +317,7 @@ function formatDate(date) {
 	return `${year}-${month}-${day}`;
 }
 
-function getNextDates(count = 3) {
+function getNextDates(count = 3, skip = false) {
 	const today = new Date();
 	const dates = [];
 
@@ -325,7 +327,8 @@ function getNextDates(count = 3) {
 
 		// Format as YYYY-MM-DD (or customize)
 		const formatted = nextDate.toISOString().split("T")[0];
-		dates.push(formatted);
+		if (skip && i == count - 1) dates.push(formatted);
+		else if (!skip) dates.push(formatted);
 	}
 
 	return dates;

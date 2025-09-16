@@ -39,6 +39,64 @@ const AppointmentSchema = new Schema(
 			type: String,
 			required: true,
 		},
+		prescription: {
+			diagnosis: {
+				type: String,
+				required: true,
+			},
+			medicine: [
+				{
+					name: {
+						type: String,
+						default: "",
+					},
+					quantity: {
+						type: String,
+						default: "",
+					},
+					doses: {
+						type: String,
+						enum: ["ONE", "TWO", "THREE"],
+						default: "ONE",
+					},
+					time: {
+						type: String,
+						enum: [
+							"MORNING",
+							"AFTERNOON",
+							"NIGHT",
+							"MORNING-NIGHT",
+							"MORNING-AFTERNOON-NIGHT",
+						],
+						default: "MORNING",
+					},
+					haveIt: {
+						type: String,
+						enum: ["BEFORE-FOOD", "AFTER-FOOD"],
+					},
+				},
+			],
+			investigations: [
+				{
+					testName: {
+						type: String,
+						default: "",
+					},
+					result: {
+						type: String,
+						default: "",
+					},
+				},
+			],
+			followUpDate: {
+				type: Date,
+				default: "",
+			},
+			notes: {
+				type: String,
+				default: "",
+			},
+		},
 	},
 	{ timestamps: true },
 );
