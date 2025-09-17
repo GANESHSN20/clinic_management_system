@@ -1,6 +1,5 @@
 const AppointmentDao = require("../dao/appointment-dao");
 const SlotDao = require("../dao/slot-dao");
-// const Utility = require("../utils/utility");
 const CONSTANTS = require("../utils/constant");
 
 const AppointmentService = {
@@ -17,17 +16,15 @@ const AppointmentService = {
 				let chosenAppointment = await AppointmentDao.isAppointmentExist(
 					payload,
 				);
-				console.log({ chosenAppointment });
 
 				if (chosenAppointment) {
 					return reject(CONSTANTS.COMMON.APPOINTMENT_REJECT);
 				}
 
 				let result = await AppointmentDao.book(payload);
-				console.log(result);
+
 				await SlotDao.update(payload.slots.slotId, payload.slots.slot);
 
-				console.log(result);
 				return resolve(result);
 			} catch (error) {
 				return reject(error);
@@ -47,6 +44,22 @@ const AppointmentService = {
 				today.setUTCHours(0, 0, 0, 0);
 				let result = await AppointmentDao.list(today.toISOString());
 				console.log({ result });
+				return resolve(result);
+			} catch (error) {
+				return reject(error);
+			}
+		});
+	},
+
+	update: (payload, appointmentId, tokenPayload) => {
+		return new Promise(async (resolve, reject) => {
+			try {
+				if (tokenPayload.role != "DOCTOR")
+					return reject(CONSTANTS.PRESCRIPTION.UNAUTHORIZED);
+				payload["status"] = "INPROGRESS";
+				let result = await AppointmentDao.update(payload, appointmentId);
+				console.log(result);
+
 				return resolve(result);
 			} catch (error) {
 				return reject(error);

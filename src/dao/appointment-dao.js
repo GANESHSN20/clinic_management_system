@@ -20,6 +20,7 @@ const AppointmentDao = {
 			slots: payload.slots,
 			date: payload.date,
 			reason: payload.reason,
+			prescription: payload.prescription,
 		}).save();
 	},
 
@@ -37,6 +38,13 @@ const AppointmentDao = {
 				path: "patientId",
 				select: { firstName: 1, lastName: 1, gender: 1, dateOfBirth: 1 },
 			});
+	},
+
+	update: (payload, appointmentId) => {
+		return AppointmentModel.updateOne(
+			{ _id: appointmentId },
+			{ $set: payload },
+		);
 	},
 };
 

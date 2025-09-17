@@ -43,6 +43,7 @@ let api_url_list = {
 		update_expenses: "/expenses/updateData",
 		delete_expenses: "/expenses/deleteData",
 		employees: "/users/register",
+		appointments: "/appointments/update",
 		bills: "/client-bills/addBill",
 		expenses: "/expenses/expenseAdd",
 		investments: "/investments/investmentAdd",
@@ -259,6 +260,7 @@ function patchData(url, body, query, params, callback) {
 			"Access-Control-Allow-Methods": "PATCH",
 			"Access-Control-Allow-Headers": "application/json",
 			contentType: "application/json",
+			Authorization: localStorage.getItem("token"),
 		},
 		dataType: "json",
 		data: JSON.stringify(body),
@@ -266,7 +268,7 @@ function patchData(url, body, query, params, callback) {
 			//if request if made successfully then the response represent the data
 
 			console.log("response", response);
-			if (response.status == 200) {
+			if (response.statusCode == 200) {
 				return callback(response, null);
 
 				// if(response.data && response.data.items && response.data.items.length>0){
