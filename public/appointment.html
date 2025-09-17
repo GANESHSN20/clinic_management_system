@@ -17,6 +17,7 @@
 	<link
 		rel="stylesheet"
 		href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
+	<link rel="stylesheet" href="./preview-letter.css" />
 	<link rel="stylesheet" href="./style.css" />
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -575,6 +576,118 @@
 									</div>
 								</div>
 							</form>
+						</div>
+						<div class="modal-footer">
+							<div class="clearfix">
+								<i id="register-loader" class="bx bx-loader-alt bx-spin"></i>
+								<button
+									type="button"
+									id="smbtbtn"
+									onclick="updatePrescription()"
+									class="signupbtn form-button">
+									SUBMIT
+								</button>
+								<button
+									type="button"
+									id="updatebtn"
+									onclick="updateData()"
+									class="signupbtn form-button"
+									style="display: none">
+									UPDATE
+								</button>
+								<button
+									type="button"
+									class="cancelbtn form-button"
+									data-dismiss="modal"
+									onclick="closeEmployeeModal()">
+									CANCEL
+								</button>
+							</div>
+							<!-- <button type="button" class="btn btn-primary">Sign in</button>    data-dismiss="modal" -->
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal fade" id="previewModal" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content width-design">
+						<div class="modal-header">
+							<h4 class="modal-title">Preview Letter</h4>
+						</div>
+						<div class="modal-body modal-body-preview">
+							<div class="a4-sheet">
+								<!-- Clinic Header -->
+								<div class="header">
+									<h1>Ganesh & Kulsum Hospital</h1>
+									<p>123 Main Street, Shimoga, Karnataka</p>
+									<p>Phone: +91 98765 43210 | Email: info@ganeshkulsum.com</p>
+								</div>
+
+								<!-- Patient Information -->
+								<div class="patient-info">
+									<table>
+										<tr>
+											<td>
+												<strong>Patient Name:</strong> <span>Ramesh Kumar</span>
+											</td>
+											<td><strong>Age:</strong> <span>32</span></td>
+										</tr>
+										<tr>
+											<td><strong>Date:</strong> 16 Sept 2025</td>
+											<td><strong>Doctor:</strong> Dr. Anjali Sharma</td>
+										</tr>
+									</table>
+								</div>
+
+								<!-- Diagnosis -->
+								<div class="section">
+									<h3>Diagnosis</h3>
+									<p>
+										Patient is experiencing
+										<strong>fever and mild fatigue</strong>. General checkup
+										done.
+									</p>
+								</div>
+
+								<!-- Recommended Tests -->
+								<div class="section">
+									<h3>Recommended Tests</h3>
+									<ul>
+										<li>Complete Blood Count (CBC)</li>
+										<li>Malaria Parasite Test</li>
+									</ul>
+								</div>
+
+								<!-- Prescribed Medicines -->
+								<div class="section">
+									<h3>Prescribed Medicines</h3>
+									<ul>
+										<li>
+											Paracetamol 500mg – 1 tablet every 6 hours (after meals)
+										</li>
+										<li>
+											ORS Solution – Drink 1 packet mixed with water daily
+										</li>
+									</ul>
+								</div>
+
+								<!-- Summary -->
+								<div class="summary">
+									<p>
+										<strong>Final Summary:</strong> Patient advised rest,
+										hydration, and follow-up after test results for further
+										evaluation.
+									</p>
+								</div>
+
+								<!-- Footer -->
+								<div class="footer">
+									<p>__________________________</p>
+									<p><strong>Dr. Anjali Sharma</strong></p>
+									<p>MBBS, MD (General Medicine)</p>
+								</div>
+							</div>
 						</div>
 						<div class="modal-footer">
 							<div class="clearfix">

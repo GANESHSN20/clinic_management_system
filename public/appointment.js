@@ -357,9 +357,16 @@ function addInvestigation() {
 												<input
 													type="text"
 													autocomplete="false"
-													class="form-control"
+													class="form-control med-input"
 													value="${recommendedTests}${result ? `- ${result}` : ""}"
 													readonly />
+													<span><i class="fa fa-pencil-square-o med-edit" aria-hidden="true" onclick="editInvestigation('${
+														addedInvestigation.length - 1
+													}')"></i>
+												<i class="fa fa-times med-close" aria-hidden="true" onclick="deleteInvestigation('${
+													addedInvestigation.length - 1
+												}')"></i>
+</span>
 											</div>`;
 
 	$("#addTests").append(str);
@@ -392,9 +399,17 @@ function addMedicine() {
 												<input
 													type="text"
 													autocomplete="false"
-													class="form-control"
+													class="form-control med-input"
 													value="(${medicineName})-(${quantity})-(${doses})-(${time})-(${haveIt})"
 													readonly />
+													<span><i class="fa fa-pencil-square-o med-edit" aria-hidden="true" onclick="editMedicine('${
+														addMedicineList.length - 1
+													}')"></i>
+												<i class="fa fa-times med-close" aria-hidden="true" onclick="deleteMedicine('${
+													addMedicineList.length - 1
+												}')"></i>
+</span>
+												
 											</div>`;
 	// }
 
@@ -411,6 +426,75 @@ let timeList = [
 let dosesList = ["ONE", "TWO", "THREE"];
 let haveItList = ["BEFORE-FOOD", "AFTER-FOOD"];
 
+function deleteInvestigation(id) {
+	document.getElementById("addTests").innerHTML = "";
+	if (id.length > 10) {
+		addedInvestigation = addedInvestigation.filter((item) => item._id != id);
+	} else {
+		addedInvestigation.splice(parseInt(id), 1);
+	}
+	if (addedInvestigation.length > 0) {
+		let str = "";
+		for (let [index, item] of addedInvestigation.entries()) {
+			str += `<div class="form-group col-md-4">
+											<label for="investigation"></label>
+											<input
+												type="text"
+												autocomplete="false"
+												id="${item.hasOwnProperty("_id") ? item._id : index}"
+												class="form-control med-input"
+												value="${item.testName}${item.result ? `- ${item.result}` : ""}"
+												readonly />
+												<span><i class="fa fa-pencil-square-o med-edit" aria-hidden="true" onclick="editInvestigation('${
+													item._id
+												}')"></i>
+												<i class="fa fa-times med-close" aria-hidden="true" onclick="deleteInvestigation('${
+													item.hasOwnProperty("_id") ? item._id : index
+												}')"></i>
+</span>
+												
+										</div>`;
+		}
+
+		$("#addTests").append(str);
+	}
+	console.log(addedInvestigation);
+}
+
+function deleteMedicine(id) {
+	document.getElementById("addMedicines").innerHTML = "";
+	if (id.length > 10) {
+		addMedicineList = addMedicineList.filter((item) => item._id != id);
+	} else {
+		addMedicineList.splice(parseInt(id), 1);
+	}
+	// addMedicineList = addMedicineList.filter((item) => item._id != id);
+	if (addMedicineList.length > 0) {
+		let str = "";
+		for (let [index, item] of addMedicineList.entries()) {
+			str += `<div class="form-group col-md-4">
+											<label for="investigation"></label>
+											<input
+												type="text"
+												id="${item.hasOwnProperty("_id") ? item._id : index}"
+												autocomplete="false"
+												class="form-control med-input"
+												value="(${item.name})-(${item.quantity})-(${item.doses})-(${item.time})-(${
+				item.haveIt
+			})"
+												readonly />
+												<span><i class="fa fa-pencil-square-o med-edit" aria-hidden="true"></i>
+												<i class="fa fa-times med-close" aria-hidden="true" onclick="deleteMedicine('${
+													item.hasOwnProperty("_id") ? item._id : index
+												}')"></i>
+</span>
+										</div>`;
+		}
+
+		$("#addMedicines").append(str);
+	}
+	console.log(addedInvestigation);
+}
 function writePrescription(...data) {
 	console.log("data to view ", data);
 	addMedicineList = [];
@@ -419,6 +503,8 @@ function writePrescription(...data) {
 	document.getElementById("addTests").innerHTML = "";
 	// $("#medicine").val("");
 	$("#name").val("");
+	$("#diagnosis").val("");
+	$("#notes").val("");
 	console.log("next dates--", followUpDate);
 
 	let [doctorInfo, patientInfo, date, appointment_id, prescriptions] = data;
@@ -426,6 +512,7 @@ function writePrescription(...data) {
 	if (prescriptionResponse.diagnosis) {
 		addMedicineList = prescriptionResponse.medicine;
 		addedInvestigation = prescriptionResponse.investigations;
+
 		if (addMedicineList.length > 0) {
 			let str = "";
 			for (let item of addMedicineList) {
@@ -433,15 +520,20 @@ function writePrescription(...data) {
 												<label for="investigation"></label>
 												<input
 													type="text"
+													id="${item._id}"
 													autocomplete="false"
-													class="form-control"
+													class="form-control med-input"
 													value="(${item.name})-(${item.quantity})-(${item.doses})-(${item.time})-(${item.haveIt})"
 													readonly />
+													<span><i class="fa fa-pencil-square-o med-edit" aria-hidden="true"></i>
+													<i class="fa fa-times med-close" aria-hidden="true" onclick="deleteMedicine('${item._id}')"></i>
+</span>
 											</div>`;
 			}
 
 			$("#addMedicines").append(str);
 		}
+
 		if (addedInvestigation.length > 0) {
 			let str = "";
 			for (let item of addedInvestigation) {
@@ -450,16 +542,28 @@ function writePrescription(...data) {
 												<input
 													type="text"
 													autocomplete="false"
-													class="form-control"
+													id="${item._id}"
+													class="form-control med-input"
 													value="${item.testName}${item.result ? `- ${item.result}` : ""}"
 													readonly />
+													<span><i class="fa fa-pencil-square-o med-edit" aria-hidden="true" onclick="editInvestigation('${
+														item._id
+													}')"></i>
+													<i class="fa fa-times med-close" aria-hidden="true" onclick="deleteInvestigation('${
+														item._id
+													}')"></i>
+</span>
+													
 											</div>`;
 			}
 
 			$("#addTests").append(str);
 		}
-		$("#followUpDate").val(prescriptionResponse.followUpDate);
+		$("#followUpDate").val(
+			formatDate(new Date(prescriptionResponse.followUpDate)),
+		);
 		$("#notes").val(prescriptionResponse.notes);
+		$("#diagnosis").val(prescriptionResponse.diagnosis);
 	} else {
 		$("#followUpDate").val(followUpDate);
 		$("#notes").val("");
@@ -992,6 +1096,21 @@ function getSlotList(filterObj) {
 		$("#show-main-loader").css("display", "none");
 	});
 }
+function previewPrescription() {}
+function previewPrescription(...data) {
+	console.log("data to view ", data);
+	// addMedicineList = [];
+	// addedInvestigation = [];
+	// document.getElementById("addMedicines").innerHTML = "";
+	// document.getElementById("addTests").innerHTML = "";
+	// // $("#medicine").val("");
+	// $("#name").val("");
+	// $("#diagnosis").val("");
+	// $("#notes").val("");
+	// console.log("next dates--", followUpDate);
+
+	let [doctorInfo, patientInfo, date, appointment_id, prescriptions] = data;
+}
 function getAppointmentList(filterObj) {
 	let filterList = {};
 	if (filterObj) {
@@ -1069,7 +1188,17 @@ function getAppointmentList(filterObj) {
 				</span><span style="cursor:pointer;color:#2c52ed;padding:5px;margin:5px;font-size:20px;" onclick="writePrescription('${doctorInfo}','${patientInfo}','${
 				it.date
 			}', '${appointmentId}', '${prescriptionStr}')"><i class="fa fa-file-text-o" aria-hidden="true"></i>
-                </span></td></tr>`;
+                </span><span><button
+						
+						type="button"
+						class="anchor-tag"
+						data-toggle="modal"
+						data-target="#previewModal"
+						onclick="previewPrescription('${doctorInfo}','${patientInfo}','${
+				it.date
+			}', '${appointmentId}', '${prescriptionStr}')">
+						preview
+					</button></span></td></tr>`;
 		}
 
 		// str +=`<tr><td>Total Amount</td><td>${response.data.totalAmount}</tr>`
@@ -1241,11 +1370,13 @@ function updatePrescription() {
 
 	//let active = Boolean(document.getElementById("active-check").value);
 	console.log("dates", document.getElementById("dates").value);
+	let finalMedicineList = addMedicineList.map(({ _id, ...rest }) => rest);
+	let finalTestList = addedInvestigation.map(({ _id, ...rest }) => rest);
 	let obj = {
 		prescription: {
 			diagnosis: $("#diagnosis").val(),
-			medicine: addMedicineList,
-			investigations: addedInvestigation,
+			medicine: finalMedicineList,
+			investigations: finalTestList,
 			followUpDate: $("#followUpDate").val(),
 			notes: $("#notes").val(),
 		},

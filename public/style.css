@@ -907,6 +907,71 @@ button:hover {
 	border-top: 0.5px #e4e2e2 solid;
 	border-bottom: 0.5px #e4e2e2 solid;
 }
+.med-input {
+	position: relative;
+}
+.med-close {
+	position: absolute;
+	top: 14px;
+	right: 6px;
+	border-radius: 50%;
+	background-color: #ef9191;
+	width: 22px;
+	height: 22px;
+	padding: 10px;
+	padding-top: 3px;
+	padding-left: 6px;
+	color: white;
+	cursor: pointer;
+}
+.med-edit {
+	position: absolute;
+	top: 30px;
+	right: 29px;
+	border-radius: 50%;
+	/* background-color: #84dd92; */
+	width: 22px;
+	height: 22px;
+	padding: 10px;
+	padding-top: 3px;
+	padding-left: 6px;
+	color: #298337;
+	font-size: 20px;
+	z-index: auto;
+	cursor: pointer;
+}
+.med-edit:hover {
+	color: #135d1e;
+}
+.med-close:hover {
+	background-color: #c94141;
+}
+.anchor-tag {
+	color: #fefbfb;
+	background-color: #b984ef;
+	padding: 2px 8px;
+	text-align: center;
+	text-decoration: none;
+	font-size: 14px;
+	/* margin: 4px 2px; */
+	cursor: pointer;
+	border: none;
+	clear: both;
+	/* box-shadow: 4px -2px 58px rgba(85, 85, 85, 0.4666666667); */
+}
+.anchor-tag:hover {
+	background-color: #6d22b8;
+}
+.width-design {
+	width: inherit;
+	margin: auto;
+}
+.modal-body-preview {
+	max-height: 660px; /* or any fixed height you want */
+	overflow-y: auto; /* enables vertical scrolling */
+	overflow-x: hidden; /* prevent horizontal scroll */
+	padding-right: 15px; /* optional: avoid scrollbar overlaying text */
+}
 @media (min-width: 992px) {
 	.col-md-1-appointment {
 		width: 11.333333%;
