@@ -6,60 +6,48 @@
 		<style>
 			@page {
 				size: A4;
-				margin: 20mm;
+				margin: 0;
 			}
-
 			body {
 				font-family: Arial, sans-serif;
-				background: #fdfdfd;
 				margin: 0;
 				padding: 0;
 			}
-
 			.a4-sheet {
 				width: 210mm;
 				height: 297mm;
-				margin: auto;
+				margin: 0 auto;
 				background: #fff;
-				border: 1px solid #ccc;
-				box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-				padding: 20mm;
+				padding: 15mm;
 				box-sizing: border-box;
 			}
-
 			.header {
 				text-align: center;
 				border-bottom: 2px solid #4a90e2;
 				padding-bottom: 10px;
 				margin-bottom: 20px;
 			}
-
 			.header h1 {
 				margin: 0;
 				font-size: 26px;
 				color: #4a90e2;
 			}
-
 			.header p {
 				margin: 2px 0;
 				font-size: 13px;
 			}
-
 			.patient-info,
 			.section {
 				margin-bottom: 20px;
 			}
-
 			.patient-info table {
 				width: 100%;
 				border-collapse: collapse;
 			}
-
 			.patient-info td {
 				padding: 6px;
 				font-size: 14px;
 			}
-
 			.section h3 {
 				margin-bottom: 8px;
 				color: #4a90e2;
@@ -67,29 +55,24 @@
 				padding-bottom: 4px;
 				font-size: 15px;
 			}
-
 			ul {
 				margin: 0;
 				padding-left: 20px;
 				font-size: 14px;
 			}
-
 			.section p {
 				font-size: 14px;
 			}
-
 			.summary {
 				border-top: 2px solid #4a90e2;
 				padding-top: 10px;
 				font-style: italic;
 				font-size: 14px;
 			}
-
 			.footer {
 				text-align: right;
 				margin-top: 60px;
 			}
-
 			.footer p {
 				font-size: 14px;
 				margin: 3px 0;
@@ -100,21 +83,29 @@
 		<div class="a4-sheet">
 			<!-- Clinic Header -->
 			<div class="header">
-				<h1>City Care Clinic</h1>
-				<p>123 Main Street, Bangalore</p>
-				<p>Phone: +91 98765 43210 | Email: info@citycare.com</p>
+				<h1>{{clinicName}}</h1>
+				<p>{{clinicAddress}}</p>
+				<p>Phone: {{phone}} | Email: {{email}}</p>
 			</div>
 
 			<!-- Patient Information -->
 			<div class="patient-info">
 				<table>
 					<tr>
-						<td><strong>Patient Name:</strong> Ramesh Kumar</td>
-						<td><strong>Age:</strong> 32</td>
+						<td><strong>Patient Name:</strong> {{patientName}}</td>
+						<td><strong>Age:</strong> {{age}}</td>
 					</tr>
 					<tr>
-						<td><strong>Date:</strong> 16 Sept 2025</td>
-						<td><strong>Doctor:</strong> Dr. Anjali Sharma</td>
+						<td><strong>Gender:</strong> {{gender}}</td>
+						<td><strong>Date:</strong> {{date}}</td>
+					</tr>
+					<tr>
+						<td><strong>Doctor:</strong> {{doctorName}}</td>
+						<td><strong>Specialization:</strong> {{specialization}}</td>
+					</tr>
+					<tr>
+						<td><strong>Slot:</strong> {{slot}}</td>
+						<td></td>
 					</tr>
 				</table>
 			</div>
@@ -122,18 +113,16 @@
 			<!-- Diagnosis -->
 			<div class="section">
 				<h3>Diagnosis</h3>
-				<p>
-					Patient is experiencing <strong>fever and mild fatigue</strong>.
-					General checkup done.
-				</p>
+				<p>{{diagnosis}}</p>
 			</div>
 
-			<!-- Recommended Tests -->
+			<!-- Investigations -->
 			<div class="section">
 				<h3>Recommended Tests</h3>
 				<ul>
-					<li>Complete Blood Count (CBC)</li>
-					<li>Malaria Parasite Test</li>
+					{{#each investigations}}
+					<li>{{testName}}</li>
+					{{/each}}
 				</ul>
 			</div>
 
@@ -141,24 +130,25 @@
 			<div class="section">
 				<h3>Prescribed Medicines</h3>
 				<ul>
-					<li>Paracetamol 500mg – 1 tablet every 6 hours (after meals)</li>
-					<li>ORS Solution – Drink 1 packet mixed with water daily</li>
+					{{#each medicines}}
+					<li>
+						{{name}} - {{quantity}} tablets, {{doses}} ({{time}}), {{haveIt}}
+					</li>
+					{{/each}}
 				</ul>
 			</div>
 
 			<!-- Summary -->
 			<div class="summary">
-				<p>
-					<strong>Final Summary:</strong> Patient advised rest, hydration, and
-					follow-up after test results for further evaluation.
-				</p>
+				<p><strong>Follow-up Date:</strong> {{followUpDate}}</p>
+				<p><strong>Notes:</strong> {{notes}}</p>
 			</div>
 
 			<!-- Footer -->
 			<div class="footer">
 				<p>__________________________</p>
-				<p><strong>Dr. Anjali Sharma</strong></p>
-				<p>MBBS, MD (General Medicine)</p>
+				<p><strong>{{doctorName}}</strong></p>
+				<p>{{specialization}}</p>
 			</div>
 		</div>
 	</body>

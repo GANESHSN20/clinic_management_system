@@ -360,9 +360,7 @@ function addInvestigation() {
 													class="form-control med-input"
 													value="${recommendedTests}${result ? `- ${result}` : ""}"
 													readonly />
-													<span><i class="fa fa-pencil-square-o med-edit" aria-hidden="true" onclick="editInvestigation('${
-														addedInvestigation.length - 1
-													}')"></i>
+													<span>
 												<i class="fa fa-times med-close" aria-hidden="true" onclick="deleteInvestigation('${
 													addedInvestigation.length - 1
 												}')"></i>
@@ -402,9 +400,7 @@ function addMedicine() {
 													class="form-control med-input"
 													value="(${medicineName})-(${quantity})-(${doses})-(${time})-(${haveIt})"
 													readonly />
-													<span><i class="fa fa-pencil-square-o med-edit" aria-hidden="true" onclick="editMedicine('${
-														addMedicineList.length - 1
-													}')"></i>
+													<span>
 												<i class="fa fa-times med-close" aria-hidden="true" onclick="deleteMedicine('${
 													addMedicineList.length - 1
 												}')"></i>
@@ -447,7 +443,9 @@ function deleteInvestigation(id) {
 												readonly />
 												<span><i class="fa fa-pencil-square-o med-edit" aria-hidden="true" onclick="editInvestigation('${
 													item._id
-												}')"></i>
+												}')" style="display:${
+				item.hasOwnProperty("_id") ? "block" : "none"
+			}"></i>
 												<i class="fa fa-times med-close" aria-hidden="true" onclick="deleteInvestigation('${
 													item.hasOwnProperty("_id") ? item._id : index
 												}')"></i>
@@ -483,7 +481,9 @@ function deleteMedicine(id) {
 				item.haveIt
 			})"
 												readonly />
-												<span><i class="fa fa-pencil-square-o med-edit" aria-hidden="true"></i>
+												<span><i class="fa fa-pencil-square-o med-edit" aria-hidden="true" style="display:${
+													item.hasOwnProperty("_id") ? "block" : "none"
+												}"></i>
 												<i class="fa fa-times med-close" aria-hidden="true" onclick="deleteMedicine('${
 													item.hasOwnProperty("_id") ? item._id : index
 												}')"></i>
@@ -1096,7 +1096,37 @@ function getSlotList(filterObj) {
 		$("#show-main-loader").css("display", "none");
 	});
 }
-function previewPrescription() {}
+// function previewPrescription() {}
+// document.getElementById("download").addEventListener("click", function () {
+// 	const element = document.getElementById("pdf-content");
+// 	const opt = {
+// 		margin: [0, 0, 0, 0], // let CSS handle padding
+// 		filename: "prescription.pdf",
+// 		image: { type: "jpeg", quality: 0.98 },
+// 		html2canvas: { scale: 2, letterRendering: true },
+// 		jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+// 	};
+// 	html2pdf().set(opt).from(element).save();
+// });
+// function downloadPrescription() {}
+function downloadPrescription(filterObj) {
+	let payloadId = appointmentId;
+	downloadPdf(
+		"appointmentDetails",
+		payloadId,
+		null,
+		patientName,
+		function (result, error) {
+			if (error) console.log(error);
+			if (result) {
+				showToastMessage(result.message, "info");
+			}
+			// if (result.data.length == 0) showToastMessage(result.message, "info");
+		},
+	);
+}
+let patientName = "";
+
 function previewPrescription(...data) {
 	console.log("data to view ", data);
 	// addMedicineList = [];
@@ -1110,6 +1140,8 @@ function previewPrescription(...data) {
 	// console.log("next dates--", followUpDate);
 
 	let [doctorInfo, patientInfo, date, appointment_id, prescriptions] = data;
+	patientName = `${patientInfo.split("-")[0]}`;
+	appointmentId = appointment_id;
 }
 function getAppointmentList(filterObj) {
 	let filterList = {};
@@ -1187,16 +1219,18 @@ function getAppointmentList(filterObj) {
                 </span>
 				</span><span style="cursor:pointer;color:#2c52ed;padding:5px;margin:5px;font-size:20px;" onclick="writePrescription('${doctorInfo}','${patientInfo}','${
 				it.date
-			}', '${appointmentId}', '${prescriptionStr}')"><i class="fa fa-file-text-o" aria-hidden="true"></i>
+			}', '${
+				it._id
+			}', '${prescriptionStr}')"><i class="fa fa-file-text-o" aria-hidden="true"></i>
                 </span><span><button
 						
 						type="button"
 						class="anchor-tag"
 						data-toggle="modal"
 						data-target="#previewModal"
-						onclick="previewPrescription('${doctorInfo}','${patientInfo}','${
-				it.date
-			}', '${appointmentId}', '${prescriptionStr}')">
+						onclick="previewPrescription('${doctorInfo}','${patientInfo}','${it.date}', '${
+				it._id
+			}', '${prescriptionStr}')">
 						preview
 					</button></span></td></tr>`;
 		}

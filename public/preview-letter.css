@@ -1,6 +1,6 @@
 .a4-sheet {
-	width: 210mm;
-	height: 297mm;
+	width: 190mm; /* reduced from 210mm → leaves safe margin */
+	min-height: 277mm;
 	margin: auto;
 	background: #fff;
 	border: 1px solid #ccc;

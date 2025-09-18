@@ -20,6 +20,7 @@ let api_url_list = {
 		salaries: "/salaries/getSalariesByUserName",
 		slots: "/slots/list",
 		appointments: "/appointments/list",
+		appointmentDetails: "/download-pdf",
 	},
 	post: {
 		clients: "/clients/register",
@@ -62,6 +63,13 @@ function getQueryData(obj) {
 }
 function hideToast() {
 	$("#toast").css("animation", "slideOut 0.6s forwards");
+}
+function randomData(length = 6) {
+	let numberData = "";
+	for (let i = 0; i < length; i++) {
+		numberData += Math.floor(Math.random() * 10); // digit 0–9
+	}
+	return numberData;
 }
 function showToastMessage(message, color) {
 	$("#toast").css("background-color", backgrndColor[color]);
@@ -157,9 +165,51 @@ function getDataList(url, params, query, callback) {
 		},
 	});
 }
+
+function downloadPdf(url, params, query, fileData, callback) {
+	let path = api_url_list.get[url];
+	if (params) path += `/${params}`;
+	if (query) path += getQueryData(query);
+
+	$.ajax({
+		method: "GET",
+		url: path,
+		contentType: "application/json",
+		headers: {
+			"Access-Control-Allow-Origin": "*",
+			"Access-Control-Allow-Methods": "GET",
+			"Access-Control-Allow-Headers": "application/json",
+			contentType: "application/json",
+			Authorization: localStorage.getItem("token"),
+		},
+		xhrFields: {
+			responseType: "blob", // important: response as binary Blob
+		},
+		success: function (response) {
+			//if request if made successfully then the response represent the data
+
+			var url = window.URL.createObjectURL(response);
+			var a = document.createElement("a");
+			a.href = url;
+			a.download = `Report_${fileData}_${randomData()}.pdf`; // filename
+			document.body.appendChild(a);
+			a.click();
+			a.remove();
+			window.URL.revokeObjectURL(url);
+		},
+		error: function (error) {
+			console.log("error", error);
+			callback(null, error);
+			//let data = JSON.stringify(error.responseJSON.message.message));
+		},
+	});
+}
+
 $("input").focus(function () {
 	$(this).css("border-left", "3px #36d874 solid");
 });
+// function randomId(length) {}
+
 function regexValidation(field, regex, data, format) {
 	console.log(field, regex, data, format);
 	let regexExp = new RegExp(regex);

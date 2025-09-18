@@ -75,9 +75,9 @@ const AppointmentService = {
 				if (tokenPayload.role == "ADMIN") {
 					return reject(CONSTANTS.APPOINTMENT.UNAUTHORIZED);
 				}
-				let today = new Date();
-				today.setUTCHours(0, 0, 0, 0);
-				let result = await AppointmentDao.detail(today.toISOString(),id);
+				// let today = new Date();
+				// today.setUTCHours(0, 0, 0, 0);
+				let result = await AppointmentDao.detail(id);
 				return resolve(result);
 			} catch (error) {
 				return reject(error);
