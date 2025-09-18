@@ -66,6 +66,24 @@ const AppointmentService = {
 			}
 		});
 	},
+
+	detail: (tokenPayload, id) => {
+		return new Promise(async (resolve, reject) => {
+			try {
+				console.log("inside service");
+
+				if (tokenPayload.role == "ADMIN") {
+					return reject(CONSTANTS.APPOINTMENT.UNAUTHORIZED);
+				}
+				let today = new Date();
+				today.setUTCHours(0, 0, 0, 0);
+				let result = await AppointmentDao.detail(today.toISOString(),id);
+				return resolve(result);
+			} catch (error) {
+				return reject(error);
+			}
+		});
+	},
 };
 
 module.exports = AppointmentService;

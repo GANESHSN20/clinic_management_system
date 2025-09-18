@@ -136,4 +136,44 @@ router.patch(
   }
 );
 
+router.get("/detail/:id", AppointmentMiddleware.isAuthenticate, function (req, res) {
+  let tokenPayload = req.user;
+  let id=req.params.id
+  AppointmentService.detail(tokenPayload, id)
+    .then((result) => {
+      res
+        .status(CONSTANTS.HTTP_STATUS.SUCCESS)
+        .send(
+          CustomResponse.success(
+            CONSTANTS.HTTP_STATUS.SUCCESS,
+            CONSTANTS.APPOINTMENT.DETAIL,
+            result
+          )
+        );
+    })
+    .catch((error) => {
+      if (typeof error == "string") {
+        res
+          .status(CONSTANTS.HTTP_STATUS.BAD_REQUEST)
+          .send(
+            CustomResponse.error(
+              CONSTANTS.HTTP_STATUS.BAD_REQUEST,
+              CONSTANTS.COMMON.DENIED,
+              error
+            )
+          );
+      } else {
+        res
+          .status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR)
+          .send(
+            CustomResponse.error(
+              CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
+              CONSTANTS.COMMON.SERVER_ERROR,
+              error
+            )
+          );
+      }
+    });
+});
+
 module.exports = router;

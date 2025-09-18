@@ -46,6 +46,23 @@ const AppointmentDao = {
 			{ $set: payload },
 		);
 	},
+
+	
+	detail: (date, id) => {
+		return AppointmentModel.findOne({_id:id,
+			date: {
+				$gte: date,
+			},
+		})
+			.populate({
+				path: "doctorId",
+				select: { email:0, password:0, userName:0, phone:0},
+			})
+			.populate({
+				path: "patientId",
+				select: { email:0, password:0, userName:0, phone:0},
+			});
+	},
 };
 
 module.exports = AppointmentDao;
