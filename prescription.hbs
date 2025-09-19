@@ -20,8 +20,12 @@
 		</style>
 	</head>
 	<body>
-		<div class="a4-sheet">
+		<div class="a4-sheet" style="position:relative">
 			<!-- Clinic Header -->
+			<span
+				style="position:absolute;top:30px;right:40px;font-size:14px;"
+			><strong>Date:</strong>
+				{{date}}</span>
 			<div class="header">
 				<h1>{{clinicName}}</h1>
 				<p>{{clinicAddress}}</p>
@@ -34,18 +38,16 @@
 					<tr>
 						<td><strong>Patient Name:</strong> {{patientName}}</td>
 						<td><strong>Age:</strong> {{age}}</td>
+						<td><strong>Gender:</strong> {{gender}}</td>
 					</tr>
 					<tr>
-						<td><strong>Gender:</strong> {{gender}}</td>
-						<td><strong>Date:</strong> {{date}}</td>
+						<td><strong>Slot Time:</strong> {{slot}}</td>
+						<td><strong>Appointment date:</strong> {{appointOn}}</td>
 					</tr>
+					<tr></tr>
 					<tr>
 						<td><strong>Doctor:</strong> {{doctorName}}</td>
 						<td><strong>Specialization:</strong> {{specialization}}</td>
-					</tr>
-					<tr>
-						<td><strong>Slot:</strong> {{slot}}</td>
-						<td><strong>Appointment on:</strong> {{appointOn}}</td>
 					</tr>
 				</table>
 			</div>

@@ -228,12 +228,22 @@
 										<p style="clear: both">You have selected slot:</p>
 										<div class="col-md-12 remove-margin">
 											<div class="form-group col-md-4">
-												<label for="expYear"></label>
+												<label for="expYear">Slot</label>
 												<input
 													type="text"
 													id="selectedSlot"
 													autocomplete="false"
 													class="form-control"
+													readonly />
+											</div>
+											<!-- <div class="form-group col-md-4"></div> -->
+											<div class="form-group col-md-4">
+												<label for="consultationsFee">Consultation Fee</label>
+												<input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													id="consultationsFee"
 													readonly />
 											</div>
 										</div>
@@ -648,7 +658,254 @@
 					</div>
 				</div>
 			</div>
+			<div class="modal fade" id="billGenerationModal" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title">Bill Generation Form</h4>
+						</div>
+						<div class="modal-body">
+							<form id="registerClient" style="border: 1px solid #ccc">
+								<div class="container">
+									<!-- <h4>Enter the Employee Detail.</h4> -->
+									<span class="error-message" id="display-message-pres"
+										>default message</span
+									>
+									<br />
+									<div class="form-row">
+										<p style="clear: both">User Information</p>
+										<div class="form-group col-md-6">
+											<label for="month"
+												>Name - Specialization - Qualification - Consultation
+												Fees</label
+											>
+											<input
+												type="text"
+												autocomplete="false"
+												class="form-control"
+												id="doctorInfoBill"
+												readonly />
+											<!-- <select
+												class="form-control select-design type-design"
+												id="doctor"></select> -->
+										</div>
+										<div class="form-group col-md-6">
+											<label for="month"
+												>Select the Patient ( Name - Gender - Date of Birth -
+												Blood Group )</label
+											>
+											<input
+												type="text"
+												autocomplete="false"
+												class="form-control"
+												id="patientInfoBill"
+												readonly />
+											<!-- <select
+												class="form-control select-design type-design"
+												id="doctor"></select> -->
+										</div>
+									</div>
+									<div class="form-row">
+										<p style="clear: both">Prescription Detail</p>
+										<div class="form-group col-md-3">
+											<label for="appointmentDate">Appointment date</label>
+											<input
+												type="text"
+												autocomplete="false"
+												class="form-control"
+												id="appointmentDateBill"
+												readonly />
+										</div>
+										<div class="form-group col-md-9">
+											<label for="years">Final Notes</label>
+											<input
+												type="text"
+												autocomplete="false"
+												class="form-control"
+												id="notesBill" />
+										</div>
+									</div>
 
+									<div class="form-row">
+										<div class="col-md-12 remove-margin">
+											<div class="form-group col-md-5">
+												<label for="tests">Tests</label>
+												<select
+													class="form-control select-design type-design"
+													id="recommendedTestsBill"></select>
+											</div>
+											<div class="form-group col-md-3">
+												<label for="years">Cost</label>
+												<input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													id="testCostBill" />
+											</div>
+											<div class="form-group col-md-3">
+												<!-- <input
+													id="showAddInvestigation"
+													type="button"
+													autocomplete="false"
+													value="+"
+													style="
+														width: inherit;
+														text-align: center;
+														font-size: 22px;
+													"
+													class="form-control exp-design"
+													onclick="addInvestigation()" /> -->
+												<div
+													id="showUpdateInvestigation"
+													style="
+														width: inherit;
+														text-align: center;
+														font-size: 22px;
+														display: none;
+														background-color: rgb(75, 172, 238);
+														border: none;
+													"
+													onclick="updateInvestigation()">
+													<input
+														type="button"
+														autocomplete="false"
+														value=""
+														style="
+															width: inherit;
+															text-align: center;
+															font-size: 22px;
+															background-color: rgb(75, 172, 238);
+															border: none;
+														"
+														class="form-control exp-design update-btn-design" />
+													<i
+														class="fa fa-check update-icon-design"
+														aria-hidden="true"
+														style="display: none"
+														id="showUpdateIcon"></i>
+												</div>
+											</div>
+										</div>
+										<div
+											class="col-md-12 remove-margin"
+											id="addTestsBill"></div>
+									</div>
+
+									<div class="form-row">
+										<div class="col-md-12 remove-margin">
+											<div class="form-group col-md-4">
+												<label for="years">Medicine Name</label>
+												<select
+													class="form-control select-design type-design"
+													id="medicineNameBill"></select>
+											</div>
+											<div class="form-group col-md-2">
+												<label for="years">Quantity</label>
+												<!-- <input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													id="quantity" /> -->
+												<select
+													class="form-control select-design type-design"
+													id="quantityBill"></select>
+											</div>
+											<div class="form-group col-md-3">
+												<label for="years">Cost</label>
+												<input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													id="medicineCostBill" />
+											</div>
+
+											<div class="form-group col-md-3">
+												<!-- <input
+													id="showAddInvestigation"
+													type="button"
+													autocomplete="false"
+													value="+"
+													style="
+														width: inherit;
+														text-align: center;
+														font-size: 22px;
+													"
+													class="form-control exp-design"
+													onclick="addInvestigation()" /> -->
+												<div
+													id="showUpdateInvestigation"
+													style="
+														width: inherit;
+														text-align: center;
+														font-size: 22px;
+														display: none;
+														background-color: rgb(75, 172, 238);
+														border: none;
+													"
+													onclick="updateInvestigation()">
+													<input
+														type="button"
+														autocomplete="false"
+														value=""
+														style="
+															width: inherit;
+															text-align: center;
+															font-size: 22px;
+															background-color: rgb(75, 172, 238);
+															border: none;
+														"
+														class="form-control exp-design update-btn-design" />
+													<i
+														class="fa fa-check update-icon-design"
+														aria-hidden="true"
+														style="display: none"
+														id="showUpdateIcon"></i>
+												</div>
+											</div>
+										</div>
+										<div
+											class="col-md-12 remove-margin"
+											id="addMedicinesBill"></div>
+									</div>
+									<!-- <div class="form-row">
+										<div class="col-md-12 remove-margin">
+											
+										</div>
+									</div> -->
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<div class="clearfix">
+								<i id="register-loader" class="bx bx-loader-alt bx-spin"></i>
+								<button
+									type="button"
+									id="smbtbtn"
+									onclick="updatePrescription()"
+									class="signupbtn form-button">
+									SUBMIT
+								</button>
+								<button
+									type="button"
+									id="updatebtn"
+									onclick="updateData()"
+									class="signupbtn form-button"
+									style="display: none">
+									UPDATE
+								</button>
+								<button
+									type="button"
+									class="cancelbtn form-button"
+									data-dismiss="modal"
+									onclick="closeEmployeeModal()">
+									CANCEL
+								</button>
+							</div>
+							<!-- <button type="button" class="btn btn-primary">Sign in</button>    data-dismiss="modal" -->
+						</div>
+					</div>
+				</div>
+			</div>
 			<div class="modal fade" id="previewModal" role="dialog">
 				<div class="modal-dialog">
 					<div class="modal-content width-design">

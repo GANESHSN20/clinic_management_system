@@ -21,6 +21,7 @@ const AppointmentDao = {
 			date: payload.date,
 			reason: payload.reason,
 			prescription: payload.prescription,
+			consultationFees: payload.consultationFees,
 		}).save();
 	},
 

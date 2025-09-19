@@ -1,7 +1,7 @@
 // console.log('admin page js');
 (function () {
 	if (!localStorage.getItem("token")) window.location.href = "/login";
-	$('#setName').text(`Hi ${localStorage.getItem('name')}`);
+	$("#setName").text(`Hi ${localStorage.getItem("name")}`);
 	let role = localStorage.getItem("role");
 	// if (role != "RECEPTIONIST" && role != "DOCTOR") {
 	// 	$("#showSlotMenu").css("display", "none");
@@ -9,7 +9,7 @@
 	// 	$("#showSlotMenu").css("display", "block");
 	// }
 
-	if (role === "ADMIN") {
+	if (role === "ADMIN" || role === "PATIENT") {
 		$("#showSlotMenu").css("display", "none");
 	} else {
 		$("#showSlotMenu").css("display", "block");
