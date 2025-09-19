@@ -344,21 +344,28 @@ function showData(...data) {
 let addedInvestigation = [];
 function addInvestigation() {
 	if (addedInvestigation.length == 6) {
-		showErrorMessage("Limit reached for tests", true);
+		showPresErrorMessage("Limit reached for tests", true);
 		return;
 	}
 
 	let recommendedTests = $("#recommendedTests").val();
 	let result = $("#result").val();
+	let testExist = addedInvestigation.find(
+		(item) => item.testName == recommendedTests,
+	);
+	if (testExist) {
+		showPresErrorMessage("Tests already been added.", true);
+		return;
+	}
 	// console.log(hospital, expYear);
 	addedInvestigation.push({ testName: recommendedTests, result: result });
-	let str = `<div class="form-group col-md-4">
+	let str = `<div class="form-group col-md-6">
 												<label for="investigation"></label>
 												<input
 													type="text"
 													autocomplete="false"
 													class="form-control med-input"
-													value="${recommendedTests}${result ? `- ${result}` : ""}"
+													value="${recommendedTests}${result ? `          |    (${result})` : ""}"
 													readonly />
 													<span>
 												<i class="fa fa-times med-close" aria-hidden="true" onclick="deleteInvestigation('${
@@ -372,7 +379,7 @@ function addInvestigation() {
 let addMedicineList = [];
 function addMedicine() {
 	if (addMedicineList.length == 6) {
-		showErrorMessage("Limit reached for medicine", true);
+		showPresErrorMessage("Limit reached for medicine", true);
 		return;
 	}
 
@@ -381,7 +388,11 @@ function addMedicine() {
 	let time = $("#time").val();
 	let haveIt = $("#haveIt").val();
 	let doses = $("#doses").val();
-
+	let testExist = addMedicineList.find((item) => item.name == medicineName);
+	if (testExist) {
+		showPresErrorMessage("Medicine already been added.", true);
+		return;
+	}
 	// console.log(hospital, expYear);
 	addMedicineList.push({
 		name: medicineName,
@@ -392,7 +403,7 @@ function addMedicine() {
 	});
 	// let str = "";
 	// for (let item of addMedicineList) {
-	let str = `<div class="form-group col-md-4">
+	let str = `<div class="form-group col-md-6">
 												<label for="investigation"></label>
 												<input
 													type="text"
@@ -421,7 +432,56 @@ let timeList = [
 ];
 let dosesList = ["ONE", "TWO", "THREE"];
 let haveItList = ["BEFORE-FOOD", "AFTER-FOOD"];
+function editInvestigation(id, name, result) {
+	console.log("---", name, result);
 
+	$("#recommendedTests").val(name);
+	$("#result").val(result);
+	$("#showUpdateInvestigation").css("display", "block");
+	$("#showUpdateIcon").css("display", "block");
+	$("#showAddInvestigation").css("display", "none");
+}
+function updateInvestigation() {
+	let recommendedTests = $("#recommendedTests").val();
+	let result = $("#result").val();
+	for (let item of addedInvestigation) {
+		if (item.testName == recommendedTests) {
+			item.result = result;
+		}
+	}
+	document.getElementById("addTests").innerHTML = "";
+
+	let str = "";
+	for (let [index, item] of addedInvestigation.entries()) {
+		str += `<div class="form-group col-md-6">
+												<label for="investigation"></label>
+												<input
+													type="text"
+													autocomplete="false"
+													id="${item._id}"
+													class="form-control med-input"
+													value="${item.testName}${item.result ? `          |    (${item.result})` : ""}"
+													readonly />
+													<span><i class="fa fa-pencil med-edit" aria-hidden="true" onclick="editInvestigation('${
+														item._id
+													}','${item.testName}', '${
+			item.result
+		}')" style="display:${item.hasOwnProperty("_id") ? "block" : "none"}"></i>
+												<i class="fa fa-times med-close" aria-hidden="true" onclick="deleteInvestigation('${
+													item.hasOwnProperty("_id") ? item._id : index
+												}')"></i>
+</span>
+													
+											</div>`;
+	}
+
+	$("#addTests").append(str);
+	console.log(JSON.stringify(addInvestigation));
+	$("#showUpdateInvestigation").css("display", "none");
+	$("#showUpdateIcon").css("display", "none");
+	$("#showAddInvestigation").css("display", "block");
+	$("#result").val("");
+}
 function deleteInvestigation(id) {
 	document.getElementById("addTests").innerHTML = "";
 	if (id.length > 10) {
@@ -432,16 +492,16 @@ function deleteInvestigation(id) {
 	if (addedInvestigation.length > 0) {
 		let str = "";
 		for (let [index, item] of addedInvestigation.entries()) {
-			str += `<div class="form-group col-md-4">
+			str += `<div class="form-group col-md-6">
 											<label for="investigation"></label>
 											<input
 												type="text"
 												autocomplete="false"
 												id="${item.hasOwnProperty("_id") ? item._id : index}"
 												class="form-control med-input"
-												value="${item.testName}${item.result ? `- ${item.result}` : ""}"
+												value="${item.testName}${item.result ? `          |    (${item.result})` : ""}"
 												readonly />
-												<span><i class="fa fa-pencil-square-o med-edit" aria-hidden="true" onclick="editInvestigation('${
+												<span><i class="fa fa-pencil med-edit" aria-hidden="true" onclick="editInvestigation('${
 													item._id
 												}')" style="display:${
 				item.hasOwnProperty("_id") ? "block" : "none"
@@ -470,7 +530,7 @@ function deleteMedicine(id) {
 	if (addMedicineList.length > 0) {
 		let str = "";
 		for (let [index, item] of addMedicineList.entries()) {
-			str += `<div class="form-group col-md-4">
+			str += `<div class="form-group col-md-6">
 											<label for="investigation"></label>
 											<input
 												type="text"
@@ -481,7 +541,7 @@ function deleteMedicine(id) {
 				item.haveIt
 			})"
 												readonly />
-												<span><i class="fa fa-pencil-square-o med-edit" aria-hidden="true" style="display:${
+												<span><i class="fa fa-pencil med-edit" aria-hidden="true" style="display:${
 													item.hasOwnProperty("_id") ? "block" : "none"
 												}"></i>
 												<i class="fa fa-times med-close" aria-hidden="true" onclick="deleteMedicine('${
@@ -499,6 +559,7 @@ function writePrescription(...data) {
 	console.log("data to view ", data);
 	addMedicineList = [];
 	addedInvestigation = [];
+	$("#setValue").val(`<i class="fa fa-plus" aria-hidden="true"></i>`);
 	document.getElementById("addMedicines").innerHTML = "";
 	document.getElementById("addTests").innerHTML = "";
 	// $("#medicine").val("");
@@ -516,7 +577,7 @@ function writePrescription(...data) {
 		if (addMedicineList.length > 0) {
 			let str = "";
 			for (let item of addMedicineList) {
-				str += `<div class="form-group col-md-4">
+				str += `<div class="form-group col-md-6">
 												<label for="investigation"></label>
 												<input
 													type="text"
@@ -525,7 +586,7 @@ function writePrescription(...data) {
 													class="form-control med-input"
 													value="(${item.name})-(${item.quantity})-(${item.doses})-(${item.time})-(${item.haveIt})"
 													readonly />
-													<span><i class="fa fa-pencil-square-o med-edit" aria-hidden="true"></i>
+													<span><i class="fa fa-pencil med-edit" aria-hidden="true" onclick="editMedicine('${item._id}')"></i>
 													<i class="fa fa-times med-close" aria-hidden="true" onclick="deleteMedicine('${item._id}')"></i>
 </span>
 											</div>`;
@@ -537,18 +598,18 @@ function writePrescription(...data) {
 		if (addedInvestigation.length > 0) {
 			let str = "";
 			for (let item of addedInvestigation) {
-				str += `<div class="form-group col-md-4">
+				str += `<div class="form-group col-md-6">
 												<label for="investigation"></label>
 												<input
 													type="text"
 													autocomplete="false"
 													id="${item._id}"
 													class="form-control med-input"
-													value="${item.testName}${item.result ? `- ${item.result}` : ""}"
+													value="${item.testName}${item.result ? `          |    (${item.result})` : ""}"
 													readonly />
-													<span><i class="fa fa-pencil-square-o med-edit" aria-hidden="true" onclick="editInvestigation('${
+													<span><i class="fa fa-pencil med-edit" aria-hidden="true" onclick="editInvestigation('${
 														item._id
-													}')"></i>
+													}','${item.testName}', '${item.result}')"></i>
 													<i class="fa fa-times med-close" aria-hidden="true" onclick="deleteInvestigation('${
 														item._id
 													}')"></i>

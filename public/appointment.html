@@ -167,7 +167,10 @@
 							<form id="registerClient" style="border: 1px solid #ccc">
 								<div class="container">
 									<!-- <h4>Enter the Employee Detail.</h4> -->
-									<span class="error-message" id="display-message"
+									<span
+										class="error-message"
+										id="display-message"
+										style="display: block"
 										>default message</span
 									>
 									<br />
@@ -401,7 +404,7 @@
 							<form id="registerClient" style="border: 1px solid #ccc">
 								<div class="container">
 									<!-- <h4>Enter the Employee Detail.</h4> -->
-									<span class="error-message" id="display-message"
+									<span class="error-message" id="display-message-pres"
 										>default message</span
 									>
 									<br />
@@ -486,11 +489,46 @@
 											</div>
 											<div class="form-group col-md-3">
 												<input
+													id="showAddInvestigation"
 													type="button"
 													autocomplete="false"
-													value="ADD"
+													value="+"
+													style="
+														width: inherit;
+														text-align: center;
+														font-size: 22px;
+													"
 													class="form-control exp-design"
 													onclick="addInvestigation()" />
+												<div
+													id="showUpdateInvestigation"
+													style="
+														width: inherit;
+														text-align: center;
+														font-size: 22px;
+														display: none;
+														background-color: rgb(75, 172, 238);
+														border: none;
+													"
+													onclick="updateInvestigation()">
+													<input
+														type="button"
+														autocomplete="false"
+														value=""
+														style="
+															width: inherit;
+															text-align: center;
+															font-size: 22px;
+															background-color: rgb(75, 172, 238);
+															border: none;
+														"
+														class="form-control exp-design update-btn-design" />
+													<i
+														class="fa fa-check update-icon-design"
+														aria-hidden="true"
+														style="display: none"
+														id="showUpdateIcon"></i>
+												</div>
 											</div>
 										</div>
 										<div class="col-md-12 remove-margin" id="addTests"></div>
@@ -517,7 +555,7 @@
 													class="form-control select-design type-design"
 													id="quantity"></select>
 											</div>
-											<div class="form-group col-md-1">
+											<div class="form-group col-md-2">
 												<label for="years">Doses</label>
 												<!-- <input
 													type="text"
@@ -528,7 +566,7 @@
 													class="form-control select-design type-design"
 													id="doses"></select>
 											</div>
-											<div class="form-group col-md-2">
+											<div class="form-group col-md-3">
 												<label for="years">Time</label>
 												<!-- <input
 													type="text"
@@ -550,11 +588,12 @@
 													class="form-control select-design type-design"
 													id="haveIt"></select>
 											</div>
-											<div class="form-group col-md-3">
+											<div class="form-group col-md-1">
 												<input
 													type="button"
 													autocomplete="false"
-													value="ADD"
+													value="+"
+													style="text-align: center; font-size: 22px"
 													class="form-control exp-design"
 													onclick="addMedicine()" />
 											</div>

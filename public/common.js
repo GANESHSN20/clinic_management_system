@@ -88,7 +88,9 @@ function hideErrorMessage() {
 	$("#display-message").css("animation", `slideOutError 0.8s forwards`);
 }
 function showErrorMessage(message, color, slideOutTime = 2000) {
+	console.log("----", message, color);
 	$("#display-message").css("visibility", "visible");
+	$("#display-message").css("display", "block");
 	$("#display-message").css("background-color", backgrndColor[color]);
 	$("#display-message").css("border-left", borderLeftColor[color]);
 	$("#display-message").css("visibility", "visible");
@@ -100,6 +102,26 @@ function showErrorMessage(message, color, slideOutTime = 2000) {
 
 	setTimeout(function () {
 		hideErrorMessage();
+	}, slideOutTime);
+}
+function hidePresErrorMessage() {
+	$("#display-message-pres").css("animation", `slideOutError 0.8s forwards`);
+}
+function showPresErrorMessage(message, color, slideOutTime = 2000) {
+	console.log("----", message, color);
+	$("#display-message-pres").css("visibility", "visible");
+	$("#display-message-pres").css("display", "block");
+	$("#display-message-pres").css("background-color", backgrndColor[color]);
+	$("#display-message-pres").css("border-left", borderLeftColor[color]);
+	$("#display-message-pres").css("visibility", "visible");
+	$("#display-message-pres").text(message);
+
+	$("#display-message-pres").css("animation", "");
+
+	$("#display-message-pres").css("animation", `slideInError 0.8s forwards`);
+
+	setTimeout(function () {
+		hidePresErrorMessage();
 	}, slideOutTime);
 }
 function hideConfirmToast() {
