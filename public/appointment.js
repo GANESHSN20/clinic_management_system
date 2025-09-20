@@ -179,10 +179,10 @@ let patientList = [];
 	$("#setName").text(`Hi ${localStorage.getItem("name")}`);
 	let role = localStorage.getItem("role");
 
-	if (role != "DOCTOR") {
-		$("#showSlotAdd").css("display", "block");
+	if (role === "ADMIN" || role === "PATIENT") {
+		$("#showSlotMenu").css("display", "none");
 	} else {
-		$("#showSlotAdd").css("display", "none");
+		$("#showSlotMenu").css("display", "block");
 	}
 	if (role != "RECEPTIONIST" && role != "DOCTOR") {
 		$("#showSlotMenu").css("display", "none");
@@ -358,7 +358,11 @@ function addInvestigation() {
 		return;
 	}
 	// console.log(hospital, expYear);
-	addedInvestigation.push({ testName: recommendedTests, result: result });
+	addedInvestigation.push({
+		testName: recommendedTests,
+		result: result,
+		cost: 0,
+	});
 	let str = `<div class="form-group col-md-6">
 												<label for="investigation"></label>
 												<input
@@ -400,6 +404,7 @@ function addMedicine() {
 		doses: doses,
 		time: time,
 		haveIt: haveIt,
+		cost: 0,
 	});
 	// let str = "";
 	// for (let item of addMedicineList) {
@@ -648,8 +653,15 @@ function writePrescription(...data) {
 	// 	$(`#${i}`).css("border-left", "3px #434242 solid");
 	// 	$(`#${i}`).prop("readonly", false);
 	// }
+	let role = localStorage.getItem("role");
+	if (role == "RECEPTIONIST") {
+		$("#billGenerationModal").modal("show");
 
-	$("#presModal").modal("show");
+		// billGenerationModal;
+	} else if (role == "DOCTOR") {
+		$("#presModal").modal("show");
+	}
+
 	$("#addbtn").css("display", "none");
 	$("#updatebtn").css("display", "block");
 	$("#registerClient").trigger("reset");
@@ -911,6 +923,7 @@ function showModalWithSelect(data) {
 	$("#doctor").val(
 		`${doctorList.firstName} ${doctorList.lastName} - ${doctorList.specialization} - ${doctorList.qualifications} - ${doctorList.consultationFee}`,
 	);
+	$("#consultationsFee").val(doctorList.consultationFee);
 	/*   >Name - Gender - Date of Birth - Blood Group</  */
 	console.log({ patientList });
 
@@ -1438,6 +1451,7 @@ function register() {
 		},
 		date: new Date(JSON.parse(document.getElementById("dates").value).date),
 		reason: document.getElementById("reason").value.trim(),
+		consultationFees: parseInt($("#consultationsFee").val()),
 	};
 	console.log("obejct to pass crate appointment", obj);
 	let isFormValid = formValidation(obj);

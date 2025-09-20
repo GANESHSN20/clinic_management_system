@@ -108,12 +108,12 @@ let qualificationList = [
 	// 	$("#showSlotMenu").css("display", "block");
 	// }
 
-	if (role === "ADMIN") {
+	if (role === "ADMIN" || role === "PATIENT") {
 		$("#showSlotMenu").css("display", "none");
 	} else {
 		$("#showSlotMenu").css("display", "block");
 	}
-	if (role != "DOCTOR" && role!="PATIENT") {
+	if (role != "DOCTOR" && role != "PATIENT") {
 		$("#showSlotAdd").css("display", "block");
 	} else {
 		$("#showSlotAdd").css("display", "none");

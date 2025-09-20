@@ -123,7 +123,7 @@ app.get(
 
 						patientName: `${result.patientId.firstName} ${result.patientId.lastName}`,
 						age: dayjs().diff(dayjs(result.patientId.dateOfBirth), "year"),
-						gender: result.patientId.gender,
+						gender: result.patientId.gender.toLowerCase(),
 						appointOn: dayjs(result.date).format("DD MMM YYYY"),
 						date: dayjs(new Date()).format("DD MMM YYYY"),
 
@@ -140,6 +140,51 @@ app.get(
 						),
 						notes: result.prescription.notes || "N/A",
 					};
+					// const data = {
+					// 	companyName: "City Care Clinic",
+					// 	companyAddress: "123 Health Street, New Delhi, India",
+					// 	phone: "+91 9876543210",
+					// 	email: "info@citycareclinic.com",
+					// 	website: "www.citycareclinic.com",
+
+					// 	invoiceNo: "INV-2025-001",
+					// 	invoiceDate: "2025-09-19",
+					// 	dueDate: "2025-09-25",
+					// 	paymentMethod: "Credit Card",
+
+					// 	customerName: "John Doe",
+					// 	customerAddress: "45 Green Park, New Delhi, India",
+
+					// 	items: [
+					// 		{
+					// 			description: "General Consultation",
+					// 			quantity: 1,
+					// 			unitPrice: "₹500",
+					// 			tax: "₹50",
+					// 			total: "₹550",
+					// 		},
+					// 		{
+					// 			description: "Blood Test (CBC)",
+					// 			quantity: 1,
+					// 			unitPrice: "₹800",
+					// 			tax: "₹80",
+					// 			total: "₹880",
+					// 		},
+					// 		{
+					// 			description: "Paracetamol 500mg",
+					// 			quantity: 10,
+					// 			unitPrice: "₹5",
+					// 			tax: "₹5",
+					// 			total: "₹55",
+					// 		},
+					// 	],
+
+					// 	subtotal: "₹1,355",
+					// 	taxTotal: "₹135",
+					// 	discount: "₹50",
+					// 	grandTotal: "₹1,440",
+					// };
+
 					console.log(JSON.stringify(data));
 
 					// Compile Handlebars template
