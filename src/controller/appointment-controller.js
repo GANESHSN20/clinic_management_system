@@ -137,6 +137,52 @@ router.patch(
 	},
 );
 
+router.patch(
+	"/updateCost/:appointmentId",
+	UserMiddleware.isAuthenticate,
+	AppointmentMiddleware.updateCostValidate,
+	function (req, res) {
+		let payload = req.body;
+		let appointmentId = req.params.appointmentId;
+		let tokenPayload = req.user;
+		AppointmentService.updateCost(payload, appointmentId, tokenPayload)
+			.then((result) => {
+				res
+					.status(CONSTANTS.HTTP_STATUS.SUCCESS)
+					.send(
+						CustomResponse.success(
+							CONSTANTS.HTTP_STATUS.SUCCESS,
+							CONSTANTS.PRESCRIPTION.UPDATE,
+							result,
+						),
+					);
+			})
+			.catch((error) => {
+				if (typeof error == "string") {
+					res
+						.status(CONSTANTS.HTTP_STATUS.BAD_REQUEST)
+						.send(
+							CustomResponse.error(
+								CONSTANTS.HTTP_STATUS.BAD_REQUEST,
+								CONSTANTS.COMMON.DENIED,
+								error,
+							),
+						);
+				} else {
+					res
+						.status(CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR)
+						.send(
+							CustomResponse.error(
+								CONSTANTS.HTTP_STATUS.INTERNAL_SERVER_ERROR,
+								CONSTANTS.COMMON.SERVER_ERROR,
+								error,
+							),
+						);
+				}
+			});
+	},
+);
+
 router.get("/detail/:id", UserMiddleware.isAuthenticate, function (req, res) {
 	let tokenPayload = req.user;
 	let id = req.params.id;

@@ -66,6 +66,21 @@ const AppointmentService = {
 			}
 		});
 	},
+	updateCost: (payload, appointmentId, tokenPayload) => {
+		return new Promise(async (resolve, reject) => {
+			try {
+				if (tokenPayload.role != "RECEPTIONIST")
+					return reject(CONSTANTS.PRESCRIPTION.UNAUTHORIZED);
+				payload["status"] = "COMPLETED";
+				let result = await AppointmentDao.updateCost(payload, appointmentId);
+				console.log(result);
+
+				return resolve(result);
+			} catch (error) {
+				return reject(error);
+			}
+		});
+	},
 
 	detail: (tokenPayload, id) => {
 		return new Promise(async (resolve, reject) => {

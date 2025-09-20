@@ -16,6 +16,7 @@ const CONSTANT = require("./src/utils/constant.js");
 const UserService = require("./src/service/user-service.js");
 const AppointmentService = require("./src/service/appointment-service.js");
 const UserMiddleware = require("./src/middleware/user-middleware.js");
+const Utility = require("./src/utils/utility.js");
 require("dotenv").config();
 const port = process.env.PORT;
 
@@ -210,6 +211,309 @@ app.get(
 					res.set({
 						"Content-Type": "application/pdf",
 						"Content-Disposition": "attachment; filename=prescription.pdf",
+					});
+					res.send(pdfBuffer);
+					// res.send("hello");
+				})
+				.catch((error) => {});
+			// Transform request object into template data
+		} catch (err) {
+			console.error(err);
+			res.status(500).send("Error generating PDF");
+		}
+	},
+);
+app.get(
+	"/download-bill/:id",
+	UserMiddleware.isAuthenticate,
+	async (req, res) => {
+		try {
+			const appointmentId = req.params.id;
+			AppointmentService.detail(req.user, appointmentId)
+				.then(async (result) => {
+					console.log("response from detail", JSON.stringify(result));
+					// {
+					// 	"slots": {
+					// 	  "slot": "11:00 AM",
+					// 	  "slotId": "68cd8268b2054af66b0646de"
+					// 	},
+					// 	"prescription": {
+					// 	  "diagnosis": "Fever",
+					// 	  "medicine": [
+					// 		{
+					// 		  "name": "Dolo 650mg",
+					// 		  "quantity": "2",
+					// 		  "doses": "TWO",
+					// 		  "time": "MORNING-NIGHT",
+					// 		  "haveIt": "AFTER-FOOD",
+					// 		  "cost": 4,
+					// 		  "_id": "68ce98c251dac9e018ba21be"
+					// 		},
+					// 		{
+					// 		  "name": "Vitamin D capsule",
+					// 		  "quantity": "10",
+					// 		  "doses": "ONE",
+					// 		  "time": "AFTERNOON",
+					// 		  "haveIt": "AFTER-FOOD",
+					// 		  "cost": 40,
+					// 		  "_id": "68ce98c251dac9e018ba21bf"
+					// 		},
+					// 		{
+					// 		  "name": "Vitamin B-complex capsule",
+					// 		  "quantity": "20",
+					// 		  "doses": "TWO",
+					// 		  "time": "MORNING-NIGHT",
+					// 		  "haveIt": "AFTER-FOOD",
+					// 		  "cost": 20,
+					// 		  "_id": "68ce98c251dac9e018ba21c0"
+					// 		},
+					// 		{
+					// 		  "name": "Iron capsule",
+					// 		  "quantity": "20",
+					// 		  "doses": "TWO",
+					// 		  "time": "MORNING-NIGHT",
+					// 		  "haveIt": "AFTER-FOOD",
+					// 		  "cost": 80,
+					// 		  "_id": "68ce98c251dac9e018ba21c1"
+					// 		},
+					// 		{
+					// 		  "name": "Dexorange",
+					// 		  "quantity": "1",
+					// 		  "doses": "ONE",
+					// 		  "time": "NIGHT",
+					// 		  "haveIt": "AFTER-FOOD",
+					// 		  "cost": 20,
+					// 		  "_id": "68ce98c251dac9e018ba21c2"
+					// 		},
+					// 		{
+					// 		  "name": "Paracetamol 500mg",
+					// 		  "quantity": "20",
+					// 		  "doses": "TWO",
+					// 		  "time": "MORNING-NIGHT",
+					// 		  "haveIt": "AFTER-FOOD",
+					// 		  "cost": 80,
+					// 		  "_id": "68ce98c251dac9e018ba21c3"
+					// 		}
+					// 	  ],
+					// 	  "investigations": [
+					// 		{
+					// 		  "testName": "Complete Blood Count (CBC)",
+					// 		  "result": "Normal",
+					// 		  "cost": 300,
+					// 		  "_id": "68ce98c251dac9e018ba21b9"
+					// 		},
+					// 		{
+					// 		  "testName": "Lipid Profile",
+					// 		  "result": "Normal",
+					// 		  "cost": 100,
+					// 		  "_id": "68ce98c251dac9e018ba21ba"
+					// 		},
+					// 		{
+					// 		  "testName": "Hemoglobin (Hb)",
+					// 		  "result": "Low",
+					// 		  "cost": 350,
+					// 		  "_id": "68ce98c251dac9e018ba21bb"
+					// 		},
+					// 		{
+					// 		  "testName": "Vitamin B12",
+					// 		  "result": "nearest to theshold point",
+					// 		  "cost": 250,
+					// 		  "_id": "68ce98c251dac9e018ba21bc"
+					// 		},
+					// 		{
+					// 		  "testName": "Vitamin D",
+					// 		  "result": "worst",
+					// 		  "cost": 3000,
+					// 		  "_id": "68ce98c251dac9e018ba21bd"
+					// 		}
+					// 	  ],
+					// 	  "followUpDate": "1970-01-01T00:00:00.000Z",
+					// 	  "notes": "Fever with Vitamin D, Hemoglogobin and Vitamin B12 dificiency found"
+					// 	},
+					// 	"_id": "68cd8821dda04134cc17e180",
+					// 	"patientId": {
+					// 	  "_id": "68cd8240b2054af66b0646d5",
+					// 	  "firstName": "syeda",
+					// 	  "lastName": "Kulsum",
+					// 	  "phone": "+919898787876",
+					// 	  "dateOfBirth": "2000-12-06T18:30:00.000Z",
+					// 	  "age": "",
+					// 	  "gender": "FEMALE",
+					// 	  "address": "Shimoga, Karnataka",
+					// 	  "bloodGroup": "B+",
+					// 	  "status": "OPEN",
+					// 	  "experience": [],
+					// 	  "isActive": true,
+					// 	  "role": "PATIENT",
+					// 	  "otp": null,
+					// 	  "createdAt": "2025-09-19T16:18:08.936Z",
+					// 	  "__v": 0
+					// 	},
+					// 	"doctorId": {
+					// 	  "age": "",
+					// 	  "_id": "68bd61081699376b0b647ba2",
+					// 	  "firstName": "Sree",
+					// 	  "lastName": "Vidya",
+					// 	  "phone": "+918790987896",
+					// 	  "dateOfBirth": "1998-04-02T18:30:00.000Z",
+					// 	  "gender": "FEMALE",
+					// 	  "address": "Hindupur Andhra",
+					// 	  "bloodGroup": "B+",
+					// 	  "email": "sreevidya@gmail.com",
+					// 	  "status": "OPEN",
+					// 	  "specialization": "Cardiologist",
+					// 	  "qualifications": "MS (Master of Surgery)",
+					// 	  "experience": [
+					// 		{
+					// 		  "hospitalName": "AIIMS, New Delhi",
+					// 		  "years": "0-1 years",
+					// 		  "_id": "68bd61081699376b0b647ba3"
+					// 		},
+					// 		{
+					// 		  "hospitalName": "Apollo Hospitals, Chennai",
+					// 		  "years": "1-2 years",
+					// 		  "_id": "68bd61081699376b0b647ba4"
+					// 		}
+					// 	  ],
+					// 	  "consultationFee": 2000,
+					// 	  "isActive": true,
+					// 	  "role": "DOCTOR",
+					// 	  "otp": null,
+					// 	  "createdAt": "2025-09-07T10:40:08.110Z",
+					// 	  "__v": 0
+					// 	},
+					// 	"consultationFees": 2000,
+					// 	"date": "2025-09-20T00:00:00.000Z",
+					// 	"status": "COMPLETED",
+					// 	"reason": "Fever",
+					// 	"createdAt": "2025-09-19T16:43:13.332Z",
+					// 	"updatedAt": "2025-09-20T12:06:26.552Z",
+					// 	"__v": 0
+					//   }
+					let taxOnFees = (5 / 100) * result.consultationFees;
+					console.log("taxFees", taxOnFees);
+					let itemList = [
+						{
+							description: "Consulation Fees",
+							quantity: 1,
+							unitPrice: result.consultationFees - taxOnFees,
+							tax: taxOnFees,
+							total: result.consultationFees,
+						},
+					];
+					console.log("first item", JSON.stringify(itemList));
+
+					let totalTax = taxOnFees;
+					let subTotal = result.consultationFees - taxOnFees;
+					let grandTotal = result.consultationFees;
+					console.log(
+						"first item with tax cusn",
+						totalTax,
+						subTotal,
+						grandTotal,
+					);
+
+					if (result.prescription.investigations.length > 0)
+						for (let it of result.prescription.investigations) {
+							// {
+							// 		  "testName": "Vitamin B12",
+							// 		  "result": "nearest to theshold point",
+							// 		  "cost": 250,
+							// 		  "_id": "68ce98c251dac9e018ba21bc"
+							// 		},
+							let tax = (5 / 100) * it.cost;
+							totalTax += tax;
+							grandTotal += it.cost;
+							subTotal += it.cost - tax;
+							itemList.push({
+								description: it.testName,
+								quantity: 1,
+								unitPrice: it.cost - tax,
+								tax,
+								total: it.cost,
+							});
+						}
+					console.log("item after testarray loop", JSON.stringify(itemList));
+					if (result.prescription.medicine.length > 0)
+						for (let it of result.prescription.medicine) {
+							// 		{
+							// 		  "name": "Paracetamol 500mg",
+							// 		  "quantity": "20",
+							// 		  "doses": "TWO",
+							// 		  "time": "MORNING-NIGHT",
+							// 		  "haveIt": "AFTER-FOOD",
+							// 		  "cost": 80,
+							// 		  "_id": "68ce98c251dac9e018ba21c3"
+							// 		}
+							let tax = (5 / 100) * it.cost;
+							totalTax += tax;
+							grandTotal += it.cost;
+							subTotal += it.cost - tax;
+							itemList.push({
+								description: it.name,
+								quantity: it.quantity,
+								unitPrice: it.cost - tax,
+								tax,
+								total: it.cost,
+							});
+						}
+					console.log("item after medicine loop", JSON.stringify(itemList));
+
+					let discount = Math.round((5 / 100) * grandTotal);
+					console.log("Discount after All loop", discount);
+
+					const data = {
+						companyName: "Ganesh & Kulsum Hospital",
+						companyAddress: "123 Main Street, Shimoga, Karnataka",
+						phone: "+91 98765 43210",
+						email: "info@ganeshkulsum.com",
+						website: "www.ganeshkulsumclinic.com",
+
+						invoiceNo: `INV_${result.patientId.firstName}_${Utility.randomData(
+							6,
+						)}`,
+						invoiceDate: Utility.formatDate(new Date()),
+						dueDate: Utility.formatDate(
+							new Date(result.prescription.followUpDate),
+						),
+						paymentMethod: "Cash/UPI",
+
+						customerName: `${result.patientId.firstName} ${result.patientId.lastName}`,
+						customerAddress: result.patientId.firstName,
+
+						items: itemList,
+
+						subtotal: subTotal,
+						taxTotal: totalTax,
+						discount: discount,
+						grandTotal: grandTotal - discount,
+					};
+
+					console.log(JSON.stringify(data));
+
+					// Compile Handlebars template
+					const templatePath = path.join(__dirname, "invoice.hbs");
+					const source = fs.readFileSync(templatePath, "utf-8");
+					const template = handlebars.compile(source);
+					const html = template(data, {
+						allowProtoPropertiesByDefault: true,
+						allowProtoMethodsByDefault: true,
+					});
+
+					// Generate PDF with Puppeteer
+					const browser = await puppeteer.launch();
+					const page = await browser.newPage();
+					await page.setContent(html, { waitUntil: "networkidle0" });
+
+					const pdfBuffer = await page.pdf({
+						format: "A4",
+						printBackground: true,
+					});
+					await browser.close();
+
+					res.set({
+						"Content-Type": "application/pdf",
+						"Content-Disposition": "attachment; filename=invoice.pdf",
 					});
 					res.send(pdfBuffer);
 					// res.send("hello");

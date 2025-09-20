@@ -47,7 +47,18 @@ const AppointmentDao = {
 			{ $set: payload },
 		);
 	},
-
+	updateCost: (payload, appointmentId) => {
+		return AppointmentModel.updateOne(
+			{ _id: appointmentId },
+			{
+				$set: {
+					"prescription.medicine": payload.prescription.medicine,
+					"prescription.investigations": payload.prescription.investigations,
+					status: payload.status,
+				},
+			},
+		);
+	},
 	detail: (id) => {
 		return AppointmentModel.findOne({
 			_id: id,
