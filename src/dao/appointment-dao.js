@@ -1,0 +1,84 @@
+const AppointmentModel = require("../model/appointment-model");
+const SlotModel = require("../model/slot-model");
+
+const AppointmentDao = {
+	isAppointmentExist: (payload) => {
+		return AppointmentModel.findOne({
+			"slots.slot": payload.slots.slot,
+			date: {
+				$eq: payload.date,
+			},
+		});
+	},
+
+	book: (payload) => {
+		console.log({ payload });
+
+		return AppointmentModel({
+			doctorId: payload.doctorId,
+			patientId: payload.patientId,
+			slots: payload.slots,
+			date: payload.date,
+			reason: payload.reason,
+			prescription: payload.prescription,
+			consultationFees: payload.consultationFees,
+		}).save();
+	},
+
+	list: (date, query) => {
+		console.log("---", date, query);
+		let payload = {
+			date: {
+				$gte: date,
+			},
+		};
+		if (Object.keys(query).length > 0) {
+			payload["patientId"] = query.patientId;
+		}
+		console.log("-----", payload);
+
+		return AppointmentModel.find(payload)
+			.populate({
+				path: "doctorId",
+				select: { firstName: 1, lastName: 1, specialization: 1 },
+			})
+			.populate({
+				path: "patientId",
+				select: { firstName: 1, lastName: 1, gender: 1, dateOfBirth: 1 },
+			});
+	},
+
+	update: (payload, appointmentId) => {
+		return AppointmentModel.updateOne(
+			{ _id: appointmentId },
+			{ $set: payload },
+		);
+	},
+	updateCost: (payload, appointmentId) => {
+		return AppointmentModel.updateOne(
+			{ _id: appointmentId },
+			{
+				$set: {
+					"prescription.medicine": payload.prescription.medicine,
+					"prescription.investigations": payload.prescription.investigations,
+					status: payload.status,
+				},
+			},
+		);
+	},
+	detail: (id) => {
+		return AppointmentModel.findOne({
+			_id: id,
+		})
+			.populate({
+				path: "doctorId",
+				select: { password: 0, userName: 0 },
+			})
+			.populate({
+				path: "patientId",
+				select: { email: 0, password: 0, userName: 0 },
+			});
+	},
+};
+
+module.exports = AppointmentDao;
