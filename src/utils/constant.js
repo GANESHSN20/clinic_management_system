@@ -56,7 +56,8 @@ const CONSTANTS = {
 		BOOK: "Appointment booked successfully",
 		UNAUTHORIZED: "You are unauthorized to use this service",
 		LIST: "Appointment list retrieved successfully",
-		DETAIL:"Appointment detail retrieved successfully"
+		DETAIL:"Appointment detail retrieved successfully",
+		INFO:"Appointment information retrieved successfully"
 	},
 	PRESCRIPTION:{
 		CREATE: "Prescription added successfully",
