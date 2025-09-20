@@ -174,10 +174,13 @@ const recommendedTests = [
 ];
 let doctorList = "";
 let patientList = [];
+
 (function () {
 	if (!localStorage.getItem("token")) window.location.href = "/login";
+
 	$("#setName").text(`Hi ${localStorage.getItem("name")}`);
 	let role = localStorage.getItem("role");
+	$("#setRole").text(role);
 
 	if (role === "ADMIN" || role === "PATIENT") {
 		$("#showSlotMenu").css("display", "none");
@@ -932,6 +935,11 @@ function writePrescription(...data) {
 			$("#active-check").prop("disabled", true);
 		else $("#active-check").prop("disabled", false);
 		$("#presModal").modal("show");
+	} else {
+		showToastMessage(
+			"Sorry...You are not allowed..But still you can see ur Prescription/Report/Bill.",
+			"warning",
+		);
 	}
 }
 function viewData(...data) {
@@ -1436,8 +1444,12 @@ function previewBill(...data) {
 }
 function getAppointmentList(filterObj) {
 	let filterList = {};
+
 	if (filterObj) {
 		for (let item in filterObj) filterList[item] = filterObj[item];
+	}
+	if (localStorage.getItem("role") == "PATIENT") {
+		filterList["patientId"] = localStorage.getItem("userId");
 	}
 	$("#tableList").html("");
 

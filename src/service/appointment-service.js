@@ -32,17 +32,17 @@ const AppointmentService = {
 		});
 	},
 
-	list: (tokenPayload) => {
+	list: (tokenPayload, query) => {
 		return new Promise(async (resolve, reject) => {
 			try {
 				console.log("inside service");
 
-				if (tokenPayload.role == "ADMIN" || tokenPayload.role == "PATIENT") {
+				if (tokenPayload.role == "ADMIN") {
 					return reject(CONSTANTS.APPOINTMENT.UNAUTHORIZED);
 				}
 				let today = new Date();
 				today.setUTCHours(0, 0, 0, 0);
-				let result = await AppointmentDao.list(today.toISOString());
+				let result = await AppointmentDao.list(today.toISOString(), query);
 				console.log({ result });
 				return resolve(result);
 			} catch (error) {

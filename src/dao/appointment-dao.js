@@ -25,12 +25,19 @@ const AppointmentDao = {
 		}).save();
 	},
 
-	list: (date) => {
-		return AppointmentModel.find({
+	list: (date, query) => {
+		console.log("---", date, query);
+		let payload = {
 			date: {
 				$gte: date,
 			},
-		})
+		};
+		if (Object.keys(query).length > 0) {
+			payload["patientId"] = query.patientId;
+		}
+		console.log("-----", payload);
+
+		return AppointmentModel.find(payload)
 			.populate({
 				path: "doctorId",
 				select: { firstName: 1, lastName: 1, specialization: 1 },

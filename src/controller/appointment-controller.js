@@ -54,7 +54,8 @@ router.post(
 
 router.get("/list", UserMiddleware.isAuthenticate, function (req, res) {
 	let tokenPayload = req.user;
-	AppointmentService.list(tokenPayload)
+	let query = tokenPayload.role == "PATIENT" ? req.query : {};
+	AppointmentService.list(tokenPayload,query)
 		.then((result) => {
 			res
 				.status(CONSTANTS.HTTP_STATUS.SUCCESS)

@@ -231,7 +231,7 @@ app.get(
 			const appointmentId = req.params.id;
 			AppointmentService.detail(req.user, appointmentId)
 				.then(async (result) => {
-					console.log("response from detail", JSON.stringify(result));
+					// console.log("response from detail", JSON.stringify(result));
 					// {
 					// 	"slots": {
 					// 	  "slot": "11:00 AM",
@@ -391,7 +391,7 @@ app.get(
 					// 	"__v": 0
 					//   }
 					let taxOnFees = (5 / 100) * result.consultationFees;
-					console.log("taxFees", taxOnFees);
+					// console.log("taxFees", taxOnFees);
 					let itemList = [
 						{
 							description: "Consulation Fees",
@@ -401,17 +401,17 @@ app.get(
 							total: result.consultationFees,
 						},
 					];
-					console.log("first item", JSON.stringify(itemList));
+					// console.log("first item", JSON.stringify(itemList));
 
 					let totalTax = taxOnFees;
 					let subTotal = result.consultationFees - taxOnFees;
 					let grandTotal = result.consultationFees;
-					console.log(
-						"first item with tax cusn",
-						totalTax,
-						subTotal,
-						grandTotal,
-					);
+					// console.log(
+					// 	"first item with tax cusn",
+					// 	totalTax,
+					// 	subTotal,
+					// 	grandTotal,
+					// );
 
 					if (result.prescription.investigations.length > 0)
 						for (let it of result.prescription.investigations) {
@@ -433,7 +433,7 @@ app.get(
 								total: it.cost,
 							});
 						}
-					console.log("item after testarray loop", JSON.stringify(itemList));
+					// console.log("item after testarray loop", JSON.stringify(itemList));
 					if (result.prescription.medicine.length > 0)
 						for (let it of result.prescription.medicine) {
 							// 		{
@@ -479,7 +479,7 @@ app.get(
 						paymentMethod: "Cash/UPI",
 
 						customerName: `${result.patientId.firstName} ${result.patientId.lastName}`,
-						customerAddress: result.patientId.firstName,
+						customerAddress: result.patientId.address,
 
 						items: itemList,
 
@@ -489,7 +489,7 @@ app.get(
 						grandTotal: grandTotal - discount,
 					};
 
-					console.log(JSON.stringify(data));
+					// console.log(JSON.stringify(data));
 
 					// Compile Handlebars template
 					const templatePath = path.join(__dirname, "invoice.hbs");
