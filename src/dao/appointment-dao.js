@@ -21,15 +21,23 @@ const AppointmentDao = {
 			date: payload.date,
 			reason: payload.reason,
 			prescription: payload.prescription,
+			consultationFees: payload.consultationFees,
 		}).save();
 	},
 
-	list: (date) => {
-		return AppointmentModel.find({
+	list: (date, query) => {
+		console.log("---", date, query);
+		let payload = {
 			date: {
 				$gte: date,
 			},
-		})
+		};
+		if (Object.keys(query).length > 0) {
+			payload["patientId"] = query.patientId;
+		}
+		console.log("-----", payload);
+
+		return AppointmentModel.find(payload)
 			.populate({
 				path: "doctorId",
 				select: { firstName: 1, lastName: 1, specialization: 1 },
@@ -45,6 +53,31 @@ const AppointmentDao = {
 			{ _id: appointmentId },
 			{ $set: payload },
 		);
+	},
+	updateCost: (payload, appointmentId) => {
+		return AppointmentModel.updateOne(
+			{ _id: appointmentId },
+			{
+				$set: {
+					"prescription.medicine": payload.prescription.medicine,
+					"prescription.investigations": payload.prescription.investigations,
+					status: payload.status,
+				},
+			},
+		);
+	},
+	detail: (id) => {
+		return AppointmentModel.findOne({
+			_id: id,
+		})
+			.populate({
+				path: "doctorId",
+				select: { password: 0, userName: 0 },
+			})
+			.populate({
+				path: "patientId",
+				select: { email: 0, password: 0, userName: 0 },
+			});
 	},
 };
 

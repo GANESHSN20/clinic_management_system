@@ -19,6 +19,7 @@ const UserDAO = {
 			lastName: payload.lastName,
 			phone: payload.phone,
 			dateOfBirth: payload.dateOfBirth,
+			// age:payload.age,
 			gender: payload.gender,
 			address: payload.address,
 			bloodGroup: payload.bloodGroup,

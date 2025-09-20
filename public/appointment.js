@@ -174,15 +174,18 @@ const recommendedTests = [
 ];
 let doctorList = "";
 let patientList = [];
+
 (function () {
 	if (!localStorage.getItem("token")) window.location.href = "/login";
+
 	$("#setName").text(`Hi ${localStorage.getItem("name")}`);
 	let role = localStorage.getItem("role");
+	$("#setRole").text(role);
 
-	if (role != "DOCTOR") {
-		$("#showSlotAdd").css("display", "block");
+	if (role === "ADMIN" || role === "PATIENT") {
+		$("#showSlotMenu").css("display", "none");
 	} else {
-		$("#showSlotAdd").css("display", "none");
+		$("#showSlotMenu").css("display", "block");
 	}
 	if (role != "RECEPTIONIST" && role != "DOCTOR") {
 		$("#showSlotMenu").css("display", "none");
@@ -344,25 +347,34 @@ function showData(...data) {
 let addedInvestigation = [];
 function addInvestigation() {
 	if (addedInvestigation.length == 6) {
-		showErrorMessage("Limit reached for tests", true);
+		showPresErrorMessage("Limit reached for tests", true);
 		return;
 	}
 
 	let recommendedTests = $("#recommendedTests").val();
 	let result = $("#result").val();
+	let testExist = addedInvestigation.find(
+		(item) => item.testName == recommendedTests,
+	);
+	if (testExist) {
+		showPresErrorMessage("Tests already been added.", true);
+		return;
+	}
 	// console.log(hospital, expYear);
-	addedInvestigation.push({ testName: recommendedTests, result: result });
-	let str = `<div class="form-group col-md-4">
+	addedInvestigation.push({
+		testName: recommendedTests,
+		result: result,
+		cost: 0,
+	});
+	let str = `<div class="form-group col-md-6">
 												<label for="investigation"></label>
 												<input
 													type="text"
 													autocomplete="false"
 													class="form-control med-input"
-													value="${recommendedTests}${result ? `- ${result}` : ""}"
+													value="${recommendedTests}${result ? `          |    (${result})` : ""}"
 													readonly />
-													<span><i class="fa fa-pencil-square-o med-edit" aria-hidden="true" onclick="editInvestigation('${
-														addedInvestigation.length - 1
-													}')"></i>
+													<span>
 												<i class="fa fa-times med-close" aria-hidden="true" onclick="deleteInvestigation('${
 													addedInvestigation.length - 1
 												}')"></i>
@@ -374,7 +386,7 @@ function addInvestigation() {
 let addMedicineList = [];
 function addMedicine() {
 	if (addMedicineList.length == 6) {
-		showErrorMessage("Limit reached for medicine", true);
+		showPresErrorMessage("Limit reached for medicine", true);
 		return;
 	}
 
@@ -383,7 +395,11 @@ function addMedicine() {
 	let time = $("#time").val();
 	let haveIt = $("#haveIt").val();
 	let doses = $("#doses").val();
-
+	let testExist = addMedicineList.find((item) => item.name == medicineName);
+	if (testExist) {
+		showPresErrorMessage("Medicine already been added.", true);
+		return;
+	}
 	// console.log(hospital, expYear);
 	addMedicineList.push({
 		name: medicineName,
@@ -391,10 +407,11 @@ function addMedicine() {
 		doses: doses,
 		time: time,
 		haveIt: haveIt,
+		cost: 0,
 	});
 	// let str = "";
 	// for (let item of addMedicineList) {
-	let str = `<div class="form-group col-md-4">
+	let str = `<div class="form-group col-md-6">
 												<label for="investigation"></label>
 												<input
 													type="text"
@@ -402,9 +419,7 @@ function addMedicine() {
 													class="form-control med-input"
 													value="(${medicineName})-(${quantity})-(${doses})-(${time})-(${haveIt})"
 													readonly />
-													<span><i class="fa fa-pencil-square-o med-edit" aria-hidden="true" onclick="editMedicine('${
-														addMedicineList.length - 1
-													}')"></i>
+													<span>
 												<i class="fa fa-times med-close" aria-hidden="true" onclick="deleteMedicine('${
 													addMedicineList.length - 1
 												}')"></i>
@@ -425,7 +440,174 @@ let timeList = [
 ];
 let dosesList = ["ONE", "TWO", "THREE"];
 let haveItList = ["BEFORE-FOOD", "AFTER-FOOD"];
+function editInvestigation(id, name, result) {
+	console.log("---", name, result);
 
+	$("#recommendedTests").val(name);
+	$("#result").val(result);
+	$("#showUpdateInvestigation").css("display", "block");
+	$("#showUpdateIcon").css("display", "block");
+	$("#showAddInvestigation").css("display", "none");
+}
+
+function updateInvestigation() {
+	let recommendedTests = $("#recommendedTests").val();
+	let result = $("#result").val();
+	for (let item of addedInvestigation) {
+		if (item.testName == recommendedTests) {
+			item.result = result;
+		}
+	}
+	document.getElementById("addTests").innerHTML = "";
+
+	let str = "";
+	for (let [index, item] of addedInvestigation.entries()) {
+		str += `<div class="form-group col-md-6">
+												<label for="investigation"></label>
+												<input
+													type="text"
+													autocomplete="false"
+													id="${item._id}"
+													class="form-control med-input"
+													value="${item.testName}${item.result ? `          |    (${item.result})` : ""}"
+													readonly />
+													<span><i class="fa fa-pencil med-edit" aria-hidden="true" onclick="editInvestigation('${
+														item._id
+													}','${item.testName}', '${
+			item.result
+		}')" style="display:${item.hasOwnProperty("_id") ? "block" : "none"}"></i>
+												<i class="fa fa-times med-close" aria-hidden="true" onclick="deleteInvestigation('${
+													item.hasOwnProperty("_id") ? item._id : index
+												}')"></i>
+</span>
+													
+											</div>`;
+	}
+
+	$("#addTests").append(str);
+	console.log(JSON.stringify(addInvestigation));
+	$("#showUpdateInvestigation").css("display", "none");
+	$("#showUpdateIcon").css("display", "none");
+	$("#showAddInvestigation").css("display", "block");
+	$("#result").val("");
+}
+
+function updateInvestigationBill() {
+	let recommendedTests = $("#recommendedTestsBill").val();
+	let cost = $("#testCostBill").val();
+	for (let item of addedInvestigation) {
+		if (item.testName == recommendedTests) {
+			item.cost = cost;
+		}
+	}
+	document.getElementById("addTestsBill").innerHTML = "";
+
+	let str = "";
+	for (let [index, item] of addedInvestigation.entries()) {
+		str += `<div class="form-group col-md-6">
+												<label for="investigation"></label>
+												<input
+													type="text"
+													autocomplete="false"
+													id="${item._id}"
+													class="form-control med-input"
+													
+													value="${item.testName}${
+			item.result ? `          |    (${item.result})` : ""
+		}           |   Rs: ${item.cost}"
+													readonly />
+													<span><i class="fa fa-pencil med-edit" aria-hidden="true" onclick="editInvestigationBill('${
+														item._id
+													}','${item.testName}', '${item.result}',  '${
+			item.cost
+		}')" style="display:${item.hasOwnProperty("_id") ? "block" : "none"}"></i>
+												
+</span>
+													
+											</div>`;
+	}
+
+	$("#addTestsBill").append(str);
+	console.log(JSON.stringify(addInvestigation));
+	$("#testCostBill").val("");
+
+	$("#showUpdateInvestigationBill").css("display", "none");
+	$("#showUpdateIconBill").css("display", "none");
+	// $("#showAddInvestigation").css("display", "block");
+	// $("#result").val("");
+}
+
+function updateMedicineBill() {
+	let medicineName = $("#nameBill").val();
+	let cost = $("#medicineCostBill").val();
+	for (let item of addMedicineList) {
+		if (item.name == medicineName) {
+			item.cost = cost;
+		}
+	}
+	document.getElementById("addMedicinesBill").innerHTML = "";
+
+	let str = "";
+	for (let [index, item] of addMedicineList.entries()) {
+		str += `<div class="form-group col-md-6">
+											<label for="investigation"></label>
+											<input
+												type="text"
+												id="${item._id}"
+												autocomplete="false"
+												class="form-control med-input"
+												value="(${item.name})-(${item.quantity})           |   Rs: ${item.cost}"
+												readonly />
+												<span><i class="fa fa-pencil med-edit" aria-hidden="true" onclick="editMedicineBill('${item._id}','${item.name}','${item.quantity}','${item.cost}')"></i>
+												
+</span>
+										</div>`;
+	}
+
+	$("#addMedicinesBill").append(str);
+	// console.log(JSON.stringify(addInvestigation));
+	$("#medicineCostBill").val("");
+	$("#medicinePerCostBill").val("");
+	$("#nameBill").val("");
+
+	$("#showUpdateMedicineBill").css("display", "none");
+	$("#showUpdateMedicineIconBill").css("display", "none");
+	$("#showMedicinePerCostBill").css("display", "none");
+	// $("#showAddInvestigation").css("display", "block");
+	// $("#result").val("");
+}
+
+function editInvestigationBill(id, name, result, cost) {
+	console.log("---", name, result);
+
+	$("#recommendedTestsBill").val(name);
+	$("#testCostBill").val(cost);
+	$("#showUpdateInvestigationBill").css("display", "block");
+	$("#showUpdateIconBill").css("display", "block");
+}
+
+$("#medicinePerCostBill").on("keyup", function () {
+	let eachMedicineCost = $(this).val();
+	let quantity = $("#quantityBill").val();
+	let totalCost = parseInt(eachMedicineCost) * parseInt(quantity);
+	$("#medicineCostBill").val(totalCost);
+});
+// function calculateMedicineCost() {
+// 	let quantity = $("#quantityBill").val();
+// 	let eachMedicineCost = $("#medicinePerCostBill").val();
+// 	let totalCost = parseInt(eachMedicineCost) * parseInt(quantity);
+// 	$("#medicineCostBill").val(totalCost);
+// }
+function editMedicineBill(id, name, quantity, cost) {
+	console.log("---", name, result);
+
+	$("#nameBill").val(name);
+	$("#medicineCostBill").val(cost);
+	$("#quantityBill").val(quantity);
+	$("#showUpdateMedicineBill").css("display", "block");
+	$("#showUpdateMedicineIconBill").css("display", "block");
+	$("#showMedicinePerCostBill").css("display", "block");
+}
 function deleteInvestigation(id) {
 	document.getElementById("addTests").innerHTML = "";
 	if (id.length > 10) {
@@ -436,18 +618,20 @@ function deleteInvestigation(id) {
 	if (addedInvestigation.length > 0) {
 		let str = "";
 		for (let [index, item] of addedInvestigation.entries()) {
-			str += `<div class="form-group col-md-4">
+			str += `<div class="form-group col-md-6">
 											<label for="investigation"></label>
 											<input
 												type="text"
 												autocomplete="false"
 												id="${item.hasOwnProperty("_id") ? item._id : index}"
 												class="form-control med-input"
-												value="${item.testName}${item.result ? `- ${item.result}` : ""}"
+												value="${item.testName}${item.result ? `          |    (${item.result})` : ""}"
 												readonly />
-												<span><i class="fa fa-pencil-square-o med-edit" aria-hidden="true" onclick="editInvestigation('${
+												<span><i class="fa fa-pencil med-edit" aria-hidden="true" onclick="editInvestigation('${
 													item._id
-												}')"></i>
+												}')" style="display:${
+				item.hasOwnProperty("_id") ? "block" : "none"
+			}"></i>
 												<i class="fa fa-times med-close" aria-hidden="true" onclick="deleteInvestigation('${
 													item.hasOwnProperty("_id") ? item._id : index
 												}')"></i>
@@ -472,7 +656,7 @@ function deleteMedicine(id) {
 	if (addMedicineList.length > 0) {
 		let str = "";
 		for (let [index, item] of addMedicineList.entries()) {
-			str += `<div class="form-group col-md-4">
+			str += `<div class="form-group col-md-6">
 											<label for="investigation"></label>
 											<input
 												type="text"
@@ -483,7 +667,9 @@ function deleteMedicine(id) {
 				item.haveIt
 			})"
 												readonly />
-												<span><i class="fa fa-pencil-square-o med-edit" aria-hidden="true"></i>
+												<span><i class="fa fa-pencil med-edit" aria-hidden="true" style="display:${
+													item.hasOwnProperty("_id") ? "block" : "none"
+												}"></i>
 												<i class="fa fa-times med-close" aria-hidden="true" onclick="deleteMedicine('${
 													item.hasOwnProperty("_id") ? item._id : index
 												}')"></i>
@@ -499,24 +685,105 @@ function writePrescription(...data) {
 	console.log("data to view ", data);
 	addMedicineList = [];
 	addedInvestigation = [];
-	document.getElementById("addMedicines").innerHTML = "";
-	document.getElementById("addTests").innerHTML = "";
-	// $("#medicine").val("");
-	$("#name").val("");
-	$("#diagnosis").val("");
-	$("#notes").val("");
-	console.log("next dates--", followUpDate);
-
-	let [doctorInfo, patientInfo, date, appointment_id, prescriptions] = data;
-	let prescriptionResponse = JSON.parse(prescriptions);
-	if (prescriptionResponse.diagnosis) {
+	let role = localStorage.getItem("role");
+	if (role == "RECEPTIONIST") {
+		document.getElementById("addMedicinesBill").innerHTML = "";
+		document.getElementById("addTestsBill").innerHTML = "";
+		$("#notesBill").val("");
+		let [doctorInfo, patientInfo, date, appointment_id, prescriptions] = data;
+		let prescriptionResponse = JSON.parse(prescriptions);
 		addMedicineList = prescriptionResponse.medicine;
 		addedInvestigation = prescriptionResponse.investigations;
+		document.getElementById("doctorInfoBill").value = doctorInfo;
+		document.getElementById("patientInfoBill").value = patientInfo;
+		document.getElementById("appointmentDateBill").value = formatDate(
+			new Date(date),
+		);
+		$("#notesBill").val(prescriptionResponse.notes);
 
 		if (addMedicineList.length > 0) {
 			let str = "";
 			for (let item of addMedicineList) {
-				str += `<div class="form-group col-md-4">
+				str += `<div class="form-group col-md-6">
+											<label for="investigation"></label>
+											<input
+												type="text"
+												id="${item._id}"
+												autocomplete="false"
+												class="form-control med-input"
+												value="(${item.name})-(${item.quantity})           |   Rs: ${item.cost}"
+												readonly />
+												<span><i class="fa fa-pencil med-edit" aria-hidden="true" onclick="editMedicineBill('${item._id}','${item.name}','${item.quantity}','${item.cost}')"></i>
+												
+</span>
+										</div>`;
+			}
+
+			$("#addMedicinesBill").append(str);
+		}
+		console.log("investigation---", addedInvestigation, addMedicineList);
+
+		if (addedInvestigation.length > 0) {
+			let str = "";
+			for (let item of addedInvestigation) {
+				str += `<div class="form-group col-md-6">
+											<label for="investigation"></label>
+											<input
+												type="text"
+												autocomplete="false"
+												id="${item._id}"
+												class="form-control med-input"
+												value="${item.testName}${
+					item.result ? `          |    (${item.result})` : ""
+				}           |   Rs: ${item.cost}"
+												readonly />
+												<span><i class="fa fa-pencil med-edit" aria-hidden="true" onclick="editInvestigationBill('${
+													item._id
+												}','${item.testName}', '${item.result}','${
+					item.cost
+				}')"></i>
+												
+</span>
+												
+										</div>`;
+			}
+
+			$("#addTestsBill").append(str);
+		}
+
+		for (let item of quantityList) {
+			$("#quantityBill").append($(`<option>`).val(item).text(item));
+		}
+		// for (let item of endTimeList) {
+		// 	$("#endTime").append($(`<option>`).val(item).text(item));
+		// }
+		for (let item of recommendedTests) {
+			$("#recommendedTestsBill").append($(`<option>`).val(item).text(item));
+		}
+
+		$("#billGenerationModal").modal("show");
+
+		// billGenerationModal;
+	} else if (role == "DOCTOR") {
+		$("#setValue").val(`<i class="fa fa-plus" aria-hidden="true"></i>`);
+		document.getElementById("addMedicines").innerHTML = "";
+		document.getElementById("addTests").innerHTML = "";
+		// $("#medicine").val("");
+		$("#name").val("");
+		$("#diagnosis").val("");
+		$("#notes").val("");
+		console.log("next dates--", followUpDate);
+
+		let [doctorInfo, patientInfo, date, appointment_id, prescriptions] = data;
+		let prescriptionResponse = JSON.parse(prescriptions);
+		if (prescriptionResponse.diagnosis) {
+			addMedicineList = prescriptionResponse.medicine;
+			addedInvestigation = prescriptionResponse.investigations;
+
+			if (addMedicineList.length > 0) {
+				let str = "";
+				for (let item of addMedicineList) {
+					str += `<div class="form-group col-md-6">
 												<label for="investigation"></label>
 												<input
 													type="text"
@@ -525,146 +792,155 @@ function writePrescription(...data) {
 													class="form-control med-input"
 													value="(${item.name})-(${item.quantity})-(${item.doses})-(${item.time})-(${item.haveIt})"
 													readonly />
-													<span><i class="fa fa-pencil-square-o med-edit" aria-hidden="true"></i>
+													<span><i class="fa fa-pencil med-edit" aria-hidden="true" onclick="editMedicine('${item._id}')"></i>
 													<i class="fa fa-times med-close" aria-hidden="true" onclick="deleteMedicine('${item._id}')"></i>
 </span>
 											</div>`;
+				}
+
+				$("#addMedicines").append(str);
 			}
+			console.log("investigation---", addedInvestigation, addMedicineList);
 
-			$("#addMedicines").append(str);
-		}
-
-		if (addedInvestigation.length > 0) {
-			let str = "";
-			for (let item of addedInvestigation) {
-				str += `<div class="form-group col-md-4">
+			if (addedInvestigation.length > 0) {
+				let str = "";
+				for (let item of addedInvestigation) {
+					str += `<div class="form-group col-md-6">
 												<label for="investigation"></label>
 												<input
 													type="text"
 													autocomplete="false"
 													id="${item._id}"
 													class="form-control med-input"
-													value="${item.testName}${item.result ? `- ${item.result}` : ""}"
+													value="${item.testName}${item.result ? `          |    (${item.result})` : ""}"
 													readonly />
-													<span><i class="fa fa-pencil-square-o med-edit" aria-hidden="true" onclick="editInvestigation('${
+													<span><i class="fa fa-pencil med-edit" aria-hidden="true" onclick="editInvestigation('${
 														item._id
-													}')"></i>
+													}','${item.testName}', '${item.result}')"></i>
 													<i class="fa fa-times med-close" aria-hidden="true" onclick="deleteInvestigation('${
 														item._id
 													}')"></i>
 </span>
 													
 											</div>`;
+				}
+
+				$("#addTests").append(str);
 			}
-
-			$("#addTests").append(str);
+			$("#followUpDate").val(
+				formatDate(new Date(prescriptionResponse.followUpDate)),
+			);
+			$("#notes").val(prescriptionResponse.notes);
+			$("#diagnosis").val(prescriptionResponse.diagnosis);
+		} else {
+			$("#followUpDate").val(followUpDate);
+			$("#notes").val("");
 		}
-		$("#followUpDate").val(
-			formatDate(new Date(prescriptionResponse.followUpDate)),
+
+		console.log({ appointmentId });
+
+		appointmentId = appointment_id;
+		// for (let i of [
+		// 	"firstName",
+		// 	"lastName",
+		// 	"userName",
+		// 	"email",
+		// 	"salary",
+		// 	"phone",
+		// 	"address",
+		// 	"year",
+		// 	"month",
+		// 	"day",
+		// ]) {
+		// 	$(`#${i}`).css("border-left", "3px #434242 solid");
+		// 	$(`#${i}`).prop("readonly", false);
+		// }
+
+		$("#addbtn").css("display", "none");
+		$("#updatebtn").css("display", "block");
+		$("#registerClient").trigger("reset");
+		$("#year").prop("disabled", false);
+		$("#month").prop("disabled", false);
+		$("#day").prop("disabled", false);
+		$("#active-check").prop("disabled", false);
+		$("#year").empty();
+		$("#month").empty();
+		$("#day").empty();
+		$("#userName").prop("readonly", true);
+
+		for (let item of quantityList) {
+			$("#quantity").append($(`<option>`).val(item).text(item));
+		}
+		for (let item of timeList) {
+			$("#time").append($(`<option>`).val(item).text(item));
+		}
+		for (let item of dosesList) {
+			$("#doses").append($(`<option>`).val(item).text(item));
+		}
+		for (let item of haveItList) {
+			$("#haveIt").append($(`<option>`).val(item).text(item));
+		}
+		// for (let item of endTimeList) {
+		// 	$("#endTime").append($(`<option>`).val(item).text(item));
+		// }
+		for (let item of recommendedTests) {
+			$("#recommendedTests").append($(`<option>`).val(item).text(item));
+		}
+		// for (let item of durationList) {
+		// 	$("#duration").append($(`<option>`).val(item).text(item));
+		// }
+
+		// for (let item of bloodGroupList) {
+		// 	$("#bloodGroup").append($(`<option>`).val(item).text(item));
+		// }
+		// for (let item of hospital) {
+		// 	$("#hospital").append($(`<option>`).val(item).text(item));
+		// }
+		// for (let item of experience) {
+		// 	$("#expYears").append($(`<option>`).val(item).text(item));
+		// }
+		// for (let item of gender) {
+		// 	$("#gender").append($(`<option>`).val(item).text(item));
+		// }
+		// for (let item of specializationList) {
+		// 	$("#specialization").append($(`<option>`).val(item).text(item));
+		// }
+
+		// for (let item of roleList) {
+		// 	// let selectedYear = item == todayDate[2] ? true : false;
+		// 	$("#role").append($(`<option>`).val(item).text(item));
+		// }
+
+		// for (let item of dayList) {
+		// 	let option = item < 10 ? `0${item}` : item;
+
+		// 	$("#day").append($(`<option>`).val(option).text(option));
+		// }
+		document.getElementById("doctorInfo").value = doctorInfo;
+		document.getElementById("patientInfo").value = patientInfo;
+		document.getElementById("appointmentDate").value = formatDate(
+			new Date(date),
 		);
-		$("#notes").val(prescriptionResponse.notes);
-		$("#diagnosis").val(prescriptionResponse.diagnosis);
+		$("#role").attr("disabled", true);
+		// $('#active-check').checked()
+		$("#active-check").prop("checked", active);
+		// let color= (active)?'#c3fabb':'#f8b5b5';
+		// let textColor = active ? "#48bf36" : "#FF4949";
+		// let status = active ? "T" : "F";
+		// // $('#status').css('background-color',color);
+		// $("#status").css("color", textColor);
+
+		// document.getElementById("status").value = status;
+		if (role == "SUPER-ADMIN" || role == "ADMIN")
+			$("#active-check").prop("disabled", true);
+		else $("#active-check").prop("disabled", false);
+		$("#presModal").modal("show");
 	} else {
-		$("#followUpDate").val(followUpDate);
-		$("#notes").val("");
+		showToastMessage(
+			"Sorry...You are not allowed..But still you can see ur Prescription/Report/Bill.",
+			"warning",
+		);
 	}
-
-	console.log({ appointmentId });
-
-	appointmentId = appointment_id;
-	// for (let i of [
-	// 	"firstName",
-	// 	"lastName",
-	// 	"userName",
-	// 	"email",
-	// 	"salary",
-	// 	"phone",
-	// 	"address",
-	// 	"year",
-	// 	"month",
-	// 	"day",
-	// ]) {
-	// 	$(`#${i}`).css("border-left", "3px #434242 solid");
-	// 	$(`#${i}`).prop("readonly", false);
-	// }
-
-	$("#presModal").modal("show");
-	$("#addbtn").css("display", "none");
-	$("#updatebtn").css("display", "block");
-	$("#registerClient").trigger("reset");
-	$("#year").prop("disabled", false);
-	$("#month").prop("disabled", false);
-	$("#day").prop("disabled", false);
-	$("#active-check").prop("disabled", false);
-	$("#year").empty();
-	$("#month").empty();
-	$("#day").empty();
-	$("#userName").prop("readonly", true);
-
-	for (let item of quantityList) {
-		$("#quantity").append($(`<option>`).val(item).text(item));
-	}
-	for (let item of timeList) {
-		$("#time").append($(`<option>`).val(item).text(item));
-	}
-	for (let item of dosesList) {
-		$("#doses").append($(`<option>`).val(item).text(item));
-	}
-	for (let item of haveItList) {
-		$("#haveIt").append($(`<option>`).val(item).text(item));
-	}
-	// for (let item of endTimeList) {
-	// 	$("#endTime").append($(`<option>`).val(item).text(item));
-	// }
-	for (let item of recommendedTests) {
-		$("#recommendedTests").append($(`<option>`).val(item).text(item));
-	}
-	// for (let item of durationList) {
-	// 	$("#duration").append($(`<option>`).val(item).text(item));
-	// }
-
-	// for (let item of bloodGroupList) {
-	// 	$("#bloodGroup").append($(`<option>`).val(item).text(item));
-	// }
-	// for (let item of hospital) {
-	// 	$("#hospital").append($(`<option>`).val(item).text(item));
-	// }
-	// for (let item of experience) {
-	// 	$("#expYears").append($(`<option>`).val(item).text(item));
-	// }
-	// for (let item of gender) {
-	// 	$("#gender").append($(`<option>`).val(item).text(item));
-	// }
-	// for (let item of specializationList) {
-	// 	$("#specialization").append($(`<option>`).val(item).text(item));
-	// }
-
-	// for (let item of roleList) {
-	// 	// let selectedYear = item == todayDate[2] ? true : false;
-	// 	$("#role").append($(`<option>`).val(item).text(item));
-	// }
-
-	// for (let item of dayList) {
-	// 	let option = item < 10 ? `0${item}` : item;
-
-	// 	$("#day").append($(`<option>`).val(option).text(option));
-	// }
-	document.getElementById("doctorInfo").value = doctorInfo;
-	document.getElementById("patientInfo").value = patientInfo;
-	document.getElementById("appointmentDate").value = formatDate(new Date(date));
-	$("#role").attr("disabled", true);
-	// $('#active-check').checked()
-	$("#active-check").prop("checked", active);
-	// let color= (active)?'#c3fabb':'#f8b5b5';
-	// let textColor = active ? "#48bf36" : "#FF4949";
-	// let status = active ? "T" : "F";
-	// // $('#status').css('background-color',color);
-	// $("#status").css("color", textColor);
-
-	// document.getElementById("status").value = status;
-	if (role == "SUPER-ADMIN" || role == "ADMIN")
-		$("#active-check").prop("disabled", true);
-	else $("#active-check").prop("disabled", false);
 }
 function viewData(...data) {
 	console.log("data to view ", data);
@@ -850,6 +1126,7 @@ function showModalWithSelect(data) {
 	$("#doctor").val(
 		`${doctorList.firstName} ${doctorList.lastName} - ${doctorList.specialization} - ${doctorList.qualifications} - ${doctorList.consultationFee}`,
 	);
+	$("#consultationsFee").val(doctorList.consultationFee);
 	/*   >Name - Gender - Date of Birth - Blood Group</  */
 	console.log({ patientList });
 
@@ -1096,7 +1373,53 @@ function getSlotList(filterObj) {
 		$("#show-main-loader").css("display", "none");
 	});
 }
-function previewPrescription() {}
+// function previewPrescription() {}
+// document.getElementById("download").addEventListener("click", function () {
+// 	const element = document.getElementById("pdf-content");
+// 	const opt = {
+// 		margin: [0, 0, 0, 0], // let CSS handle padding
+// 		filename: "prescription.pdf",
+// 		image: { type: "jpeg", quality: 0.98 },
+// 		html2canvas: { scale: 2, letterRendering: true },
+// 		jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+// 	};
+// 	html2pdf().set(opt).from(element).save();
+// });
+// function downloadPrescription() {}
+function downloadPrescription(filterObj) {
+	let payloadId = appointmentId;
+	downloadPdf(
+		"appointmentDetails",
+		payloadId,
+		null,
+		patientName,
+		function (result, error) {
+			if (error) console.log(error);
+			if (result) {
+				showToastMessage(result.message, "info");
+			}
+			// if (result.data.length == 0) showToastMessage(result.message, "info");
+		},
+	);
+}
+function downloadBill(filterObj) {
+	let payloadId = appointmentId;
+	downloadBillDocument(
+		"appointmentBills",
+		payloadId,
+		null,
+		patientName,
+		function (result, error) {
+			if (error) console.log(error);
+			if (result) {
+				showToastMessage(result.message, "info");
+			}
+			// if (result.data.length == 0) showToastMessage(result.message, "info");
+		},
+	);
+}
+let patientName = "";
+
 function previewPrescription(...data) {
 	console.log("data to view ", data);
 	// addMedicineList = [];
@@ -1110,11 +1433,23 @@ function previewPrescription(...data) {
 	// console.log("next dates--", followUpDate);
 
 	let [doctorInfo, patientInfo, date, appointment_id, prescriptions] = data;
+	patientName = `${patientInfo.split("-")[0]}`;
+	appointmentId = appointment_id;
+}
+
+function previewBill(...data) {
+	let [doctorInfo, patientInfo, date, appointment_id, prescriptions] = data;
+	patientName = `${patientInfo.split("-")[0]}`;
+	appointmentId = appointment_id;
 }
 function getAppointmentList(filterObj) {
 	let filterList = {};
+
 	if (filterObj) {
 		for (let item in filterObj) filterList[item] = filterObj[item];
+	}
+	if (localStorage.getItem("role") == "PATIENT") {
+		filterList["patientId"] = localStorage.getItem("userId");
 	}
 	$("#tableList").html("");
 
@@ -1187,16 +1522,28 @@ function getAppointmentList(filterObj) {
                 </span>
 				</span><span style="cursor:pointer;color:#2c52ed;padding:5px;margin:5px;font-size:20px;" onclick="writePrescription('${doctorInfo}','${patientInfo}','${
 				it.date
-			}', '${appointmentId}', '${prescriptionStr}')"><i class="fa fa-file-text-o" aria-hidden="true"></i>
-                </span><span><button
+			}', '${
+				it._id
+			}', '${prescriptionStr}')"><i class="fa fa-file-text-o" aria-hidden="true"></i>
+                </span>
+				<span style="cursor:pointer;color:#2c52ed;padding:5px;margin:5px;font-size:20px;" data-toggle="modal"
+						data-target="#billModal" onclick="previewBill('${doctorInfo}','${patientInfo}','${
+				it.date
+			}', '${
+				it._id
+			}', '${prescriptionStr}')"><i class="fa fa-inr" aria-hidden="true"></i>
+                </span>
+				
+
+				<span><button
 						
 						type="button"
 						class="anchor-tag"
 						data-toggle="modal"
 						data-target="#previewModal"
-						onclick="previewPrescription('${doctorInfo}','${patientInfo}','${
-				it.date
-			}', '${appointmentId}', '${prescriptionStr}')">
+						onclick="previewPrescription('${doctorInfo}','${patientInfo}','${it.date}', '${
+				it._id
+			}', '${prescriptionStr}')">
 						preview
 					</button></span></td></tr>`;
 		}
@@ -1343,6 +1690,7 @@ function register() {
 		},
 		date: new Date(JSON.parse(document.getElementById("dates").value).date),
 		reason: document.getElementById("reason").value.trim(),
+		consultationFees: parseInt($("#consultationsFee").val()),
 	};
 	console.log("obejct to pass crate appointment", obj);
 	let isFormValid = formValidation(obj);
@@ -1402,6 +1750,44 @@ function updatePrescription() {
 	});
 }
 
+function updatePrescriptionCost() {
+	console.log({ message: "adad", appointmentId });
+
+	//let active = Boolean(document.getElementById("active-check").value);
+	let finalMedicineList = addMedicineList.map(({ _id, ...rest }) => rest);
+	let finalTestList = addedInvestigation.map(({ _id, ...rest }) => rest);
+	let obj = {
+		prescription: {
+			medicine: finalMedicineList,
+			investigations: finalTestList,
+		},
+	};
+	console.log("obejct to pass crate appointment", obj);
+	let isFormValid = formValidation(obj);
+	if (!isFormValid) return false;
+
+	$("#register-loader").css("visibility", "visible");
+
+	patchData(
+		"prescriptionCost",
+		obj,
+		null,
+		appointmentId,
+		function (result, error) {
+			if (error) console.log(error);
+			console.log({ "data received from": result });
+			$("#register-loader").css("visibility", "hidden");
+			showToastMessage(result.message, "success");
+			$("#registerClient").trigger("reset");
+			$("#billGenerationModal").modal("hide");
+			// getEmployeeList();
+			setTimeout(() => {
+				getAppointmentList();
+				// getSlotList();
+			}, 2000);
+		},
+	);
+}
 function addExperience() {
 	if (expList.length == 3) {
 		showErrorMessage("Limit reached for experience", true);

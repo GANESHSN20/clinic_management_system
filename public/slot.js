@@ -141,7 +141,8 @@ let doctorList = "";
 	if (!localStorage.getItem("token")) window.location.href = "/login";
 	$("#setName").text(`Hi ${localStorage.getItem("name")}`);
 	let role = localStorage.getItem("role");
-	if (role != "DOCTOR" && role!= "PATIENT") {
+	$("#setRole").text(role);
+	if (role != "DOCTOR" && role != "PATIENT") {
 		$("#showSlotAdd").css("display", "block");
 	} else {
 		$("#showSlotAdd").css("display", "none");

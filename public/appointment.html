@@ -6,6 +6,7 @@
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 	</head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<link
 		rel="stylesheet"
@@ -139,6 +140,17 @@
 		</nav>
 		<div style="margin-left: 250px; cursor: pointer">
 			<nav class="navbar navbar-expand-lg fixed-top navbar-design" id="navbar">
+				<span
+					style="
+						color: #2d8378;
+						margin-left: 42px;
+						cursor: pointer;
+						font-weight: bold;
+						font-size: 16px;
+					"
+					id="setRole"
+					>ADMIN</span
+				>
 				<div class="right">
 					<img
 						style="cursor: pointer"
@@ -166,7 +178,10 @@
 							<form id="registerClient" style="border: 1px solid #ccc">
 								<div class="container">
 									<!-- <h4>Enter the Employee Detail.</h4> -->
-									<span class="error-message" id="display-message"
+									<span
+										class="error-message"
+										id="display-message"
+										style="display: block"
 										>default message</span
 									>
 									<br />
@@ -224,12 +239,22 @@
 										<p style="clear: both">You have selected slot:</p>
 										<div class="col-md-12 remove-margin">
 											<div class="form-group col-md-4">
-												<label for="expYear"></label>
+												<label for="expYear">Slot</label>
 												<input
 													type="text"
 													id="selectedSlot"
 													autocomplete="false"
 													class="form-control"
+													readonly />
+											</div>
+											<!-- <div class="form-group col-md-4"></div> -->
+											<div class="form-group col-md-4">
+												<label for="consultationsFee">Consultation Fee</label>
+												<input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													id="consultationsFee"
 													readonly />
 											</div>
 										</div>
@@ -400,7 +425,7 @@
 							<form id="registerClient" style="border: 1px solid #ccc">
 								<div class="container">
 									<!-- <h4>Enter the Employee Detail.</h4> -->
-									<span class="error-message" id="display-message"
+									<span class="error-message" id="display-message-pres"
 										>default message</span
 									>
 									<br />
@@ -485,11 +510,46 @@
 											</div>
 											<div class="form-group col-md-3">
 												<input
+													id="showAddInvestigation"
 													type="button"
 													autocomplete="false"
-													value="ADD"
+													value="+"
+													style="
+														width: inherit;
+														text-align: center;
+														font-size: 22px;
+													"
 													class="form-control exp-design"
 													onclick="addInvestigation()" />
+												<div
+													id="showUpdateInvestigation"
+													style="
+														width: inherit;
+														text-align: center;
+														font-size: 22px;
+														display: none;
+														background-color: rgb(75, 172, 238);
+														border: none;
+													"
+													onclick="updateInvestigation()">
+													<input
+														type="button"
+														autocomplete="false"
+														value=""
+														style="
+															width: inherit;
+															text-align: center;
+															font-size: 22px;
+															background-color: rgb(75, 172, 238);
+															border: none;
+														"
+														class="form-control exp-design update-btn-design" />
+													<i
+														class="fa fa-check update-icon-design"
+														aria-hidden="true"
+														style="display: none"
+														id="showUpdateIcon"></i>
+												</div>
 											</div>
 										</div>
 										<div class="col-md-12 remove-margin" id="addTests"></div>
@@ -516,7 +576,7 @@
 													class="form-control select-design type-design"
 													id="quantity"></select>
 											</div>
-											<div class="form-group col-md-1">
+											<div class="form-group col-md-2">
 												<label for="years">Doses</label>
 												<!-- <input
 													type="text"
@@ -527,7 +587,7 @@
 													class="form-control select-design type-design"
 													id="doses"></select>
 											</div>
-											<div class="form-group col-md-2">
+											<div class="form-group col-md-3">
 												<label for="years">Time</label>
 												<!-- <input
 													type="text"
@@ -549,11 +609,12 @@
 													class="form-control select-design type-design"
 													id="haveIt"></select>
 											</div>
-											<div class="form-group col-md-3">
+											<div class="form-group col-md-1">
 												<input
 													type="button"
 													autocomplete="false"
-													value="ADD"
+													value="+"
+													style="text-align: center; font-size: 22px"
 													class="form-control exp-design"
 													onclick="addMedicine()" />
 											</div>
@@ -608,14 +669,406 @@
 					</div>
 				</div>
 			</div>
+			<div class="modal fade" id="billGenerationModal" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title">Bill Generation Form</h4>
+						</div>
+						<div class="modal-body">
+							<form id="registerClient" style="border: 1px solid #ccc">
+								<div class="container">
+									<!-- <h4>Enter the Employee Detail.</h4> -->
+									<span class="error-message" id="display-message-pres"
+										>default message</span
+									>
+									<br />
+									<div class="form-row">
+										<p style="clear: both">User Information</p>
+										<div class="form-group col-md-6">
+											<label for="month"
+												>Name - Specialization - Qualification - Consultation
+												Fees</label
+											>
+											<input
+												type="text"
+												autocomplete="false"
+												class="form-control"
+												id="doctorInfoBill"
+												readonly />
+											<!-- <select
+												class="form-control select-design type-design"
+												id="doctor"></select> -->
+										</div>
+										<div class="form-group col-md-6">
+											<label for="month"
+												>Select the Patient ( Name - Gender - Date of Birth -
+												Blood Group )</label
+											>
+											<input
+												type="text"
+												autocomplete="false"
+												class="form-control"
+												id="patientInfoBill"
+												readonly />
+											<!-- <select
+												class="form-control select-design type-design"
+												id="doctor"></select> -->
+										</div>
+									</div>
+									<div class="form-row">
+										<p style="clear: both">Prescription Detail</p>
+										<div class="form-group col-md-3">
+											<label for="appointmentDate">Appointment date</label>
+											<input
+												type="text"
+												autocomplete="false"
+												class="form-control"
+												id="appointmentDateBill"
+												readonly />
+										</div>
+										<div class="form-group col-md-9">
+											<label for="years">Final Notes</label>
+											<input
+												type="text"
+												autocomplete="false"
+												class="form-control"
+												id="notesBill" />
+										</div>
+									</div>
 
+									<div class="form-row">
+										<div class="col-md-12 remove-margin">
+											<div class="form-group col-md-5">
+												<label for="tests">Tests</label>
+												<select
+													class="form-control select-design type-design"
+													id="recommendedTestsBill"
+													disabled></select>
+											</div>
+											<div class="form-group col-md-3">
+												<label for="years">Cost</label>
+												<input
+													type="number"
+													autocomplete="false"
+													class="form-control"
+													id="testCostBill" />
+											</div>
+											<div class="form-group col-md-3">
+												<!-- <input
+													id="showAddInvestigation"
+													type="button"
+													autocomplete="false"
+													value="+"
+													style="
+														width: inherit;
+														text-align: center;
+														font-size: 22px;
+													"
+													class="form-control exp-design"
+													onclick="addInvestigation()" /> -->
+												<div
+													id="showUpdateInvestigationBill"
+													style="
+														width: inherit;
+														text-align: center;
+														font-size: 22px;
+														display: none;
+														background-color: rgb(75, 172, 238);
+														border: none;
+													"
+													onclick="updateInvestigationBill()">
+													<input
+														type="button"
+														autocomplete="false"
+														value=""
+														style="
+															width: inherit;
+															text-align: center;
+															font-size: 22px;
+															background-color: rgb(75, 172, 238);
+															border: none;
+														"
+														class="form-control exp-design update-btn-design" />
+													<i
+														class="fa fa-check update-icon-design"
+														aria-hidden="true"
+														style="display: none"
+														id="showUpdateIconBill"></i>
+												</div>
+											</div>
+										</div>
+										<div
+											class="col-md-12 remove-margin"
+											id="addTestsBill"></div>
+									</div>
+
+									<div class="form-row">
+										<div class="col-md-12 remove-margin">
+											<div class="form-group col-md-4">
+												<label for="years">Medicine Name</label>
+												<input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													id="nameBill"
+													readonly />
+											</div>
+											<div class="form-group col-md-2">
+												<label for="years">Quantity</label>
+												<!-- <input
+													type="text"
+													autocomplete="false"
+													class="form-control"
+													id="quantity" /> -->
+												<select
+													class="form-control select-design type-design"
+													id="quantityBill"
+													disabled></select>
+											</div>
+											<div
+												class="form-group col-md-1"
+												style="display: none"
+												id="showMedicinePerCostBill">
+												<label for="years">Each Cost:</label>
+												<input
+													type="number"
+													autocomplete="false"
+													class="form-control"
+													id="medicinePerCostBill" />
+											</div>
+											<div class="form-group col-md-2">
+												<label for="years">Total Cost</label>
+												<input
+													type="number"
+													autocomplete="false"
+													class="form-control"
+													id="medicineCostBill" />
+											</div>
+
+											<div class="form-group col-md-3">
+												<!-- <input
+													id="showAddInvestigation"
+													type="button"
+													autocomplete="false"
+													value="+"
+													style="
+														width: inherit;
+														text-align: center;
+														font-size: 22px;
+													"
+													class="form-control exp-design"
+													onclick="addInvestigation()" /> -->
+												<div
+													id="showUpdateMedicineBill"
+													style="
+														width: inherit;
+														text-align: center;
+														font-size: 22px;
+														display: none;
+														background-color: rgb(75, 172, 238);
+														border: none;
+													"
+													onclick="updateMedicineBill()">
+													<input
+														type="button"
+														autocomplete="false"
+														value=""
+														style="
+															width: inherit;
+															text-align: center;
+															font-size: 22px;
+															background-color: rgb(75, 172, 238);
+															border: none;
+														"
+														class="form-control exp-design update-btn-design" />
+													<i
+														class="fa fa-check update-icon-design"
+														aria-hidden="true"
+														style="display: none"
+														id="showUpdateMedicineIconBill"></i>
+												</div>
+											</div>
+										</div>
+										<div
+											class="col-md-12 remove-margin"
+											id="addMedicinesBill"></div>
+									</div>
+									<!-- <div class="form-row">
+										<div class="col-md-12 remove-margin">
+											
+										</div>
+									</div> -->
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<div class="clearfix">
+								<i id="register-loader" class="bx bx-loader-alt bx-spin"></i>
+
+								<button
+									type="button"
+									id="updatebtn"
+									onclick="updatePrescriptionCost()"
+									class="signupbtn form-button">
+									UPDATE
+								</button>
+								<button
+									type="button"
+									class="cancelbtn form-button"
+									data-dismiss="modal"
+									onclick="closeEmployeeModal()">
+									CANCEL
+								</button>
+							</div>
+							<!-- <button type="button" class="btn btn-primary">Sign in</button>    data-dismiss="modal" -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" id="billModal" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content width-design">
+						<div class="modal-header">
+							<h4 class="modal-title">Preview Letter</h4>
+						</div>
+						<div class="modal-body modal-body-preview" id="pdf-content">
+							<div class="a4-sheet" style="position: relative">
+								<!-- Invoice Header -->
+								<span
+									style="
+										position: absolute;
+										top: 30px;
+										right: 40px;
+										font-size: 14px;
+									">
+									<strong>Date:</strong>
+									{{invoiceDate}}
+								</span>
+								<div class="header">
+									<h1>{{companyName}}</h1>
+									<p>{{companyAddress}}</p>
+									<p>Phone: {{phone}} | Email: {{email}}</p>
+								</div>
+
+								<!-- Invoice Info -->
+								<div class="invoice-info">
+									<table>
+										<tr>
+											<td>
+												<strong>Invoice No:</strong>
+												{{invoiceNo}}<br />
+												<strong>Bill To:</strong>
+												{{customerName}}<br />
+												<strong>Address:</strong>
+												{{customerAddress}}
+											</td>
+											<td style="text-align: right">
+												<strong>Due Date:</strong>
+												{{dueDate}}<br />
+												<strong>Payment Method:</strong>
+												{{paymentMethod}}
+											</td>
+										</tr>
+									</table>
+								</div>
+
+								<!-- Items Table -->
+								<div class="section">
+									<h3>Invoice Items</h3>
+									<table class="items">
+										<thead>
+											<tr>
+												<th style="width: 40%">Description</th>
+												<th style="width: 15%">Quantity</th>
+												<th style="width: 15%">Unit Price</th>
+												<th style="width: 15%">Tax</th>
+												<th style="width: 15%">Total</th>
+											</tr>
+										</thead>
+										<tbody>
+											{{#each items}}
+											<tr>
+												<td>{{description}}</td>
+												<td>{{quantity}}</td>
+												<td>{{unitPrice}}</td>
+												<td>{{tax}}</td>
+												<td>{{total}}</td>
+											</tr>
+											{{/each}}
+										</tbody>
+									</table>
+								</div>
+
+								<!-- Totals -->
+								<div class="totals">
+									<table>
+										<tr>
+											<td>Subtotal</td>
+											<td style="text-align: right">{{subtotal}}</td>
+										</tr>
+										<tr>
+											<td>Tax</td>
+											<td style="text-align: right">{{taxTotal}}</td>
+										</tr>
+										<tr>
+											<td>Discount</td>
+											<td style="text-align: right">{{discount}}</td>
+										</tr>
+										<tr>
+											<td>Grand Total</td>
+											<td style="text-align: right">{{grandTotal}}</td>
+										</tr>
+									</table>
+								</div>
+
+								<!-- Footer -->
+								<div class="footer">
+									<p>Thank you for your business!</p>
+									<p>{{companyName}} | {{website}}</p>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<div class="clearfix">
+								<i id="register-loader" class="bx bx-loader-alt bx-spin"></i>
+								<button
+									type="button"
+									id="download"
+									onclick="downloadBill()"
+									class="signupbtn form-button">
+									<i class="fa fa-download" aria-hidden="true"></i>
+
+									Download
+								</button>
+								<button
+									type="button"
+									id="updatebtn"
+									onclick="updateData()"
+									class="signupbtn form-button"
+									style="display: none">
+									UPDATE
+								</button>
+								<button
+									type="button"
+									class="cancelbtn form-button"
+									data-dismiss="modal"
+									onclick="closeEmployeeModal()">
+									CANCEL
+								</button>
+							</div>
+							<!-- <button type="button" class="btn btn-primary">Sign in</button>    data-dismiss="modal" -->
+						</div>
+					</div>
+				</div>
+			</div>
 			<div class="modal fade" id="previewModal" role="dialog">
 				<div class="modal-dialog">
 					<div class="modal-content width-design">
 						<div class="modal-header">
 							<h4 class="modal-title">Preview Letter</h4>
 						</div>
-						<div class="modal-body modal-body-preview">
+						<div class="modal-body modal-body-preview" id="pdf-content">
 							<div class="a4-sheet">
 								<!-- Clinic Header -->
 								<div class="header">
@@ -694,10 +1147,12 @@
 								<i id="register-loader" class="bx bx-loader-alt bx-spin"></i>
 								<button
 									type="button"
-									id="smbtbtn"
-									onclick="updatePrescription()"
+									id="download"
+									onclick="downloadPrescription()"
 									class="signupbtn form-button">
-									SUBMIT
+									<i class="fa fa-download" aria-hidden="true"></i>
+
+									Download
 								</button>
 								<button
 									type="button"

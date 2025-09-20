@@ -20,6 +20,8 @@ let api_url_list = {
 		salaries: "/salaries/getSalariesByUserName",
 		slots: "/slots/list",
 		appointments: "/appointments/list",
+		appointmentDetails: "/download-pdf",
+		appointmentBills: "/download-bill",
 	},
 	post: {
 		clients: "/clients/register",
@@ -44,6 +46,7 @@ let api_url_list = {
 		delete_expenses: "/expenses/deleteData",
 		employees: "/users/register",
 		appointments: "/appointments/update",
+		prescriptionCost: "/appointments/updateCost",
 		bills: "/client-bills/addBill",
 		expenses: "/expenses/expenseAdd",
 		investments: "/investments/investmentAdd",
@@ -63,6 +66,13 @@ function getQueryData(obj) {
 function hideToast() {
 	$("#toast").css("animation", "slideOut 0.6s forwards");
 }
+function randomData(length = 6) {
+	let numberData = "";
+	for (let i = 0; i < length; i++) {
+		numberData += Math.floor(Math.random() * 10); // digit 0–9
+	}
+	return numberData;
+}
 function showToastMessage(message, color) {
 	$("#toast").css("background-color", backgrndColor[color]);
 	$("#toast").css("border-left", borderLeftColor[color]);
@@ -80,7 +90,9 @@ function hideErrorMessage() {
 	$("#display-message").css("animation", `slideOutError 0.8s forwards`);
 }
 function showErrorMessage(message, color, slideOutTime = 2000) {
+	console.log("----", message, color);
 	$("#display-message").css("visibility", "visible");
+	$("#display-message").css("display", "block");
 	$("#display-message").css("background-color", backgrndColor[color]);
 	$("#display-message").css("border-left", borderLeftColor[color]);
 	$("#display-message").css("visibility", "visible");
@@ -92,6 +104,26 @@ function showErrorMessage(message, color, slideOutTime = 2000) {
 
 	setTimeout(function () {
 		hideErrorMessage();
+	}, slideOutTime);
+}
+function hidePresErrorMessage() {
+	$("#display-message-pres").css("animation", `slideOutError 0.8s forwards`);
+}
+function showPresErrorMessage(message, color, slideOutTime = 2000) {
+	console.log("----", message, color);
+	$("#display-message-pres").css("visibility", "visible");
+	$("#display-message-pres").css("display", "block");
+	$("#display-message-pres").css("background-color", backgrndColor[color]);
+	$("#display-message-pres").css("border-left", borderLeftColor[color]);
+	$("#display-message-pres").css("visibility", "visible");
+	$("#display-message-pres").text(message);
+
+	$("#display-message-pres").css("animation", "");
+
+	$("#display-message-pres").css("animation", `slideInError 0.8s forwards`);
+
+	setTimeout(function () {
+		hidePresErrorMessage();
 	}, slideOutTime);
 }
 function hideConfirmToast() {
@@ -157,9 +189,89 @@ function getDataList(url, params, query, callback) {
 		},
 	});
 }
+
+function downloadPdf(url, params, query, fileData, callback) {
+	let path = api_url_list.get[url];
+	if (params) path += `/${params}`;
+	if (query) path += getQueryData(query);
+
+	$.ajax({
+		method: "GET",
+		url: path,
+		contentType: "application/json",
+		headers: {
+			"Access-Control-Allow-Origin": "*",
+			"Access-Control-Allow-Methods": "GET",
+			"Access-Control-Allow-Headers": "application/json",
+			contentType: "application/json",
+			Authorization: localStorage.getItem("token"),
+		},
+		xhrFields: {
+			responseType: "blob", // important: response as binary Blob
+		},
+		success: function (response) {
+			//if request if made successfully then the response represent the data
+
+			var url = window.URL.createObjectURL(response);
+			var a = document.createElement("a");
+			a.href = url;
+			a.download = `Report_${fileData}_${randomData()}.pdf`; // filename
+			document.body.appendChild(a);
+			a.click();
+			a.remove();
+			window.URL.revokeObjectURL(url);
+		},
+		error: function (error) {
+			console.log("error", error);
+			callback(null, error);
+			//let data = JSON.stringify(error.responseJSON.message.message));
+		},
+	});
+}
+function downloadBillDocument(url, params, query, fileData, callback) {
+	let path = api_url_list.get[url];
+	if (params) path += `/${params}`;
+	if (query) path += getQueryData(query);
+
+	$.ajax({
+		method: "GET",
+		url: path,
+		contentType: "application/json",
+		headers: {
+			"Access-Control-Allow-Origin": "*",
+			"Access-Control-Allow-Methods": "GET",
+			"Access-Control-Allow-Headers": "application/json",
+			contentType: "application/json",
+			Authorization: localStorage.getItem("token"),
+		},
+		xhrFields: {
+			responseType: "blob", // important: response as binary Blob
+		},
+		success: function (response) {
+			//if request if made successfully then the response represent the data
+
+			var url = window.URL.createObjectURL(response);
+			var a = document.createElement("a");
+			a.href = url;
+			a.download = `Bill_${fileData}_${randomData()}.pdf`; // filename
+			document.body.appendChild(a);
+			a.click();
+			a.remove();
+			window.URL.revokeObjectURL(url);
+		},
+		error: function (error) {
+			console.log("error", error);
+			callback(null, error);
+			//let data = JSON.stringify(error.responseJSON.message.message));
+		},
+	});
+}
+
 $("input").focus(function () {
 	$(this).css("border-left", "3px #36d874 solid");
 });
+// function randomId(length) {}
+
 function regexValidation(field, regex, data, format) {
 	console.log(field, regex, data, format);
 	let regexExp = new RegExp(regex);

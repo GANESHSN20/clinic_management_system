@@ -72,6 +72,43 @@ const Utility = {
 
 		return `${hrs}:${String(mins).padStart(2, "0")} ${period}`;
 	},
+	formatDate: (date) => {
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, "0"); // months are 0-based
+		const day = String(date.getDate()).padStart(2, "0");
+
+		return `${year}-${month}-${day}`;
+	},
+	randomData: (length = 6) => {
+		let numberData = "";
+		for (let i = 0; i < length; i++) {
+			numberData += Math.floor(Math.random() * 10); // digit 0–9
+		}
+		return numberData;
+	},
+
+	presentAge: (dateOfBirth, currentDate = new Date()) => {
+		let dob = new Date(dateOfBirth);
+		let years = currentDate.getFullYear() - dob.getFullYear();
+		let months = currentDate.getMonth() - dob.getMonth();
+		let days = currentDate.getDate() - dob.getDate();
+
+		if (days < 0) {
+			months--;
+			let previousMonth = new Date(
+				currentDate.getFullYear(),
+				currentDate.getMonth(),
+				0,
+			).getDate();
+			days += previousMonth;
+		}
+
+		if (months < 0) {
+			years--;
+			months += 12;
+		}
+		return `${years}years ${months}months ${days}days`;
+	},
 };
 
 module.exports = Utility;

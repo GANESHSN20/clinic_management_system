@@ -41,6 +41,10 @@ const UserService = {
 				return resolve({ password, userName });
 			}
 
+			//   let age = Utility.presentAge(payload.dateOfBirth);
+			//   console.log("age inside service", age);
+			//   payload.age = age;
+
 			UserDao.register(payload)
 				.then((result) => {
 					console.log("return data from dao to service", result);
@@ -51,6 +55,7 @@ const UserService = {
 						role: result.role,
 						phone: result.phone,
 						userName: result.userName,
+						// age: result.age,
 					});
 				})
 				.catch((error) => {
@@ -75,6 +80,7 @@ const UserService = {
 					lastName: user.lastName,
 					role: user.role,
 					userName: user.userName,
+					_id: user._id,
 				};
 				let token = JwtService.createToken(tokenPayload);
 				return resolve({
@@ -124,7 +130,7 @@ const UserService = {
 			// if (role === "PATIENT") {
 			// 	return resolve([]);
 			// }
-			UserDao.list(Utility.getListByRole(role,userName))
+			UserDao.list(Utility.getListByRole(role, userName))
 				.then((result) => {
 					return resolve(result);
 				})
