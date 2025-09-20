@@ -73,28 +73,6 @@ const Utility = {
     return `${hrs}:${String(mins).padStart(2, "0")} ${period}`;
   },
 
-  presentAge: (dateOfBirth, currentDate = new Date()) => {
-    let dob = new Date(dateOfBirth);
-    let years = currentDate.getFullYear() - dob.getFullYear();
-    let months = currentDate.getMonth() - dob.getMonth();
-    let days = currentDate.getDate() - dob.getDate();
-
-    if (days < 0) {
-      months--;
-      let previousMonth = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth(),
-        0
-      ).getDate();
-      days += previousMonth;
-    }
-
-    if (months < 0) {
-      years--;
-      months += 12;
-    }
-    return `${years}years ${months}months ${days}days`;
-  },
 };
 
 module.exports = Utility;

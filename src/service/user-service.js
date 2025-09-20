@@ -41,10 +41,6 @@ const UserService = {
         return resolve({ password, userName });
       }
 
-    //   let age = Utility.presentAge(payload.dateOfBirth);
-    //   console.log("age inside service", age);
-    //   payload.age = age;
-
       UserDao.register(payload)
         .then((result) => {
           console.log("return data from dao to service", result);
@@ -55,7 +51,6 @@ const UserService = {
             role: result.role,
             phone: result.phone,
             userName: result.userName,
-            // age: result.age,
           });
         })
         .catch((error) => {
@@ -126,9 +121,6 @@ const UserService = {
     return new Promise(async (resolve, reject) => {
       let role = tokenPayload.role;
       let userName = tokenPayload.userName;
-      // if (role === "PATIENT") {
-      // 	return resolve([]);
-      // }
       UserDao.list(Utility.getListByRole(role, userName))
         .then((result) => {
           return resolve(result);

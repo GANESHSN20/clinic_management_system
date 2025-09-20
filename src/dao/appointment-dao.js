@@ -62,22 +62,6 @@ const AppointmentDao = {
       });
   },
 
-  info: (date, appointmentId) => {
-    return AppointmentModel.find({
-      date: {
-        $gte: date,
-      },
-      _id: appointmentId,
-    })
-      .populate({
-        path: "doctorId",
-        select: { firstName: 1, lastName: 1, specialization: 1 },
-      })
-      .populate({
-        path: "patientId",
-        select: { firstName: 1, lastName: 1, gender: 1, dateOfBirth: 1 },
-      });
-  },
 };
 
 module.exports = AppointmentDao;

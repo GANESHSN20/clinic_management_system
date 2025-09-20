@@ -75,8 +75,6 @@ const AppointmentService = {
         if (tokenPayload.role == "ADMIN") {
           return reject(CONSTANTS.APPOINTMENT.UNAUTHORIZED);
         }
-        // let today = new Date();
-        // today.setUTCHours(0, 0, 0, 0);
         let result = await AppointmentDao.detail(id);
         return resolve(result);
       } catch (error) {
@@ -85,25 +83,6 @@ const AppointmentService = {
     });
   },
 
-  info: (tokenPayload, appointmentId) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        console.log("inside service");
-        if (tokenPayload.role != "PATIENT")
-          return reject(CONSTANTS.APPOINTMENT.UNAUTHORIZED);
-        let today = new Date();
-        today.setUTCHours(0, 0, 0, 0);
-        let result = await AppointmentDao.info(
-          today.toISOString(),
-          appointmentId
-        );
-        console.log({ result });
-        return resolve(result);
-      } catch (error) {
-        return reject(error);
-      }
-    });
-  },
 };
 
 module.exports = AppointmentService;
