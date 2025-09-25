@@ -15,13 +15,13 @@
 			color: #4a90e2; border-bottom: 1px solid #ddd; padding-bottom: 4px;
 			font-size: 15px; } table.items { width: 100%; border-collapse: collapse;
 			margin-top: 10px; font-size: 14px; } table.items th, table.items td {
-			border: 1px solid #ddd; padding: 8px; text-align: left; } table.items th {
-			background: #f4f7fb; color: #333; } .totals { margin-top: 15px; float:
-			right; width: 40%; } .totals table { width: 100%; border-collapse:
-			collapse; font-size: 14px; } .totals td { padding: 6px; } .totals
-			tr:last-child td { font-weight: bold; border-top: 2px solid #4a90e2; }
-			.footer { text-align: center; margin-top: 60px; font-size: 12px; color:
-			#555; }
+			border: 1px solid #ddd; padding: 8px; text-align: left; margin-bottom:
+			10px; } table.items th { background: #f4f7fb; color: #333; } .totals {
+			margin-top: 15px; float: right; width: 40%; } .totals table { width: 100%;
+			border-collapse: collapse; font-size: 14px; } .totals td { padding: 6px; }
+			.totals tr:last-child td { font-weight: bold; border-top: 2px solid
+			#4a90e2; } .footer { text-align: center; margin-top: 60px; font-size:
+			12px; color: #555; } td{ margin-bottom: 20px; }
 		</style>
 	</head>
 	<body>
@@ -45,17 +45,20 @@
 						<td>
 							<strong>Invoice No:</strong>
 							{{invoiceNo}}<br />
+							<br />
 							<strong>Bill To:</strong>
 							{{customerName}}<br />
+							<br />
 							<strong>Address:</strong>
 							{{customerAddress}}
 						</td>
 						<td style="text-align:right;">
 							<strong>Due Date:</strong>
-							{{dueDate}}<br />
+							{{dueDate}}<br /><br />
 							<strong>Payment Method:</strong>
 							{{paymentMethod}}
 						</td>
+
 					</tr>
 				</table>
 			</div>

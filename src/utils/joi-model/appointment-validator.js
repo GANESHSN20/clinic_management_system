@@ -130,6 +130,56 @@ const AppointmentSchemaValidation = {
 		.messages({
 			"object.min": "At least one field must be provided for update",
 		}),
+	updateCostValidate: Joi.object({
+		prescription: Joi.object({
+			medicine: Joi.array().items(
+				Joi.object({
+					name: Joi.string().allow("").messages({
+						"string.base": "medicine name must be a string",
+					}),
+					quantity: Joi.string().allow("").messages({
+						"string.base": "medicine quantity must be a string",
+					}),
+					doses: Joi.string().valid("ONE", "TWO", "THREE").messages({
+						"any.only": "doses must be ONE, TWO, or THREE",
+					}),
+					time: Joi.string()
+						.valid(
+							"MORNING",
+							"AFTERNOON",
+							"NIGHT",
+							"MORNING-NIGHT",
+							"MORNING-AFTERNOON-NIGHT",
+						)
+						.messages({
+							"any.only":
+								"time must be MORNING, AFTERNOON, NIGHT, MORNING-NIGHT, or MORNING-AFTERNOON-NIGHT",
+						}),
+					haveIt: Joi.string().valid("BEFORE-FOOD", "AFTER-FOOD").messages({
+						"any.only": "haveIt must be BEFORE-FOOD or AFTER-FOOD",
+					}),
+					cost: Joi.number().integer(),
+				}),
+			),
+
+			investigations: Joi.array().items(
+				Joi.object({
+					testName: Joi.string().allow("").messages({
+						"string.base": "investigations testName must be a string",
+					}),
+					result: Joi.string().allow("").max(100).messages({
+						"string.base": "investigations result must be a string",
+						"string.max": "investigations result cannot exceed 100 characters",
+					}),
+					cost: Joi.number().integer(),
+				}),
+			),
+		}),
+	})
+		.min(1)
+		.messages({
+			"object.min": "At least one field must be provided for update",
+		}),
 };
 
 module.exports = AppointmentSchemaValidation;
