@@ -25,43 +25,60 @@ const AppointmentDao = {
     }).save();
   },
 
-  list: (date) => {
-    return AppointmentModel.find({
-      date: {
-        $gte: date,
-      },
-    })
-      .populate({
-        path: "doctorId",
-        select: { firstName: 1, lastName: 1, specialization: 1 },
-      })
-      .populate({
-        path: "patientId",
-        select: { firstName: 1, lastName: 1, gender: 1, dateOfBirth: 1 },
-      });
-  },
+	list: (date, query) => {
+		console.log("---", date, query);
+		let payload = {
+			date: {
+				$gte: date,
+			},
+		};
+		if (Object.keys(query).length > 0) {
+			payload["patientId"] = query.patientId;
+		}
+		console.log("-----", payload);
 
-  update: (payload, appointmentId) => {
-    return AppointmentModel.updateOne(
-      { _id: appointmentId },
-      { $set: payload }
-    );
-  },
+		return AppointmentModel.find(payload)
+			.populate({
+				path: "doctorId",
+				select: { firstName: 1, lastName: 1, specialization: 1 },
+			})
+			.populate({
+				path: "patientId",
+				select: { firstName: 1, lastName: 1, gender: 1, dateOfBirth: 1 },
+			});
+	},
 
-  detail: (id) => {
-    return AppointmentModel.findOne({
-      _id: id,
-    })
-      .populate({
-        path: "doctorId",
-        select: { password: 0, userName: 0 },
-      })
-      .populate({
-        path: "patientId",
-        select: { email: 0, password: 0, userName: 0 },
-      });
-  },
-
+	update: (payload, appointmentId) => {
+		return AppointmentModel.updateOne(
+			{ _id: appointmentId },
+			{ $set: payload },
+		);
+	},
+	updateCost: (payload, appointmentId) => {
+		return AppointmentModel.updateOne(
+			{ _id: appointmentId },
+			{
+				$set: {
+					"prescription.medicine": payload.prescription.medicine,
+					"prescription.investigations": payload.prescription.investigations,
+					status: payload.status,
+				},
+			},
+		);
+	},
+	detail: (id) => {
+		return AppointmentModel.findOne({
+			_id: id,
+		})
+			.populate({
+				path: "doctorId",
+				select: { password: 0, userName: 0 },
+			})
+			.populate({
+				path: "patientId",
+				select: { email: 0, password: 0, userName: 0 },
+			});
+	},
 };
 
 module.exports = AppointmentDao;

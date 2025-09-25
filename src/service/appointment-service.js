@@ -32,24 +32,24 @@ const AppointmentService = {
     });
   },
 
-  list: (tokenPayload) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        console.log("inside service");
+	list: (tokenPayload, query) => {
+		return new Promise(async (resolve, reject) => {
+			try {
+				console.log("inside service");
 
-        if (tokenPayload.role == "ADMIN" || tokenPayload.role == "PATIENT") {
-          return reject(CONSTANTS.APPOINTMENT.UNAUTHORIZED);
-        }
-        let today = new Date();
-        today.setUTCHours(0, 0, 0, 0);
-        let result = await AppointmentDao.list(today.toISOString());
-        console.log({ result });
-        return resolve(result);
-      } catch (error) {
-        return reject(error);
-      }
-    });
-  },
+				if (tokenPayload.role == "ADMIN") {
+					return reject(CONSTANTS.APPOINTMENT.UNAUTHORIZED);
+				}
+				let today = new Date();
+				today.setUTCHours(0, 0, 0, 0);
+				let result = await AppointmentDao.list(today.toISOString(), query);
+				console.log({ result });
+				return resolve(result);
+			} catch (error) {
+				return reject(error);
+			}
+		});
+	},
 
   update: (payload, appointmentId, tokenPayload) => {
     return new Promise(async (resolve, reject) => {
@@ -60,12 +60,27 @@ const AppointmentService = {
         let result = await AppointmentDao.update(payload, appointmentId);
         console.log(result);
 
-        return resolve(result);
-      } catch (error) {
-        return reject(error);
-      }
-    });
-  },
+				return resolve(result);
+			} catch (error) {
+				return reject(error);
+			}
+		});
+	},
+	updateCost: (payload, appointmentId, tokenPayload) => {
+		return new Promise(async (resolve, reject) => {
+			try {
+				if (tokenPayload.role != "RECEPTIONIST")
+					return reject(CONSTANTS.PRESCRIPTION.UNAUTHORIZED);
+				payload["status"] = "COMPLETED";
+				let result = await AppointmentDao.updateCost(payload, appointmentId);
+				console.log(result);
+
+				return resolve(result);
+			} catch (error) {
+				return reject(error);
+			}
+		});
+	},
 
   detail: (tokenPayload, id) => {
     return new Promise(async (resolve, reject) => {

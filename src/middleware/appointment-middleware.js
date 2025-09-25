@@ -66,6 +66,26 @@ const AppointmentMiddleware = {
 			next();
 		}
 	},
+	updateCostValidate: (req, res, next) => {
+		if (req.body) {
+			const { error } = AppointmentSchemaValidator.updateCostValidate.validate(
+				req.body,
+				{
+					abortEarly: false,
+				},
+			);
+			if (error) {
+				return res.status(CONSTANTS.HTTP_STATUS.BAD_REQUEST).send(
+					CustomResponse.error(
+						CONSTANTS.HTTP_STATUS.BAD_REQUEST,
+						CONSTANTS.MIDDLEWARE.VALIDATE,
+						error.details.map((err) => err.message),
+					),
+				);
+			}
+			next();
+		}
+	},
 };
 
 module.exports = AppointmentMiddleware;

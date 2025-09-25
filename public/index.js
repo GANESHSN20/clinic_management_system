@@ -55,6 +55,7 @@ function login() {
 				localStorage.setItem("name", response.data.firstName);
 				localStorage.setItem("userName", response.data.userName);
 				localStorage.setItem("role", response.data.role);
+				localStorage.setItem("userId", response.data._id);
 				showToastMessage(response.message, "success");
 				$("#show-loader").css("visibility", "hidden");
 

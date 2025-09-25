@@ -21,6 +21,7 @@ let api_url_list = {
 		slots: "/slots/list",
 		appointments: "/appointments/list",
 		appointmentDetails: "/download-pdf",
+		appointmentBills: "/download-bill",
 	},
 	post: {
 		clients: "/clients/register",
@@ -45,6 +46,7 @@ let api_url_list = {
 		delete_expenses: "/expenses/deleteData",
 		employees: "/users/register",
 		appointments: "/appointments/update",
+		prescriptionCost: "/appointments/updateCost",
 		bills: "/client-bills/addBill",
 		expenses: "/expenses/expenseAdd",
 		investments: "/investments/investmentAdd",
@@ -214,6 +216,44 @@ function downloadPdf(url, params, query, fileData, callback) {
 			var a = document.createElement("a");
 			a.href = url;
 			a.download = `Report_${fileData}_${randomData()}.pdf`; // filename
+			document.body.appendChild(a);
+			a.click();
+			a.remove();
+			window.URL.revokeObjectURL(url);
+		},
+		error: function (error) {
+			console.log("error", error);
+			callback(null, error);
+			//let data = JSON.stringify(error.responseJSON.message.message));
+		},
+	});
+}
+function downloadBillDocument(url, params, query, fileData, callback) {
+	let path = api_url_list.get[url];
+	if (params) path += `/${params}`;
+	if (query) path += getQueryData(query);
+
+	$.ajax({
+		method: "GET",
+		url: path,
+		contentType: "application/json",
+		headers: {
+			"Access-Control-Allow-Origin": "*",
+			"Access-Control-Allow-Methods": "GET",
+			"Access-Control-Allow-Headers": "application/json",
+			contentType: "application/json",
+			Authorization: localStorage.getItem("token"),
+		},
+		xhrFields: {
+			responseType: "blob", // important: response as binary Blob
+		},
+		success: function (response) {
+			//if request if made successfully then the response represent the data
+
+			var url = window.URL.createObjectURL(response);
+			var a = document.createElement("a");
+			a.href = url;
+			a.download = `Bill_${fileData}_${randomData()}.pdf`; // filename
 			document.body.appendChild(a);
 			a.click();
 			a.remove();
