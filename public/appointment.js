@@ -1100,6 +1100,10 @@ function updateData() {
 }
 
 function showModalWithSelect(data) {
+	// patientList = [];
+	document.getElementById("patients").innerHTML = "";
+	document.getElementById("dates").innerHTML = "";
+
 	console.log("showmodle with select", data);
 	for (let i of data) {
 		$(`#${i}`).css("border-left", "3px #434242 solid");
