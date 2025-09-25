@@ -459,6 +459,10 @@ function updateData() {
 
 function showModalWithSelect(data) {
 	console.log("showmodle with select", data);
+	document.getElementById("startTime").innerHTML = "";
+	document.getElementById("endTime").innerHTML = "";
+	document.getElementById("duration").innerHTML = "";
+	document.getElementById("dates").innerHTML = "";
 	for (let i of data) {
 		$(`#${i}`).css("border-left", "3px #434242 solid");
 		$(`#${i}`).prop("readonly", false);
