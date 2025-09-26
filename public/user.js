@@ -405,6 +405,11 @@ function updateData() {
 
 function showModalWithSelect(data) {
 	console.log("showmodle with select", data);
+	document.getElementById("qualification").innerHTML = "";
+	document.getElementById("bloodGroup").innerHTML = "";
+	document.getElementById("gender").innerHTML = "";
+	document.getElementById("specialization").innerHTML = "";
+	document.getElementById("role").innerHTML = "";
 	for (let i of data) {
 		$(`#${i}`).css("border-left", "3px #434242 solid");
 		$(`#${i}`).prop("readonly", false);

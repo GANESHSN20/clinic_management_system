@@ -51,14 +51,14 @@ const AppointmentService = {
 		});
 	},
 
-  update: (payload, appointmentId, tokenPayload) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (tokenPayload.role != "DOCTOR")
-          return reject(CONSTANTS.PRESCRIPTION.UNAUTHORIZED);
-        payload["status"] = "INPROGRESS";
-        let result = await AppointmentDao.update(payload, appointmentId);
-        console.log(result);
+	update: (payload, appointmentId, tokenPayload) => {
+		return new Promise(async (resolve, reject) => {
+			try {
+				if (tokenPayload.role != "DOCTOR" && tokenPayload.role != "RECEPTIONIST")
+					return reject(CONSTANTS.PRESCRIPTION.UNAUTHORIZED);
+				payload["status"] = "INPROGRESS";
+				let result = await AppointmentDao.update(payload, appointmentId);
+				console.log(result);
 
 				return resolve(result);
 			} catch (error) {

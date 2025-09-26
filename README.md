@@ -73,3 +73,4 @@ service function to get the slot array based on start time , end time and durati
    for token role receipnist all data with descending order of date
 
 appointment Schedule
+#e02727;
