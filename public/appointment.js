@@ -1436,8 +1436,52 @@ function previewPrescription(...data) {
 	// $("#notes").val("");
 	// console.log("next dates--", followUpDate);
 
-	let [doctorInfo, patientInfo, date, appointment_id, prescriptions] = data;
+	let [doctorInfo, patientInfo, date, appointment_id, prescriptions, slotTime] =
+		data;
+	let prescriptionResponse = JSON.parse(prescriptions);
+	console.log(
+		"detail--",
+		doctorInfo,
+		patientInfo,
+		date,
+		appointment_id,
+		prescriptions,
+	);
+
 	patientName = `${patientInfo.split("-")[0]}`;
+	let patientData = patientInfo.split(" - ");
+	console.log("----", patientInfo, "-------", patientData);
+
+	$("#previewDate").text(formatDate(new Date(date)));
+	$("#previewClinicName").text("Serenity Clinic");
+	$("#previewClinicAddress").text("123 Main Street, Shimoga, Karnataka");
+	$("#previewPhone").text("+91 98765 43210");
+	$("#previewEmail").text("info@serenityclinic.com");
+	$("#previewGender").text(patientData[1]);
+	$("#previewAge").text(
+		calculateAge(
+			patientData[patientData.length - 1]
+				.replace("(", "")
+				.replace(")", "")
+				.trim(),
+		),
+	);
+	$("#previewPatientName").text(patientName);
+	$("#previewSlotTime").text(slotTime);
+	let testStr = "";
+	if (prescriptionResponse.investigations.length > 0)
+		for (let item of prescriptionResponse.investigations) {
+			testStr += `<li>${item.testName}- ${item.result}</li>`;
+			//
+		}
+	$("#previewTests").append(testStr);
+
+	let medicineStr = "";
+	if (prescriptionResponse.medicine.length > 0)
+		for (let item of prescriptionResponse.medicine) {
+			medicineStr += `<li>${item.name} - ${item.quantity} tablets, ${item.doses} (${item.time}),${item.haveIt}</li>`;
+		}
+	$("#previewMedicines").append(medicineStr);
 	appointmentId = appointment_id;
 }
 
@@ -1547,7 +1591,7 @@ function getAppointmentList(filterObj) {
 						data-target="#previewModal"
 						onclick="previewPrescription('${doctorInfo}','${patientInfo}','${it.date}', '${
 				it._id
-			}', '${prescriptionStr}')">
+			}', '${prescriptionStr}','${it.slots.slot}')">
 						preview
 					</button></span></td></tr>`;
 		}
