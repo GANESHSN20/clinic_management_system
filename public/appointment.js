@@ -1458,7 +1458,7 @@ function getAppointmentList(filterObj) {
 	$("#tableList").html("");
 
 	$("#show-main-loader").css("display", "block");
-	$("#showTableDesc").html("Slot List");
+	$("#showTableDesc").html("Appointment List");
 	getDataList("appointments", null, filterList, function (result, error) {
 		if (error) console.log(error);
 
