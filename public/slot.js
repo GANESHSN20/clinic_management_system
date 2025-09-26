@@ -827,7 +827,7 @@ function register() {
 		$("#myModal").modal("hide");
 		// getEmployeeList();
 		setTimeout(() => {
-			// getSlotList();
+			getSlotList();
 		}, 2000);
 	});
 }
