@@ -1452,12 +1452,18 @@ function previewPrescription(...data) {
 	let patientData = patientInfo.split(" - ");
 	console.log("----", patientInfo, "-------", patientData);
 
-	$("#previewDate").text(formatDate(new Date(date)));
+	doctorName = `${doctorInfo.split("-")[0]}`;
+	doctorSpecialization = `${doctorInfo.split("-")[1]}`;
+	let doctorData = doctorInfo.split(" - ");
+	console.log("----", doctorInfo, "-------", doctorData);
+
+	$("#previewDate").text(formatDate(new Date()));
 	$("#previewClinicName").text("Serenity Clinic");
 	$("#previewClinicAddress").text("123 Main Street, Shimoga, Karnataka");
 	$("#previewPhone").text("+91 98765 43210");
 	$("#previewEmail").text("info@serenityclinic.com");
 	$("#previewGender").text(patientData[1]);
+	$("#previewAppointmentDate").text(formatDate(new Date(date)));
 	$("#previewAge").text(
 		calculateAge(
 			patientData[patientData.length - 1]
@@ -1467,6 +1473,11 @@ function previewPrescription(...data) {
 		),
 	);
 	$("#previewPatientName").text(patientName);
+	$("#previewDoctorName").text(doctorName);
+	$("#previewDoctorSpecialization").text(doctorSpecialization);
+	$("#previewDoctorSign").text(doctorName);
+	$("#previewDoctorSignSpecialization").text(doctorSpecialization);
+
 	$("#previewSlotTime").text(slotTime);
 	let testStr = "";
 	if (prescriptionResponse.investigations.length > 0)
@@ -1476,10 +1487,14 @@ function previewPrescription(...data) {
 		}
 	$("#previewTests").append(testStr);
 
+	$("#previewDiagnosis").text(prescriptionResponse.diagnosis);
+	$("#previewFollowUpDate").text(formatDate(new Date(prescriptionResponse.followUpDate)));
+	$("#previewFinalNotes").text(prescriptionResponse.notes);
+
 	let medicineStr = "";
 	if (prescriptionResponse.medicine.length > 0)
 		for (let item of prescriptionResponse.medicine) {
-			medicineStr += `<li>${item.name} - ${item.quantity} tablets, ${item.doses} (${item.time}),${item.haveIt}</li>`;
+			medicineStr += `<li>${item.name} - ${item.quantity} tablets, ${item.doses} (${item.time}), ${item.haveIt}</li>`;
 		}
 	$("#previewMedicines").append(medicineStr);
 	appointmentId = appointment_id;
