@@ -117,10 +117,10 @@ app.get(
 					// 	__v: 0
 					//   }
 					const data = {
-						clinicName: "Ganesh & Kulsum Hospital",
+						clinicName: "Serenity Clinic",
 						clinicAddress: "123 Main Street, Shimoga, Karnataka",
 						phone: "+91 98765 43210",
-						email: "info@ganeshkulsum.com",
+						email: "info@serenityclinic.com",
 
 						patientName: `${result.patientId.firstName} ${result.patientId.lastName}`,
 						age: dayjs().diff(dayjs(result.patientId.dateOfBirth), "year"),
@@ -463,11 +463,11 @@ app.get(
 					console.log("Discount after All loop", discount);
 
 					const data = {
-						companyName: "Ganesh & Kulsum Hospital",
-						companyAddress: "123 Main Street, Shimoga, Karnataka",
+						clinicName: "Serinity Clinic",
+						clinicAddress: "123 Main Street, Shimoga, Karnataka",
 						phone: "+91 98765 43210",
 						email: "info@ganeshkulsum.com",
-						website: "www.ganeshkulsumclinic.com",
+						website: "www.serenityclinic.com",
 
 						invoiceNo: `INV_${result.patientId.firstName}_${Utility.randomData(
 							6,
