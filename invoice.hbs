@@ -1,0 +1,122 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Invoice</title>
+		<style>
+			@page { size: A4; margin: 0; } body { font-family: Arial, sans-serif;
+			margin: 0; padding: 0; } .a4-sheet { width: 210mm; height: 297mm; margin:
+			0 auto; background: #fff; padding: 15mm; box-sizing: border-box; } .header
+			{ text-align: center; border-bottom: 2px solid #4a90e2; padding-bottom:
+			10px; margin-bottom: 20px; } .header h1 { margin: 0; font-size: 26px;
+			color: #4a90e2; } .header p { margin: 2px 0; font-size: 13px; }
+			.invoice-info { margin-bottom: 20px; font-size: 14px; } .invoice-info
+			table { width: 100%; border-collapse: collapse; } .invoice-info td {
+			padding: 6px; vertical-align: top; } .section h3 { margin-bottom: 8px;
+			color: #4a90e2; border-bottom: 1px solid #ddd; padding-bottom: 4px;
+			font-size: 15px; } table.items { width: 100%; border-collapse: collapse;
+			margin-top: 10px; font-size: 14px; } table.items th, table.items td {
+			border: 1px solid #ddd; padding: 8px; text-align: left; margin-bottom:
+			10px; } table.items th { background: #f4f7fb; color: #333; } .totals {
+			margin-top: 15px; float: right; width: 40%; } .totals table { width: 100%;
+			border-collapse: collapse; font-size: 14px; } .totals td { padding: 6px; }
+			.totals tr:last-child td { font-weight: bold; border-top: 2px solid
+			#4a90e2; } .footer { text-align: center; margin-top: 60px; font-size:
+			12px; color: #555; } td{ margin-bottom: 20px; }
+		</style>
+	</head>
+	<body>
+		<div class="a4-sheet" style="position:relative">
+
+			<!-- Invoice Header -->
+			<span style="position:absolute;top:30px;right:40px;font-size:14px;">
+				<strong>Date:</strong>
+				{{invoiceDate}}
+			</span>
+			<div class="header">
+				<h1>{{clinicName}}</h1>
+				<p>{{clinicAddress}}</p>
+				<p>Phone: {{phone}} | Email: {{email}}</p>
+			</div>
+
+			<!-- Invoice Info -->
+			<div class="invoice-info">
+				<table>
+					<tr>
+						<td>
+							<strong>Invoice No:</strong>
+							{{invoiceNo}}<br />
+							<br />
+							<strong>Bill To:</strong>
+							{{customerName}}<br />
+							<br />
+							<strong>Address:</strong>
+							{{customerAddress}}
+						</td>
+						<td style="text-align:right;">
+							<strong>Due Date:</strong>
+							{{dueDate}}<br /><br />
+							<strong>Payment Method:</strong>
+							{{paymentMethod}}
+						</td>
+
+					</tr>
+				</table>
+			</div>
+
+			<!-- Items Table -->
+			<div class="section">
+				<h3>Invoice Items</h3>
+				<table class="items">
+					<thead>
+						<tr>
+							<th style="width:40%">Description</th>
+							<th style="width:15%">Quantity</th>
+							<th style="width:15%">Unit Price</th>
+							<th style="width:15%">Tax</th>
+							<th style="width:15%">Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						{{#each items}}
+							<tr>
+								<td>{{description}}</td>
+								<td>{{quantity}}</td>
+								<td>{{unitPrice}}</td>
+								<td>{{tax}}</td>
+								<td>{{total}}</td>
+							</tr>
+						{{/each}}
+					</tbody>
+				</table>
+			</div>
+
+			<!-- Totals -->
+			<div class="totals">
+				<table>
+					<tr>
+						<td>Subtotal</td>
+						<td style="text-align:right;">{{subtotal}}</td>
+					</tr>
+					<tr>
+						<td>Tax</td>
+						<td style="text-align:right;">{{taxTotal}}</td>
+					</tr>
+					<tr>
+						<td>Discount</td>
+						<td style="text-align:right;">{{discount}}</td>
+					</tr>
+					<tr>
+						<td>Grand Total</td>
+						<td style="text-align:right;">{{grandTotal}}</td>
+					</tr>
+				</table>
+			</div>
+
+			<!-- Footer -->
+			<div class="footer">
+				<p>Thank you for your business!</p>
+				<p>{{clinicName}} | {{website}}</p>
+			</div>
+		</div>
+	</body>
+</html>
