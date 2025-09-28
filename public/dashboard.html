@@ -1,169 +1,121 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<link
-			rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-	</head>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<link
-		rel="stylesheet"
-		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
-	<link
-		rel="stylesheet"
-		href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" />
-	<link
-		rel="stylesheet"
-		href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
-	<link rel="stylesheet" href="./style.css" />
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+  />
+  <link rel="stylesheet" href="./style.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-	<body>
-		<div class="callout toast" id="toast">
-			<span id="toast-message" class="spanTag">Error</span>
-			<span class="closebtn" onclick="this.parentElement.style.display='none';"
-				>×</span
-			>
-		</div>
-		<nav class="sidebar">
-			<header class="header-design">
-				<div onclick="navigateTo('DASHBOARD')">
-					<img class="image-design" src="./img/logo.png" alt="" srcset="" />
-				</div>
-			</header>
-			<div class="menu-bar">
-				<div class="menu">
-					<!-- <li class="search-box">
-                  <i class='bx bx-search icon'></i>
-                  <input type="text" placeholder="Search...">
-              </li> -->
-					<ul class="menu-links">
-						<li class="nav-link isActive">
-							<a class="menu-isActive">
-								<i class="bx bx-home-alt icon menu-isActive"></i>
-								<span class="text nav-text menu-isActive">Dashboard</span>
-							</a>
-						</li>
-						<!-- <li class="nav-link">
-              <a onclick="navigateTo('INCOME')">
-                <i class="bx bxs-bank icon"></i>
-                <span class="text nav-text">Investment</span>
+  <body>
+    <div class="callout toast" id="toast">
+      <span id="toast-message" class="spanTag">Error</span>
+      <span class="closebtn" onclick="this.parentElement.style.display='none';"
+        >×</span
+      >
+    </div>
+    <nav class="sidebar">
+      <header class="header-design">
+        <div onclick="navigateTo('DASHBOARD')">
+          <span id="logo-name"><strong>Serenity</strong></span>
+          <span id="logo-desc"
+            >Clinic <strong style="color: #2d8378">( + )</strong></span
+          >
+          <img class="image-design" src="./img/logo.png" alt="" srcset="" />
+        </div>
+      </header>
+      <div class="menu-bar">
+        <div class="menu">
+          
+          <ul class="menu-links">
+            <li class="nav-link isActive">
+              <a class="menu-isActive">
+                <i class="bx bx-home-alt icon menu-isActive"></i>
+                <span class="text nav-text menu-isActive">Dashboard</span>
               </a>
-            </li> -->
-						<li class="nav-link">
-							<a onclick="navigateTo('USER')">
-								<i class="bx bxs-user-detail icon"></i>
-								<span class="text nav-text">Users</span>
-							</a>
-						</li>
-						<li class="nav-link" id="showSlotMenu">
-							<a onclick="navigateTo('SLOT')">
-								<i class="bx bx-money icon"></i>
-								<span class="text nav-text">Slots</span>
-							</a>
-						</li>
-						<li class="nav-link">
-							<a onclick="navigateTo('APPOINTMENT')">
-								<i class="bx bx-money icon"></i>
-								<span class="text nav-text">Appointments</span>
-							</a>
-						</li>
-
-						<!-- <li class="nav-link">
-              <a onclick="navigateTo('BILLS')">
-                <i class="bx bx-list-check icon"></i>
-                <span class="text nav-text">Bills</span>
+            </li>
+            
+            <li class="nav-link">
+              <a onclick="navigateTo('USER')">
+                <i class="fa fa-user-circle-o icon" aria-hidden="true"></i>
+                <span class="text nav-text">Users</span>
               </a>
-            </li> -->
-						<!-- <li class="nav-link">
-							<a onclick="navigateTo('EMPLOYEE')">
-								<i class="bx bxs-user-pin icon"></i>
-								<span class="text nav-text">Employee</span>
-							</a>
-						</li> -->
-						<!-- <li class="nav-link">
-              <a onclick="navigateTo('SALARY')">
-                <i class="bx bx-money-withdraw icon"></i>
-                <span class="text nav-text">Salaries</span>
-              </a>
-            </li> -->
-						<!-- <li class="nav-link">
-              <a onclick="navigateTo('EXPENSE')">
-                <i class="bx bx-money icon"></i>
-                <span class="text nav-text">Expenses</span>
+            </li>
+            <li class="nav-link" id="showSlotMenu">
+              <a onclick="navigateTo('SLOT')">
+                <i class="fa fa-plus-square-o icon"></i>
+                <span class="text nav-text">Slots</span>
               </a>
             </li>
             <li class="nav-link">
-              <a onclick="navigateTo('REPORT')">
-                <i class="bx bxs-report icon"></i>
-                <span class="text nav-text">Report</span>
+              <a onclick="navigateTo('APPOINTMENT')">
+                <i class="fa fa-calendar-plus-o icon"></i>
+                <span class="text nav-text">Appointments</span>
               </a>
-            </li> -->
-					</ul>
-				</div>
-				<div class="bottom-content">
-					<li class="nav-link">
-						<a onclick="logout()">
-							<i class="bx bx-log-out icon"></i>
-							<span class="text nav-text">Logout</span>
-						</a>
-					</li>
-				</div>
-			</div>
-		</nav>
-		<div style="margin-left: 250px; cursor: pointer">
-			<nav class="navbar navbar-expand-lg fixed-top navbar-design" id="navbar">
-				<span
-					style="
-						color: #2d8378;
-						margin-left: 42px;
-						cursor: pointer;
-						font-weight: bold;
-						font-size: 16px;
-					"
-					id="setRole"
-					>ADMIN</span
-				>
-				<div class="right">
-					<img
-						style="cursor: pointer"
-						id="profileImage"
-						src="./profile_icon.jpeg"
-						alt=""
-						width="30" />
-					<span style="color: #632828; cursor: pointer" id="setName"
-						>ADMIN</span
-					>
-					<!-- <span class="logout-icon" onclick="logout()"
-              ><i class="fa fa-sign-out" aria-hidden="true"></i
-            >logout</span> -->
-				</div>
-			</nav>
-		</div>
-		<!-- <div class="main-area">
-			Dashboard
-			<form>
-				<label class="radio-as-input">
-					<input type="radio" name="gender" value="male" />
-					<span>Male</span>
-				</label>
+            </li>
 
-				<label class="radio-as-input">
-					<input type="radio" name="gender" value="female" />
-					<span>Female</span>
-				</label>
+            
+          </ul>
+        </div>
+        <div class="bottom-content">
+          <li class="nav-link">
+            <a onclick="logout()">
+              <i class="bx bx-log-out icon"></i>
+              <span class="text nav-text">Logout</span>
+            </a>
+          </li>
+        </div>
+      </div>
+    </nav>
+    <div style="margin-left: 250px; cursor: pointer">
+      <nav class="navbar navbar-expand-lg fixed-top navbar-design" id="navbar">
+        <span
+          style="
+            color: #0a0a0a;
+            margin-left: 42px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+          "
+          id="setRole"
+          >ADMIN</span
+        >
+        <div class="right">
+          <img
+            style="cursor: pointer"
+            id="profileImage"
+            src="./profile_icon.jpeg"
+            alt=""
+            width="30"
+          />
+          <span style="color: #632828; cursor: pointer" id="setName"
+            >ADMIN</span
+          >
+         
+        </div>
+      </nav>
+    </div>
+    
 
-				<label class="radio-as-input">
-					<input type="radio" name="gender" value="other" />
-					<span>Other</span>
-				</label>
-			</form>
-		</div> -->
-
-		<script src="./common.js"></script>
-		<script src="./dashboard.js"></script>
-		<script src="./navigation.js"></script>
-	</body>
+    <script src="./common.js"></script>
+    <script src="./dashboard.js"></script>
+    <script src="./navigation.js"></script>
+  </body>
 </html>

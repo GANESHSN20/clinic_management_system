@@ -11,28 +11,7 @@ function login() {
 	if (!isFormValid) return false;
 	$("#show-loader").css("visibility", "visible");
 
-	// for (let i in obj) {
-	//   if (obj[i] == "" || obj[i] == []) {
-	//     $(`#${i}`).css("border", "1px red solid");
-	//     $("#message").css("color", "red");
-
-	//     $("#showMessage").css("display", "block");
-	//     $("#showMessage").css("background", "#f2dede");
-	//     let key = i[0].toUpperCase() + i.slice(1);
-	//     $("#message").text(`${key} is Required.`);
-
-	//     setTimeout(() => {
-	//       $("#showMessage").css("display", "none");
-	//       $(`#${i}`).css("border", "none");
-	//       $("#message").css("color", "#1e81b0");
-
-	//       // window.location.href = '/register';
-	//     }, 3000);
-	//     return;
-	//   } else {
-	//     $(`#${i}`).css("border", "none");
-	//   }
-	// }
+	
 
 	$.ajax({
 		method: "POST",

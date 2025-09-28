@@ -2,28 +2,28 @@ const AppointmentModel = require("../model/appointment-model");
 const SlotModel = require("../model/slot-model");
 
 const AppointmentDao = {
-	isAppointmentExist: (payload) => {
-		return AppointmentModel.findOne({
-			"slots.slot": payload.slots.slot,
-			date: {
-				$eq: payload.date,
-			},
-		});
-	},
+  isAppointmentExist: (payload) => {
+    return AppointmentModel.findOne({
+      "slots.slot": payload.slots.slot,
+      date: {
+        $eq: payload.date,
+      },
+    });
+  },
 
-	book: (payload) => {
-		console.log({ payload });
+  book: (payload) => {
+    console.log({ payload });
 
-		return AppointmentModel({
-			doctorId: payload.doctorId,
-			patientId: payload.patientId,
-			slots: payload.slots,
-			date: payload.date,
-			reason: payload.reason,
-			prescription: payload.prescription,
-			consultationFees: payload.consultationFees,
-		}).save();
-	},
+    return AppointmentModel({
+      doctorId: payload.doctorId,
+      patientId: payload.patientId,
+      slots: payload.slots,
+      date: payload.date,
+      reason: payload.reason,
+      prescription: payload.prescription,
+      consultationFees: payload.consultationFees,
+    }).save();
+  },
 
 	list: (date, query) => {
 		console.log("---", date, query);
@@ -44,7 +44,7 @@ const AppointmentDao = {
 			})
 			.populate({
 				path: "patientId",
-				select: { firstName: 1, lastName: 1, gender: 1, dateOfBirth: 1 },
+				select: { firstName: 1, lastName: 1, gender: 1, dateOfBirth: 1, address:1 },
 			});
 	},
 
