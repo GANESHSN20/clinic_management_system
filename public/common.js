@@ -12,45 +12,22 @@ let borderLeftColor = {
 };
 let api_url_list = {
   get: {
-    clients: "/clients/getClientList",
     users: "/users/list",
-    bills: "/client-bills/getBillByUserName",
-    expenses: "/expenses/getExpensesByCondition",
-    investments: "/investments/getInvestmentsByCondition",
-    salaries: "/salaries/getSalariesByUserName",
+    
     slots: "/slots/list",
     appointments: "/appointments/list",
     appointmentDetails: "/download-pdf",
     appointmentBills: "/download-bill",
   },
   post: {
-    clients: "/clients/register",
     users: "/users/register",
     appointments: "/appointments/book",
-    bills: "/client-bills/addBill",
     slots: "/slots/create",
-    expenses: "/expenses/expenseAdd",
-    investments: "/investments/investmentAdd",
-    salaries: "/salaries/salaryPaid",
+    
   },
   patch: {
-    delete_client: "/clients/deleteData",
-    update_clients: "/clients/updateData",
-    update_employees: "/users/updateData",
-    delete_employees: "/users/deleteData",
-    update_salaries: "/salaries/updateData",
-    delete_salaries: "/salaries/deleteData",
-    update_bills: "/client-bills/updateData",
-    delete_bills: "/client-bills/deleteData",
-    update_expenses: "/expenses/updateData",
-    delete_expenses: "/expenses/deleteData",
-    employees: "/users/register",
     appointments: "/appointments/update",
     prescriptionCost: "/appointments/updateCost",
-    bills: "/client-bills/addBill",
-    expenses: "/expenses/expenseAdd",
-    investments: "/investments/investmentAdd",
-    salaries: "/salaries/salaryPaid",
   },
 };
 
@@ -147,9 +124,7 @@ function showToastConfirmMessage(message, color, userId) {
   }, 2000);
 }
 
-// function getDataList(){
 
-// }
 function getDataList(url, params, query, callback) {
   let path = api_url_list.get[url];
   if (params) path += `/${params}`;
@@ -173,13 +148,6 @@ function getDataList(url, params, query, callback) {
       console.log("response", response);
       if (response.statusCode == 200) {
         return callback(response, null);
-
-        // if(response.data && response.data.items && response.data.items.length>0){
-        // items = response.data;
-
-        // $('#totalAmount').val(response.data.totalAmount)
-
-        // localStorage.setItem('token',response.token);
       }
     },
     error: function (error) {
@@ -425,29 +393,7 @@ function patchData(url, body, query, params, callback) {
   });
 }
 
-function calcSalaryRemaining(inp1, inp2, inp3, event, salary) {
-  let totalPaid =
-    parseInt(inp1 || 0) + parseInt(inp2 || 0) + parseInt(inp3 || 0);
-  console.log("totalpaid--", totalPaid);
-  // if (event.keyCode != 8) {
-  setTimeout(() => {
-    let leftAmount = salary - totalPaid;
-    if (totalPaid <= salary)
-      showErrorMessage(
-        `Remaining: ${leftAmount} out of ${salary} salary. `,
-        "info",
-        3000
-      );
-    else if (totalPaid > salary)
-      showErrorMessage(
-        `Warning !! ( ${-leftAmount} ) more than salary.`,
-        "warning",
-        5000
-      );
-  }, 1200);
 
-  // }
-}
 
 function formatDate(date) {
   const year = date.getFullYear();

@@ -96,10 +96,7 @@
             <!-- </li> -->
             <li class="nav-link">
               <a onclick="navigateTo('USER')">
-                <i
-                  class="fa fa-user-circle-o icon "
-                  aria-hidden="true"
-                ></i>
+                <i class="fa fa-user-circle-o icon" aria-hidden="true"></i>
                 <span class="text nav-text">Users</span>
               </a>
             </li>
@@ -198,7 +195,7 @@
                   <div class="form-row">
                     <p style="clear: both">Doctor Information</p>
                     <div class="form-group col-md-8">
-                      <label for="month"
+                      <label for="doctorInfo"
                         >Name - Specialization - Qualification - Consultation
                         Fees</label
                       >
@@ -217,7 +214,7 @@
                   <div class="form-row">
                     <p style="clear: both">Slot Detail</p>
                     <div class="form-group col-md-6">
-                      <label for="month">Available dates</label>
+                      <label for="availableDates">Available dates</label>
                       <select
                         class="form-control select-design type-design"
                         id="dates"
@@ -233,141 +230,21 @@
                   </div>
                   <div class="form-row">
                     <div class="form-group col-md-6">
-                      <label for="month">Start Time </label>
+                      <label for="startTime">Start Time </label>
                       <select
                         class="form-control select-design type-design"
                         id="startTime"
                       ></select>
                     </div>
                     <div class="form-group col-md-6">
-                      <label for="month">End Time</label>
+                      <label for="endTime">End Time</label>
                       <select
                         class="form-control select-design type-design"
                         id="endTime"
                       ></select>
                     </div>
                   </div>
-
-                  <!-- <div class="form-row">
-										<div class="form-group col-md-6">
-											<label for="email">Email</label>
-											<input
-												type="email"
-												autocomplete="off"
-												class="form-control"
-												id="email"
-												placeholder="Enter email" />
-										</div>
-										<div class="form-group col-md-6">
-											<label for="phone">Phone</label>
-											<input
-												type="number"
-												autocomplete="off"
-												class="form-control"
-												id="phone"
-												placeholder="Enter phone" />
-										</div>
-									</div> -->
-
-                  <!-- <div class="form-row">
-										<div class="form-group col-md-8">
-											<label for="address">Address</label>
-											<input
-												type="text"
-												autocomplete="false"
-												class="form-control"
-												id="address"
-												placeholder="Enter address" />
-										</div>
-										<div class="form-group col-md-4">
-											<label for="month">Blood Group</label>
-											<select
-												class="form-control select-design type-design"
-												id="bloodGroup"></select>
-										</div>
-									</div> -->
-                  <!-- <div class="form-row">
-										<div class="col-md-12 remove-margin">
-											<div class="form-group col-md-4">
-												<label for="userName">User Name</label>
-												<input
-													type="text"
-													autocomplete="false"
-													class="form-control"
-													id="userName"
-													readonly />
-											</div>
-											<div class="form-group col-md-4">
-												<label for="month">Role</label>
-												<select
-													class="form-control select-design type-design"
-													id="role"
-													onchange="onRoleChange(event)"></select>
-											</div>
-											<div class="form-group col-md-1"></div>
-											<div class="form-group col-md-3">
-												<label for="status">Active</label>
-												<br />
-												<label class="switch">
-													<input
-														type="checkbox"
-														class="active-check"
-														onclick="getCheckedData(event)"
-														id="active-check"
-														checked />
-													<span class="slider round"></span>
-												</label>
-											</div>
-										</div>
-									</div> -->
-                  <!-- <div class="form-row" id="isDoctor">
-										<div class="col-md-12 remove-margin">
-											<div class="form-group col-md-4">
-												<label for="qualification">Qualification</label>
-												<select
-													class="form-control select-design type-design"
-													id="qualification"></select>
-											</div>
-											<div class="form-group col-md-4">
-												<label for="month">Specialization</label>
-												<select
-													class="form-control select-design type-design"
-													id="specialization"></select>
-											</div>
-
-											<div class="form-group col-md-4">
-												<label for="consultationFee">Consultation Fee</label>
-												<input
-													type="text"
-													autocomplete="false"
-													class="form-control"
-													id="consultationFee" />
-											</div>
-										</div>
-										<div class="col-md-12 remove-margin">
-											<div class="form-group col-md-5">
-												<label for="hospital">Hospital</label>
-												<select
-													class="form-control select-design type-design"
-													id="hospital"></select>
-											</div>
-											<div class="form-group col-md-4">
-												<label for="years">Years</label>
-												<select
-													class="form-control select-design type-design"
-													id="expYears"></select>
-											</div>
-											<div class="form-group col-md-3">
-												<input
-													type="button"
-													autocomplete="false"
-													value="yes"
-													class="form-control exp-design"
-													onclick="addExperience()" />
-											</div>
-										</div>
-										<div class="col-md-12 remove-margin" id="addExp"></div>
-									</div> -->
+              
                 </div>
               </form>
             </div>
@@ -395,7 +272,7 @@
                   type="button"
                   class="cancelbtn form-button"
                   data-dismiss="modal"
-                  onclick="closeEmployeeModal()"
+                  onclick="closeUserModal()"
                 >
                   CANCEL
                 </button>
@@ -411,9 +288,7 @@
           <span id="showTableDesc" class="filter-design">List</span>
         </div>
         <div class="form-group col-md-2">
-          <!-- <select
-						class="form-control select-design type-design filter-design"
-						id="month"></select> -->
+          
         </div>
         <div class="col-md-2 filter-label-design">
           <span class="type-design filter-label-design">UserType: </span>
@@ -425,9 +300,7 @@
           ></select>
         </div>
         <div class="form-group col-md-2">
-          <!-- <select
-						class="form-control select-design type-design filter-design"
-						id="month"></select> -->
+          
         </div>
         <div class="form-group col-md-1">
           <button

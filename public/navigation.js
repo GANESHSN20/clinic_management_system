@@ -9,33 +9,19 @@ function navigateTo(pageName) {
 			break;
 		}
 		case "APPOINTMENT": {
-			window.location.href = "/appointment"; //"/investment";
+			window.location.href = "/appointment"; 
 			break;
 		}
 		case "PRESCRIPTION": {
-			window.location.href = "/prescription"; //"/investment";
+			window.location.href = "/prescription"; 
 			break;
 		}
-		case "BILLS": {
-			window.location.href = "#"; //"/bill";
-			break;
-		}
-		case "EXPENSE": {
-			window.location.href = "#"; //"/expense";
-			break;
-		}
-		case "SALARY": {
-			window.location.href = "#"; //"/salary";
-			break;
-		}
+		
 		case "USER": {
 			window.location.href = "/user";
 			break;
 		}
-		case "REPORT": {
-			window.location.href = "#"; // "/report";
-			break;
-		}
+		
 	}
 }
 function logout() {
