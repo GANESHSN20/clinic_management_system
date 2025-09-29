@@ -1,76 +1,72 @@
-# cms_mgmt_system
+# Clinic Management System 🏥
 
-Clinic Management System
+Clinic Management System is a full-stack web application designed to simplify clinic operations.  
+It provides **role-based dashboards** for Admin, Doctor, Receptionist, and Patient, allowing easy management of **appointments, slots, patient records, billing, and reporting**.
 
-## Database Name
+---
 
-cms-db
+## 🚀 Features
+- Role-based authentication & dashboards  
+- Appointment booking, rescheduling, and cancellation  
+- Patient profiles and medical history management  
+- Doctor dashboard for appointments & prescriptions  
+- Receptionist module for managing slots & schedules  
+- Automated billing & invoice generation  
+- Reports and analytics for admin  
 
-## collection Names
+---
 
-users
+## 🛠 Tech Stack
+- **Backend:** Node.js, Express  
+- **Frontend:** HTML, CSS, Bootstrap, JavaScript  
+- **Database:** MongoDB with Mongoose  
+- **Authentication:** JWT  
 
-## User Model
+---
 
-{
-firstName:'Umme', required
-lastName:'Kulsum'  
- phone:{
-countryCode:'', // enum, Nepal , India
-phNumber:''
-}
-8798989098, required  
- dateOfBirth:'2001-01-02', required
-gender:"Female",enum ['MALE', 'FEMALE'] required
-address:'MG road',
-blood-group:'A+',['A+', 'AB+', 'O+', 'o-', 'AB-', 'B+','B-', 'A-'] required
-userName:'CMS2001F01UMME02'( clinic ShortName+ year of birth+Sex+last four
-Digit of mobile + firstNameIn caps + Days of birth ), required
-password:'asdf123', required
-email:''
-status:'Open, closed, OnGoing' ENUM ['OPEN', 'ONGOING', 'CLOSED']
-isActive:true/false, boolean default = false
-createdAt:'', today date with default today date
-role:'Doctor, patient, receipt, admin' enum ['DOCTOR', 'PATIENT', 'Receptionist', 'ADMIN'] // admin will eb provided ons the of server
-OTP:''-- whatsapp ''
-}
+## ⚡ Getting Started
 
-https://github.com/sandeepkj90/cms_mgmt_system.git
+### 1. Clone the Repository
+```bash
+git clone https://github.com/GANESHSN20/clinic_management_system.git
+cd clinic_management_system
 
-Slot Schema
+2. Install Dependencies
+npm install
 
-slot Schema
+3. Setup Environment Variables
 
-Role receiptionist
-{
-date:
-startTime:{
-time:11
-periodIndicator:'am'
-}
-endTime: {
-time:2
-periodIndicator:'pm'
-}
-duration: 30
-slots:[{slot:"11 am",status:false},{slot:"11:30 am",status:false}]
-createdAt:
+Create a `.env` file in the project root and add the following:
+- `PORT` → Port number to run the server (e.g., 3000)
+- `MONGO_URI` → MongoDB connection string
+- `SECRET_KEY` → Secret key for authentication
+- `ADMIN_PASSWORD`→ password field for ADMIN register
+- `ADMIN_USER_NAME` → username field for ADMIN register
+- `ADMIN_EMAIL` → email field for ADMIN register
 
-}
-{
-date:
-startTime: 11:00am
-endTime: 2:pm
-duration: 30
-slots:[{slot:"11 am",status:false},{slot:"11:30 am",status:false}]
+4. Run the Application
+npm start
 
-}
-1.creating slot
+Visit the live project 👉 [http://localhost:3000](http://localhost:3000)  
+```
 
-service function to get the slot array based on start time , end time and duration
+## 👥 User Roles
 
-2. getting slotlist for token role patient is based on today date condition is greater than equal to today date list
-   for token role receipnist all data with descending order of date
+**Admin** → Manage users, view reports
 
-appointment Schedule
-#e02727;
+**Receptionist** → Manage appointments & slots
+
+**Doctor** → View patients & update medical records
+
+**Patient** → Book and manage own appointments
+
+## 🧑‍🤝‍🧑 Team Members
+
+**Syeda Umme Kulsum**
+**Ganesh S N**
+Both team members contributed equally to all features and testing.
+
+## 📜 License
+
+This project is licensed under the **MIT** License.
+See the license details [here](LICENSE) .
