@@ -37,6 +37,7 @@ app.use("/slot", (req, res) => {
 app.use("/appointment", (req, res) => {
   res.sendFile(__dirname + "/public/appointment.html");
 });
+
 app.use("/prescription", (req, res) => {
   res.sendFile(__dirname + "/public/prescription.html");
 });
