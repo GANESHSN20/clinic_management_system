@@ -25,9 +25,8 @@ It provides **role-based dashboards** for Admin, Doctor, Receptionist, and Patie
 ---
 
 ## ⚡ Getting Started
-
-### 1. Clone the Repository
 ```bash
+1. Clone the Repository
 git clone https://github.com/GANESHSN20/clinic_management_system.git
 cd clinic_management_system
 
@@ -65,7 +64,7 @@ Visit the live project 👉 [http://localhost:3000](http://localhost:3000)
 
 **Syeda Umme Kulsum** and
 **Ganesh S N**
-Both team members contributed equally to all features and testing.
+, both team members contributed equally to all features and testing.
 
 ## 📜 License
 
