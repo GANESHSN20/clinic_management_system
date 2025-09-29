@@ -47,8 +47,9 @@ Create a `.env` file in the project root and add the following:
 4. Run the Application
 npm start
 
-Visit the live project 👉 [http://localhost:3000](http://localhost:3000)  
 ```
+Visit the live project 👉 [http://localhost:3000](http://localhost:3000)  
+
 
 ## 👥 User Roles
 
