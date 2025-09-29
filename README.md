@@ -52,17 +52,17 @@ Visit the live project 👉 [http://localhost:3000](http://localhost:3000)
 
 ## 👥 User Roles
 
-**Admin** → Manage users, view reports
+- **Admin** → Manage users, view reports
 
-**Receptionist** → Manage appointments & slots
+- **Receptionist** → Manage appointments & slots
 
-**Doctor** → View patients & update medical records
+- **Doctor** → View patients & update medical records
 
-**Patient** → Book and manage own appointments
+- **Patient** → Book and manage own appointments
 
 ## 🧑‍🤝‍🧑 Team Members
 
-**Syeda Umme Kulsum**
+**Syeda Umme Kulsum** and
 **Ganesh S N**
 Both team members contributed equally to all features and testing.
 
